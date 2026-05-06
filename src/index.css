@@ -142,17 +142,17 @@ a {
 
 .glass-panel {
   background: rgba(255, 255, 255, 0.12);
-  /* Extremely translucent */
   border: 1px solid rgba(255, 255, 255, 0.3);
   backdrop-filter: blur(45px) saturate(160%);
-  /* Deep blur + saturation for "Real Glass" feel */
   -webkit-backdrop-filter: blur(45px) saturate(160%);
   border-radius: 32px;
   padding: 3rem;
   box-shadow:
     0 12px 40px rgba(0, 0, 0, 0.03),
     0 0 0 1px rgba(255, 255, 255, 0.2) inset;
-  /* Crystalline edge */
+  /* Forzar renderizado de GPU */
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
 }
 
 
