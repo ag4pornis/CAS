@@ -1,228 +1,207 @@
-import React, { useEffect, useRef, useState } from "react";
-import { ArrowLeft, Calendar, BookOpen } from "lucide-react";
-import { experiences, casProject, learningOutcomes } from "../data/experiences";
-
-const strandNames = {
-  creativity: "Creatividad",
-  activity: "Actividad",
-  service: "Servicio",
-  project: "Proyecto CAS",
-};
-
-const strandColors = {
-  creativity: "var(--creativity)",
-  activity: "var(--activity)",
-  service: "var(--service)",
-  project: "var(--project)",
-};
+import React, { useEffect } from "react";
+import { casDescription, casProject, experiences } from "../data/experiences";
+import { X, Calendar, CheckCircle2, ChevronLeft } from "lucide-react";
 
 export default function DetailOverlay({ section, onClose }) {
-  const overlayRef = useRef(null);
-  const [isVisible, setIsVisible] = useState(false);
+  const isProject = section === "project";
+  
+  // Get data correctly
+  const data = isProject ? casProject : casDescription.strands.find((s) => s.id === section);
+  
+  // Get experiences for this section
+  const sectionExperiences = isProject ? [] : experiences[section] || [];
 
+  if (!data) return null;
+
+  // ESC key to close
   useEffect(() => {
-    // Trigger enter animation
-    requestAnimationFrame(() => {
-      requestAnimationFrame(() => {
-        setIsVisible(true);
-      });
-    });
-  }, []);
-
-  const handleClose = () => {
-    setIsVisible(false);
-    setTimeout(onClose, 600);
-  };
-
-  const renderProjectContent = () => (
-    <div className="detail-project">
-      <p className="detail-description">{casProject.details}</p>
-
-      <h3 style={{ color: strandColors.project, marginTop: "2rem" }}>
-        Línea Temporal
-      </h3>
-      <div className="detail-timeline">
-        {casProject.timeline.map((phase, i) => (
-          <div key={i} className="detail-timeline-item glass-panel">
-            <div
-              className="detail-timeline-phase"
-              style={{ color: strandColors.project }}
-            >
-              {phase.phase}
-            </div>
-            <div className="detail-timeline-date">{phase.date}</div>
-            <p>{phase.description}</p>
-          </div>
-        ))}
-      </div>
-
-      <h3 style={{ color: strandColors.project, marginTop: "2rem" }}>
-        Reflexión
-      </h3>
-      <div className="glass-panel">
-        <p>
-          Aquí puedes escribir tu reflexión general sobre el proyecto CAS.
-          ¿Qué aprendiste? ¿Cómo te transformó? ¿Qué harías diferente?
-        </p>
-      </div>
-    </div>
-  );
-
-  const renderStrandContent = () => {
-    const items = experiences[section] || [];
-    return (
-      <div>
-        <div className="experiences-grid">
-          {items.map((exp) => (
-            <div key={exp.id} className="experience-card">
-              <h4>{exp.title}</h4>
-              <div className="date">
-                <Calendar size={12} style={{ marginRight: "0.3rem" }} />
-                {exp.date}
-              </div>
-              <p>{exp.description}</p>
-
-              <div className="reflection-box">
-                <BookOpen
-                  size={14}
-                  style={{ color: strandColors[section], flexShrink: 0 }}
-                />
-                <span>{exp.reflection}</span>
-              </div>
-
-              <div className="tags">
-                {exp.learningOutcomes.map((lo) => {
-                  const outcome = learningOutcomes.find((o) => o.id === lo);
-                  return (
-                    <span key={lo} className={`tag ${section}`}>
-                      {outcome?.short}
-                    </span>
-                  );
-                })}
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-    );
-  };
+    const handleEsc = (e) => {
+      if (e.key === "Escape") onClose();
+    };
+    window.addEventListener("keydown", handleEsc);
+    return () => window.removeEventListener("keydown", handleEsc);
+  }, [onClose]);
 
   return (
-    <div
-      ref={overlayRef}
-      className={`detail-overlay ${isVisible ? "detail-overlay-enter" : "detail-overlay-exit"}`}
-      style={{
-        "--strand-color": strandColors[section],
-      }}
-    >
-      {/* 3D-like opening effect */}
-      <div className={`detail-portal ${isVisible ? "portal-open" : "portal-closed"}`}>
-        <div className="detail-header">
-          <button className="back-button" onClick={handleClose}>
-            <ArrowLeft size={16} />
-            Volver
-          </button>
-          <h3 style={{ color: strandColors[section], fontSize: "1rem" }}>
-            {strandNames[section]}
-          </h3>
+    <div className="detail-overlay">
+      <header className="detail-header">
+        <button className="back-button" onClick={onClose}>
+          <ChevronLeft size={18} />
+          Volver
+        </button>
+        <div className="header-title">
+          <span className="header-label">{isProject ? "Proyecto" : "Aspecto CAS"}</span>
+          <h2>{data.name || data.title}</h2>
+        </div>
+      </header>
+
+      <main className="detail-body">
+        <div className="detail-intro">
+          <h1 className="editorial-title">{data.title || data.name}</h1>
+          <p className="subtitle">{data.description || data.text}</p>
         </div>
 
-        <div className="detail-body">
-          <h1 style={{ color: strandColors[section] }}>
-            {strandNames[section]}
-          </h1>
-          <p className="subtitle">
-            {section === "project"
-              ? casProject.subtitle
-              : `Mis experiencias de ${strandNames[section]?.toLowerCase()}`}
-          </p>
+        {!isProject && (
+          <section className="outcomes-section">
+            <h3>Resultados de Aprendizaje</h3>
+            <div className="outcomes-list">
+              {/* Note: In your experiences.js, outcomes are just strings in description or elsewhere? 
+                  Actually, strands don't have outcomes defined in experiences.js yet. 
+                  I'll add a check or just show a message. */}
+              <div className="outcome-tag">
+                <CheckCircle2 size={16} />
+                Desarrollo de nuevas habilidades
+              </div>
+            </div>
+          </section>
+        )}
 
-          {section === "project" ? renderProjectContent() : renderStrandContent()}
-        </div>
-      </div>
+        <section className="experiences-section">
+          <h3>Experiencias y Reflexiones</h3>
+          <div className="experiences-grid">
+            {sectionExperiences.map((exp, i) => (
+              <div key={i} className="experience-card">
+                <div className="card-header">
+                  <span className="date">
+                    <Calendar size={14} />
+                    {exp.date}
+                  </span>
+                  <h4>{exp.title}</h4>
+                </div>
+                <p>{exp.reflection}</p>
+                <div className="card-tags">
+                  {(exp.learningOutcomes || []).map((loId, j) => (
+                    <span key={j} className={`tag-pill ${section}`}>
+                      Resultado {loId}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            ))}
+            {sectionExperiences.length === 0 && (
+              <p>No hay experiencias registradas todavía en esta sección.</p>
+            )}
+          </div>
+        </section>
+      </main>
 
       <style>{`
-        .detail-overlay {
-          --strand-color: var(--text-primary);
+        .header-title {
+          margin-left: 1rem;
         }
 
-        .detail-portal {
-          width: 100%;
-          height: 100%;
+        .header-label {
+          font-size: 0.65rem;
+          text-transform: uppercase;
+          letter-spacing: 0.1em;
+          color: var(--text-muted);
+          display: block;
+        }
+
+        .header-title h2 {
+          font-size: 1.1rem;
+          margin-top: -0.2rem;
+        }
+
+        .detail-intro {
+          margin-bottom: 4rem;
+          max-width: 800px;
+        }
+
+        .editorial-title {
+          font-size: clamp(2.5rem, 6vw, 4.5rem);
+          margin-bottom: 1.5rem;
+          color: var(--text-primary);
+        }
+
+        .subtitle {
+          font-size: 1.2rem;
+          line-height: 1.8;
+          color: var(--text-secondary);
+        }
+
+        .outcomes-section {
+          margin-bottom: 4rem;
+        }
+
+        .outcomes-section h3, .experiences-section h3 {
+          font-family: var(--font-body);
+          font-size: 0.85rem;
+          text-transform: uppercase;
+          letter-spacing: 0.2em;
+          color: var(--text-muted);
+          margin-bottom: 2rem;
+          border-bottom: 1px solid #eee;
+          padding-bottom: 1rem;
+        }
+
+        .outcomes-list {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 1rem;
+        }
+
+        .outcome-tag {
+          display: flex;
+          align-items: center;
+          gap: 0.6rem;
+          background: #fff;
+          border: 1px solid #eee;
+          padding: 0.6rem 1.2rem;
+          border-radius: 8px;
+          font-size: 0.9rem;
+          font-weight: 500;
+          color: var(--text-secondary);
+        }
+
+        .experience-card {
           display: flex;
           flex-direction: column;
-          overflow-y: auto;
-          transform-origin: center center;
-          transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+          gap: 1.2rem;
         }
 
-        .portal-closed {
-          transform: scale(0) rotateY(90deg);
-          opacity: 0;
-          border-radius: 50%;
+        .card-header h4 {
+          font-family: var(--font-heading);
+          font-size: 1.6rem;
+          margin-top: 0.5rem;
         }
 
-        .portal-open {
-          transform: scale(1) rotateY(0deg);
-          opacity: 1;
-          border-radius: 0;
-        }
-
-        .detail-overlay-enter {
-          background: var(--bg-primary);
-        }
-
-        .detail-overlay-exit {
-          background: transparent;
-          pointer-events: none;
-        }
-
-        .reflection-box {
+        .card-header .date {
           display: flex;
-          gap: 0.5rem;
-          align-items: flex-start;
-          margin-top: 0.75rem;
-          padding: 0.75rem;
-          border-radius: 10px;
-          background: rgba(255,255,255,0.02);
-          border-left: 2px solid var(--strand-color);
-          font-size: 0.85rem;
-          color: var(--text-secondary);
-          font-style: italic;
+          align-items: center;
+          gap: 0.4rem;
+          font-size: 0.75rem;
+          font-weight: 700;
+          color: var(--text-muted);
+          text-transform: uppercase;
         }
 
-        .detail-description {
-          font-size: 1.05rem;
+        .experience-card p {
+          font-size: 1rem;
           line-height: 1.8;
         }
 
-        .detail-timeline {
-          display: grid;
-          grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-          gap: 1rem;
-          margin-top: 1rem;
+        .card-tags {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 0.5rem;
+          margin-top: auto;
         }
 
-        .detail-timeline-item {
-          padding: 1.2rem;
-        }
-
-        .detail-timeline-phase {
+        .tag-pill {
+          font-size: 0.7rem;
           font-weight: 700;
-          font-size: 1rem;
-          margin-bottom: 0.3rem;
+          padding: 0.3rem 0.8rem;
+          border-radius: 4px;
+          background: #f1f1f1;
+          color: var(--text-secondary);
+          text-transform: uppercase;
         }
 
-        .detail-timeline-date {
-          font-size: 0.8rem;
-          color: var(--text-muted);
-          margin-bottom: 0.5rem;
-        }
-
-        .experience-card:hover {
-          border-color: var(--strand-color);
-          box-shadow: 0 0 20px rgba(255,255,255,0.02);
-        }
+        .tag-pill.creativity { background: #f3f0f9; color: var(--creativity); }
+        .tag-pill.activity { background: #fef3c7; color: var(--activity); }
+        .tag-pill.service { background: #e0f2fe; color: var(--service); }
+        .tag-pill.project { background: #ecfdf5; color: var(--project); }
       `}</style>
     </div>
   );

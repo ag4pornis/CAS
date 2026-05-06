@@ -5,39 +5,64 @@ import ProjectSection from "./components/ProjectSection";
 import StrandSection from "./components/StrandSection";
 import DetailOverlay from "./components/DetailOverlay";
 import { casDescription } from "./data/experiences";
-import Lenis from "@studio-freight/lenis";
+import Lenis from "lenis";
 
-// Background color configs per section
+// Editorial Light Theme Colors
 const sectionColors = {
-  hero: { from: "10, 10, 18", to: "15, 12, 25", accent: "100, 80, 160" },
-  project: { from: "5, 15, 12", to: "8, 18, 14", accent: "52, 211, 153" },
-  creativity: { from: "15, 8, 22", to: "18, 10, 25", accent: "192, 132, 252" },
-  activity: { from: "18, 12, 6", to: "22, 14, 8", accent: "251, 146, 60" },
-  service: { from: "6, 12, 18", to: "8, 14, 22", accent: "56, 189, 248" },
+  hero: { from: "226, 232, 240", to: "248, 250, 252", accent: "30, 41, 59" }, // Deep Obsidian
+  project: { from: "236, 253, 245", to: "248, 250, 252", accent: "5, 150, 105" },
+  creativity: { from: "232, 225, 245", to: "250, 248, 255", accent: "142, 125, 190" },
+  activity: { from: "254, 243, 199", to: "255, 255, 255", accent: "217, 119, 6" },
+  service: { from: "191, 232, 255", to: "240, 249, 255", accent: "14, 165, 233" },
 };
+
 
 export default function App() {
   const [activeSection, setActiveSection] = useState("hero");
+  const [bgColors, setBgColors] = useState({
+    active: sectionColors.hero,
+    previous: sectionColors.hero,
+    isTransitioning: false
+  });
+
+  useEffect(() => {
+    const newColors = sectionColors[activeSection] || sectionColors.hero;
+    if (newColors.accent !== bgColors.active.accent) {
+      setBgColors(prev => ({
+        previous: prev.active,
+        active: newColors,
+        isTransitioning: true
+      }));
+      
+      const timer = setTimeout(() => {
+        setBgColors(prev => ({ ...prev, isTransitioning: false }));
+      }, 2000);
+      return () => clearTimeout(timer);
+    }
+  }, [activeSection]);
+
   const [scrollProgress, setScrollProgress] = useState(0);
   const [detailView, setDetailView] = useState(null);
+  const [projectVisible, setProjectVisible] = useState(false);
   const [visibleStrands, setVisibleStrands] = useState({
     creativity: false,
     activity: false,
     service: false,
   });
 
+
   const contentRef = useRef(null);
   const lenisRef = useRef(null);
 
-  // ─── Initialize Lenis for PERFECT smooth scroll ───
+  // ─── Initialize Lenis ───
   useEffect(() => {
     const lenis = new Lenis({
-      duration: 2.4, // Even heavier
-      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), 
+      duration: 2.4,
+      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
       orientation: "vertical",
       gestureOrientation: "vertical",
       smoothWheel: true,
-      wheelMultiplier: 0.3, // Heavy global feel
+      wheelMultiplier: 0.3,
       touchMultiplier: 1.5,
       infinite: false,
     });
@@ -53,26 +78,7 @@ export default function App() {
 
     lenis.on("scroll", ({ scroll, limit, velocity, progress }) => {
       setScrollProgress(progress);
-      
-      // Dynamic resistance: check if we are in the "sweet spot" of a section
-      const sections = document.querySelectorAll(".strand-section, .project-section");
-      let inSweetSpot = false;
-      
-      sections.forEach(section => {
-        const rect = section.getBoundingClientRect();
-        const centerDist = Math.abs(rect.top + rect.height / 2 - window.innerHeight / 2);
-        // Half of viewport height for sweet spot
-        if (centerDist < window.innerHeight * 0.5) {
-          inSweetSpot = true;
-        }
-      });
-
-      // Normal: 0.3, In section: 0.005 (Total immersion/viscosity)
-      lenis.options.wheelMultiplier = inSweetSpot ? 0.005 : 0.3;
     });
-
-
-
 
 
     return () => {
@@ -80,7 +86,7 @@ export default function App() {
     };
   }, []);
 
-  // ─── Intersection Observer for section detection ───
+  // ─── Intersection Observer ───
   useEffect(() => {
     const observerOptions = {
       root: null,
@@ -117,43 +123,179 @@ export default function App() {
 
   const openDetail = useCallback((section) => {
     setDetailView(section);
-    lenisRef.current?.stop(); // Stop scroll when overlay is open
+    lenisRef.current?.stop();
     document.body.classList.add("no-scroll");
   }, []);
 
   const closeDetail = useCallback(() => {
     setDetailView(null);
-    lenisRef.current?.start(); // Resume scroll
+    lenisRef.current?.start();
     document.body.classList.remove("no-scroll");
   }, []);
 
+  const orbRef = React.useRef(null);
+  const orbPos = React.useRef({ x: 0, y: 0 });
+  const orbState = React.useRef('idle');
+
+  React.useEffect(() => {
+    const animFrame = () => {
+      if (!orbRef.current) return;
+
+      const panels = Array.from(document.querySelectorAll('.glass-panel'));
+      let targetCard = null;
+      for (const panel of panels) {
+        const r = panel.getBoundingClientRect();
+        if (r.bottom > 50 && r.top < window.innerHeight - 50) {
+          targetCard = panel;
+          break;
+        }
+      }
+
+      const ease = 0.1;
+      const vh = window.innerHeight;
+      const vw = window.innerWidth;
+      let targetX, targetY;
+
+      if (targetCard) {
+        const rect = targetCard.getBoundingClientRect();
+
+        // --- NEW: Dynamic Corner Selection ---
+        // If the card center is below the viewport center, target TOP corner.
+        // If we've scrolled past the card center, target BOTTOM corner.
+        const cardCenter = (rect.top + rect.bottom) / 2;
+        const viewportCenter = vh / 2;
+
+        targetX = rect.left;
+        targetY = (cardCenter > viewportCenter) ? rect.top : rect.bottom;
+
+        // --- Wide Safety Margins & Rebounds ---
+        const margin = 120;
+        const topLimit = margin;
+        const bottomLimit = vh - margin;
+
+        // Note: We check against the actual corner the orb is currently targeting
+        if (targetY < topLimit) {
+          targetY = vh * 0.25;
+          targetX = vw * 0.08;
+          if (orbState.current !== 'bonked_top') {
+            orbState.current = 'bonked_top';
+            triggerBonk('scale(1.4, 0.6)');
+          }
+        } else if (targetY > bottomLimit) {
+          targetY = vh * 0.75;
+          targetX = vw * 0.08;
+          if (orbState.current !== 'bonked_bottom') {
+            orbState.current = 'bonked_bottom';
+            triggerBonk('scale(1.4, 0.6)');
+          }
+        } else {
+          orbState.current = 'following';
+        }
+      } else {
+        orbState.current = 'confused';
+        targetX = vw * 0.08;
+        targetY = vh * 0.25;
+      }
+
+
+
+      function triggerBonk(transform) {
+        if (!orbRef.current) return;
+        orbRef.current.style.transition = 'transform 0.15s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
+        orbRef.current.style.transform = `translate(-50%, -50%) ${transform}`;
+        setTimeout(() => {
+          if (orbRef.current) orbRef.current.style.transform = 'translate(-50%, -50%) scale(1)';
+        }, 200);
+      }
+
+      orbPos.current.x += (targetX - orbPos.current.x) * ease;
+      orbPos.current.y += (targetY - orbPos.current.y) * ease;
+
+      // --- Organic Floating Drift (Enhanced) ---
+      const time = Date.now() * 0.0015;
+      const driftX = Math.sin(time) * 15;
+      const driftY = Math.cos(time * 0.8) * 20;
+
+      // Increase drift factor when following to stay 'alive'
+      const driftFactor = (orbState.current === 'following') ? 0.5 : 1;
+
+      // Breathing pulse effect
+      const pulse = 1 + Math.sin(Date.now() * 0.002) * 0.08;
+
+      orbRef.current.style.top = `${orbPos.current.y + driftY * driftFactor}px`;
+      orbRef.current.style.left = `${orbPos.current.x + driftX * driftFactor}px`;
+      orbRef.current.style.transform = `translate(-50%, -50%) scale(${pulse})`;
+
+
+      if (targetCard) {
+        const section = targetCard.closest('section');
+        if (section && section.id) {
+          const sectionColor = sectionColors[section.id] || sectionColors.hero;
+          orbRef.current.style.backgroundColor = `rgb(${sectionColor.accent})`;
+          orbRef.current.style.boxShadow = `0 0 40px 10px rgba(${sectionColor.accent}, 0.4)`;
+        }
+      }
+
+      requestAnimationFrame(animFrame);
+    };
+
+    const frameId = requestAnimationFrame(animFrame);
+    return () => cancelAnimationFrame(frameId);
+  }, []);
+
+
+
+
+  // Autonomous, no dependencies needed
+
+
+
   const colors = sectionColors[activeSection] || sectionColors.hero;
+
 
   return (
     <>
-      <div
-        className="dynamic-bg"
-        style={{
-          backgroundColor: `rgb(${colors.from})`,
-          backgroundImage: `linear-gradient(180deg, rgba(${colors.from}, 1) 0%, rgba(${colors.to}, 1) 100%)`,
-        }}
+      {/* Smooth Background Transition Layer */}
+      <div 
+        className="dynamic-bg" 
+        style={{ 
+          backgroundColor: `rgb(${bgColors.active.from})`,
+          transition: 'background-color 2s cubic-bezier(0.23, 1, 0.32, 1)',
+          zIndex: -2
+        }} 
       >
+        {/* Persistent Mist Overlay */}
         <div 
-          className="bg-glow" 
-          style={{ 
-            background: `radial-gradient(circle at 50% 50%, rgba(${colors.accent}, 0.15) 0%, transparent 70%)` 
-          }} 
+          style={{
+            position: 'absolute',
+            inset: 0,
+            background: `radial-gradient(circle at 50% 50%, rgba(255,255,255,0) 0%, rgba(255,255,255,0.4) 100%)`,
+            pointerEvents: 'none'
+          }}
         />
       </div>
+
 
       <Scene3D
         activeSection={activeSection}
         scrollProgress={scrollProgress}
       />
 
+      <div
+        ref={orbRef}
+        className="scroll-orb"
+        style={{
+          backgroundColor: `rgb(${colors.accent})`,
+          boxShadow: `0 0 40px 10px rgba(${colors.accent}, 0.5)`,
+        }}
+      />
+
       <div className="content-layer" ref={contentRef}>
+
         <HeroSection />
         <ProjectSection onEnter={() => openDetail("project")} />
+
+
         <StrandSection
           strand={casDescription.strands[0]}
           isVisible={visibleStrands.creativity}
@@ -164,7 +306,7 @@ export default function App() {
           strand={casDescription.strands[1]}
           isVisible={visibleStrands.activity}
           onEnter={() => openDetail("activity")}
-          alignment="right"
+          alignment="left"
         />
         <StrandSection
           strand={casDescription.strands[2]}
@@ -173,12 +315,14 @@ export default function App() {
           alignment="left"
         />
 
-        <footer className="site-footer">
+
+        <footer className="site-footer glass-panel">
           <div className="footer-content">
             <p className="footer-text">CAS Portfolio — IB Diploma Programme</p>
             <p className="footer-sub">Creatividad · Actividad · Servicio</p>
           </div>
         </footer>
+
       </div>
 
       {detailView && (
@@ -186,34 +330,47 @@ export default function App() {
       )}
 
       <style>{`
-        html.lenis {
-          height: auto;
+        .content-layer {
+          position: relative;
+          z-index: 1;
+          width: 100%;
         }
 
-        .lenis.lenis-smooth {
-          scroll-behavior: auto !important;
+        .scroll-orb {
+          position: fixed;
+          width: 60px;
+          height: 60px;
+          border-radius: 50%;
+          filter: blur(15px);
+          z-index: 0;
+          pointer-events: none;
+          /* Negative margins to center it on the corner vertex (half-in, half-out) */
+          margin-top: -30px;
+          margin-left: -30px;
+          transition: 
+            background-color 1s ease,
+            box-shadow 1s ease;
+
+          will-change: top, left, background-color;
         }
 
-        .lenis.lenis-smooth [data-lenis-prevent] {
-          overscroll-behavior: contain;
+
+        @keyframes float {
+          0%, 100% { transform: translate(-50%, -50%) translateY(0); }
+          50% { transform: translate(-50%, -50%) translateY(-15px); }
         }
 
-        .lenis.lenis-stopped {
-          overflow: hidden;
-        }
+
+
 
         .dynamic-bg {
+
+
+
           position: fixed;
           inset: 0;
           z-index: -2;
-          transition: background 1.5s ease-in-out;
-        }
-
-        .bg-glow {
-          position: absolute;
-          inset: 0;
-          transition: background 1.5s ease-in-out;
-          pointer-events: none;
+          transition: background 2s cubic-bezier(0.23, 1, 0.32, 1);
         }
 
         .no-scroll {
@@ -221,28 +378,28 @@ export default function App() {
         }
 
         .site-footer {
-          padding: 4rem 2rem;
+          margin: 6rem 0 0 0;
+          padding: 5rem 2rem;
           text-align: center;
-          border-top: 1px solid var(--glass-border);
           position: relative;
+          background: transparent !important;
+          border: none !important;
+          border-radius: 40px 40px 0 0 !important;
+          width: 100%;
         }
 
-        .footer-content {
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          gap: 0.3rem;
-        }
+
 
         .footer-text {
-          font-size: 0.85rem;
-          color: var(--text-secondary);
-          font-weight: 500;
+          font-family: var(--font-heading);
+          font-size: 1.1rem;
+          color: var(--text-primary);
         }
 
         .footer-sub {
-          font-size: 0.75rem;
+          font-size: 0.85rem;
           color: var(--text-muted);
+          margin-top: 0.5rem;
         }
       `}</style>
     </>

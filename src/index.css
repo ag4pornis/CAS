@@ -1,54 +1,57 @@
 /* ============================================
-   CAS Portfolio — Global Design System
+   CAS Portfolio — Editorial Art Gallery Style
    ============================================ */
 
-@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,700;0,800;1,700&display=swap');
 
-/* --- Design Tokens --- */
+/* --- Design Tokens (Light Theme) --- */
 :root {
   /* Background */
-  --bg-primary: #0a0a0f;
-  --bg-secondary: #12121a;
-  --bg-card: rgba(255, 255, 255, 0.03);
-  --bg-glass: rgba(255, 255, 255, 0.05);
+  --bg-primary: #f8f9fa;
+  --bg-secondary: #ffffff;
+  --bg-card: rgba(255, 255, 255, 0.7);
+  --bg-glass: rgba(255, 255, 255, 0.4);
 
   /* Text */
-  --text-primary: #f0f0f5;
-  --text-secondary: rgba(240, 240, 245, 0.65);
-  --text-muted: rgba(240, 240, 245, 0.4);
+  --text-primary: #1a1a1a;
+  --text-secondary: #4a4a4a;
+  --text-muted: #8a8a8a;
 
-  /* CAS Strand Colors */
-  --creativity: #c084fc;
-  --creativity-glow: rgba(192, 132, 252, 0.4);
-  --creativity-bg: rgba(192, 132, 252, 0.08);
+  /* CAS Strand Colors (Sophisticated Palette) */
+  --creativity: #8e7dbe;
+  /* Dusty Purple */
+  --creativity-glow: rgba(142, 125, 190, 0.2);
+  --creativity-bg: #f3f0f9;
 
-  --activity: #fb923c;
-  --activity-glow: rgba(251, 146, 60, 0.4);
-  --activity-bg: rgba(251, 146, 60, 0.08);
+  --activity: #d97706;
+  /* Earthy Orange */
+  --activity-glow: rgba(217, 119, 6, 0.2);
+  --activity-bg: #fef3c7;
 
-  --service: #38bdf8;
-  --service-glow: rgba(56, 189, 248, 0.4);
-  --service-bg: rgba(56, 189, 248, 0.08);
+  --service: #0ea5e9;
+  /* Sky Blue */
+  --service-glow: rgba(14, 165, 233, 0.2);
+  --service-bg: #e0f2fe;
 
   /* Project */
-  --project: #34d399;
-  --project-glow: rgba(52, 211, 153, 0.4);
-  --project-bg: rgba(52, 211, 153, 0.08);
+  --project: #059669;
+  /* Forest Green */
+  --project-glow: rgba(5, 150, 105, 0.2);
+  --project-bg: #ecfdf5;
 
   /* Glassmorphism */
-  --glass-border: rgba(255, 255, 255, 0.08);
-  --glass-blur: 20px;
+  --glass-border: rgba(0, 0, 0, 0.05);
+  --glass-blur: 15px;
 
   /* Typography */
   --font-body: 'Outfit', system-ui, -apple-system, sans-serif;
-  --font-heading: 'Space Grotesk', 'Outfit', sans-serif;
+  --font-heading: 'Playfair Display', serif;
 
   /* Spacing */
   --section-padding: clamp(4rem, 10vh, 8rem);
 
   /* Transitions */
   --ease-smooth: cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  --ease-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 /* --- Reset & Base --- */
@@ -62,7 +65,7 @@
 
 html {
   scrollbar-width: thin;
-  scrollbar-color: rgba(255, 255, 255, 0.15) transparent;
+  scrollbar-color: rgba(0, 0, 0, 0.1) transparent;
 }
 
 body {
@@ -84,34 +87,39 @@ body {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.15);
+  background: rgba(0, 0, 0, 0.1);
   border-radius: 3px;
 }
 
 /* --- Typography --- */
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   font-family: var(--font-heading);
   font-weight: 700;
-  line-height: 1.15;
-  letter-spacing: -0.02em;
+  line-height: 1.1;
+  letter-spacing: -0.01em;
 }
 
 h1 {
-  font-size: clamp(2.5rem, 6vw, 5rem);
+  font-size: clamp(3rem, 8vw, 6rem);
   font-weight: 800;
 }
 
 h2 {
-  font-size: clamp(1.8rem, 4vw, 3rem);
+  font-size: clamp(2rem, 5vw, 4rem);
 }
 
 h3 {
-  font-size: clamp(1.2rem, 2.5vw, 1.8rem);
+  font-size: clamp(1.4rem, 3vw, 2.2rem);
 }
 
 p {
   color: var(--text-secondary);
-  font-weight: 300;
+  font-weight: 400;
   max-width: 65ch;
 }
 
@@ -133,13 +141,21 @@ a {
 }
 
 .glass-panel {
-  background: var(--bg-glass);
-  border: 1px solid var(--glass-border);
-  backdrop-filter: blur(var(--glass-blur));
-  -webkit-backdrop-filter: blur(var(--glass-blur));
-  border-radius: 20px;
-  padding: 2rem;
+  background: rgba(255, 255, 255, 0.12);
+  /* Extremely translucent */
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  backdrop-filter: blur(45px) saturate(160%);
+  /* Deep blur + saturation for "Real Glass" feel */
+  -webkit-backdrop-filter: blur(45px) saturate(160%);
+  border-radius: 32px;
+  padding: 3rem;
+  box-shadow:
+    0 12px 40px rgba(0, 0, 0, 0.03),
+    0 0 0 1px rgba(255, 255, 255, 0.2) inset;
+  /* Crystalline edge */
 }
+
+
 
 .gradient-text {
   background: linear-gradient(135deg, var(--text-primary), var(--text-secondary));
@@ -147,11 +163,6 @@ a {
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
-
-.creativity-accent { color: var(--creativity); }
-.activity-accent { color: var(--activity); }
-.service-accent { color: var(--service); }
-.project-accent { color: var(--project); }
 
 /* --- Canvas Container --- */
 .canvas-container {
@@ -162,10 +173,6 @@ a {
   height: 100%;
   z-index: 0;
   pointer-events: none;
-}
-
-.canvas-container.interactive {
-  pointer-events: auto;
 }
 
 /* --- Content Layer --- */
@@ -198,63 +205,41 @@ a {
 }
 
 .strand-content h2 {
-  margin-bottom: 1rem;
+  margin-bottom: 1.5rem;
 }
 
 .strand-content p {
-  margin-bottom: 1.5rem;
-  font-size: 1.05rem;
+  margin-bottom: 2rem;
+  font-size: 1.1rem;
 }
 
-/* --- CTA Button --- */
+/* --- CTA Button (Glass Editorial Style) --- */
 .cta-button {
   display: inline-flex;
   align-items: center;
-  gap: 0.5rem;
-  padding: 0.8rem 1.8rem;
-  border: 1px solid var(--glass-border);
-  border-radius: 50px;
-  background: var(--bg-glass);
-  backdrop-filter: blur(10px);
+  gap: 0.75rem;
+  padding: 1.1rem 2.4rem;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  border-radius: 100px;
+  background: white;
   color: var(--text-primary);
   font-family: var(--font-body);
-  font-size: 0.95rem;
-  font-weight: 500;
+  font-size: 0.9rem;
+  font-weight: 600;
   cursor: pointer;
   transition: all 0.4s var(--ease-smooth);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
   position: relative;
   overflow: hidden;
 }
 
-.cta-button::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  border-radius: 50px;
-  opacity: 0;
-  transition: opacity 0.4s var(--ease-smooth);
-}
-
 .cta-button:hover {
-  transform: translateY(-2px);
-  border-color: rgba(255, 255, 255, 0.2);
+  transform: translateY(-3px);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.08);
+  border-color: var(--text-primary);
+  background: var(--text-primary);
+  color: white;
 }
-
-.cta-button:hover::before {
-  opacity: 1;
-}
-
-.cta-button.creativity-btn::before { background: var(--creativity-bg); }
-.cta-button.creativity-btn:hover { border-color: var(--creativity); box-shadow: 0 0 30px var(--creativity-glow); }
-
-.cta-button.activity-btn::before { background: var(--activity-bg); }
-.cta-button.activity-btn:hover { border-color: var(--activity); box-shadow: 0 0 30px var(--activity-glow); }
-
-.cta-button.service-btn::before { background: var(--service-bg); }
-.cta-button.service-btn:hover { border-color: var(--service); box-shadow: 0 0 30px var(--service-glow); }
-
-.cta-button.project-btn::before { background: var(--project-bg); }
-.cta-button.project-btn:hover { border-color: var(--project); box-shadow: 0 0 30px var(--project-glow); }
 
 /* --- Section Detail Overlay --- */
 .detail-overlay {
@@ -275,19 +260,20 @@ a {
   align-items: center;
   gap: 1rem;
   padding: 1.5rem 2rem;
-  background: rgba(10, 10, 15, 0.85);
-  backdrop-filter: blur(20px);
-  border-bottom: 1px solid var(--glass-border);
+  background: rgba(255, 255, 255, 0.2);
+  /* Global glass style */
+  backdrop-filter: blur(30px) saturate(140%);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.3);
 }
 
 .back-button {
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  padding: 0.5rem 1rem;
+  padding: 0.5rem 1.2rem;
   border: 1px solid var(--glass-border);
-  border-radius: 50px;
-  background: var(--bg-glass);
+  border-radius: 8px;
+  background: white;
   color: var(--text-primary);
   font-family: var(--font-body);
   font-size: 0.85rem;
@@ -297,96 +283,68 @@ a {
 }
 
 .back-button:hover {
-  background: rgba(255, 255, 255, 0.1);
-  border-color: rgba(255, 255, 255, 0.2);
+  background: #f1f1f1;
 }
 
 .detail-body {
   flex: 1;
-  padding: 3rem 2rem;
-  max-width: 900px;
+  padding: 4rem 2rem;
+  max-width: 1000px;
   margin: 0 auto;
   width: 100%;
 }
 
-.detail-body h1 {
-  margin-bottom: 1rem;
-}
-
-.detail-body .subtitle {
-  font-size: 1.15rem;
-  color: var(--text-secondary);
-  margin-bottom: 3rem;
-}
-
-/* --- Experience Cards (inside detail views) --- */
+/* --- Experience Cards --- */
 .experiences-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: 1.5rem;
-  margin-top: 2rem;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 2rem;
+  margin-top: 3rem;
 }
 
 .experience-card {
-  background: var(--bg-glass);
-  border: 1px solid var(--glass-border);
-  border-radius: 16px;
-  padding: 1.5rem;
+  background: rgba(255, 255, 255, 0.15);
+  /* Global glass style */
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  backdrop-filter: blur(20px) saturate(130%);
+  border-radius: 20px;
+  padding: 2rem;
   transition: all 0.4s var(--ease-smooth);
-  cursor: default;
+  box-shadow:
+    0 4px 20px rgba(0, 0, 0, 0.02),
+    0 0 0 1px rgba(255, 255, 255, 0.1) inset;
 }
 
 .experience-card:hover {
-  transform: translateY(-4px);
-  border-color: rgba(255, 255, 255, 0.15);
+  transform: translateY(-6px);
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.05);
 }
 
 .experience-card h4 {
-  font-size: 1.1rem;
-  margin-bottom: 0.5rem;
-}
-
-.experience-card .date {
-  font-size: 0.8rem;
-  color: var(--text-muted);
+  font-size: 1.25rem;
   margin-bottom: 0.75rem;
 }
 
-.experience-card p {
-  font-size: 0.9rem;
-}
-
-.experience-card .tags {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-  margin-top: 1rem;
-}
-
-.experience-card .tag {
-  padding: 0.2rem 0.6rem;
-  border-radius: 50px;
+.tag {
+  padding: 0.3rem 0.8rem;
+  border-radius: 6px;
   font-size: 0.75rem;
-  font-weight: 500;
-  border: 1px solid;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
 }
-
-.tag.creativity { color: var(--creativity); border-color: var(--creativity-bg); background: var(--creativity-bg); }
-.tag.activity { color: var(--activity); border-color: var(--activity-bg); background: var(--activity-bg); }
-.tag.service { color: var(--service); border-color: var(--service-bg); background: var(--service-bg); }
-.tag.project { color: var(--project); border-color: var(--project-bg); background: var(--project-bg); }
 
 /* --- Responsive --- */
 @media (max-width: 768px) {
+  h1 {
+    font-size: 3.5rem;
+  }
+
+  h2 {
+    font-size: 2.5rem;
+  }
+
   .strand-section {
-    padding: 3rem 1.5rem;
-  }
-
-  .detail-body {
-    padding: 2rem 1.5rem;
-  }
-
-  .experiences-grid {
-    grid-template-columns: 1fr;
+    padding: 4rem 1.5rem;
   }
 }

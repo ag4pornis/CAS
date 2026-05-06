@@ -5,7 +5,6 @@ import PaintPalette from "./objects/PaintPalette";
 import Dumbbell from "./objects/Dumbbell";
 import ServiceHands from "./objects/ServiceHands";
 import ProjectStar from "./objects/ProjectStar";
-import FloatingParticles from "./objects/FloatingParticles";
 
 export default function Scene3D({ activeSection, scrollProgress }) {
   return (
@@ -17,13 +16,11 @@ export default function Scene3D({ activeSection, scrollProgress }) {
         style={{ background: "transparent" }}
       >
         <Suspense fallback={null}>
-          {/* Lighting */}
-          <ambientLight intensity={0.3} />
+          {/* Brighter lighting for Light Theme */}
+          <ambientLight intensity={0.8} />
+          <pointLight position={[10, 10, 10]} intensity={1} />
           <directionalLight position={[5, 5, 5]} intensity={0.5} />
-          <directionalLight position={[-3, -3, 2]} intensity={0.2} color="#8080ff" />
-
-          {/* Background particles - always visible */}
-          <FloatingParticles />
+          <directionalLight position={[-3, -3, 2]} intensity={0.3} color="#ffffff" />
 
           {/* 3D Objects - visibility driven by scroll position */}
           <ProjectStar
@@ -44,7 +41,7 @@ export default function Scene3D({ activeSection, scrollProgress }) {
           />
 
           {/* Subtle environment reflection */}
-          <Environment preset="night" />
+          <Environment preset="city" />
 
           {/* Light fog - transparent to let CSS background through */}
           <fog attach="fog" args={["rgba(0,0,0,0)", 8, 20]} />

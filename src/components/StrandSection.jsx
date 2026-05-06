@@ -1,83 +1,97 @@
 import React from "react";
-import { Palette, Dumbbell, HandHeart } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 
-const icons = {
-  creativity: Palette,
-  activity: Dumbbell,
-  service: HandHeart,
-};
-
-const colors = {
-  creativity: {
-    color: "var(--creativity)",
-    glow: "var(--creativity-glow)",
-    bg: "var(--creativity-bg)",
-    btnClass: "creativity-btn",
-  },
-  activity: {
-    color: "var(--activity)",
-    glow: "var(--activity-glow)",
-    bg: "var(--activity-bg)",
-    btnClass: "activity-btn",
-  },
-  service: {
-    color: "var(--service)",
-    glow: "var(--service-glow)",
-    bg: "var(--service-bg)",
-    btnClass: "service-btn",
-  },
-};
-
-export default function StrandSection({
-  strand,
-  isVisible,
-  onEnter,
-  alignment = "left",
-}) {
-  const Icon = icons[strand.id];
-  const theme = colors[strand.id];
-  const isLeft = alignment === "left";
-
+export default function StrandSection({ strand, isVisible, onEnter, alignment = "left" }) {
   return (
-    <section
-      className="strand-section"
-      id={strand.id}
-      style={{
-        justifyContent: isLeft ? "flex-start" : "flex-end",
-        paddingLeft: isLeft ? "8vw" : "2rem",
-        paddingRight: isLeft ? "2rem" : "8vw",
-      }}
-    >
-      <div className={`strand-content ${isVisible ? "visible" : ""}`}>
-        <div
-          className="strand-icon-wrapper"
-          style={{
-            color: theme.color,
-            borderColor: theme.color,
-            background: theme.bg,
-            boxShadow: `0 0 30px ${theme.glow}`,
-          }}
-        >
-          <Icon size={28} />
+    <section className="strand-section" id={strand.id}>
+      <div className="strand-card glass-panel">
+        <div className="strand-header" style={{ color: strand.color }}>
+          <span className="strand-number">0{strand.id === 'creativity' ? '1' : strand.id === 'activity' ? '2' : '3'}</span>
+          <span className="strand-label">{strand.name}</span>
         </div>
-        <h2 style={{ color: theme.color }}>{strand.name}</h2>
+        <h2>{strand.title}</h2>
         <p>{strand.description}</p>
-        <button className={`cta-button ${theme.btnClass}`} onClick={onEnter}>
-          <Icon size={16} />
-          Explorar {strand.name}
+        <button
+          className="cta-button"
+          onClick={onEnter}
+        >
+          Ver Experiencias
+          <ArrowRight size={18} />
         </button>
       </div>
 
       <style>{`
-        .strand-icon-wrapper {
-          width: 60px;
-          height: 60px;
-          border-radius: 16px;
-          border: 1px solid;
+        .strand-section {
+          min-height: 120vh;
           display: flex;
           align-items: center;
-          justify-content: center;
-          margin-bottom: 0.75rem;
+          justify-content: flex-start;
+          padding: 4rem 12%;
+          width: 100%;
+        }
+
+        .strand-card {
+          max-width: 550px;
+          text-align: center;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          gap: 1.5rem;
+        }
+
+        .strand-header {
+          display: flex;
+          align-items: center;
+          gap: 1rem;
+          margin-bottom: 0.5rem;
+          font-weight: 700;
+          letter-spacing: 0.1em;
+          text-transform: uppercase;
+        }
+
+        .strand-number {
+          font-family: var(--font-body);
+          font-size: 0.9rem;
+          opacity: 0.5;
+        }
+
+        .strand-label {
+          font-size: 0.8rem;
+        }
+
+        .strand-card h2 {
+          font-style: italic;
+          color: var(--text-primary);
+          margin-bottom: 1.5rem;
+          font-size: clamp(1.8rem, 4vw, 2.8rem);
+        }
+
+        .strand-card p {
+          color: var(--text-secondary);
+          line-height: 1.8;
+          margin-bottom: 2.5rem;
+          font-size: 1.05rem;
+        }
+
+        @media (max-width: 1024px) {
+          .strand-section {
+            padding: 4rem 5%;
+          }
+        }
+
+        @media (max-width: 900px) {
+          .strand-section {
+            padding: 4rem 1.5rem;
+            justify-content: center !important;
+          }
+          .strand-card {
+            text-align: center;
+            align-items: center;
+            transform: translateY(60px);
+          }
+          .strand-card.visible {
+            transform: translateY(0);
+          }
         }
       `}</style>
     </section>

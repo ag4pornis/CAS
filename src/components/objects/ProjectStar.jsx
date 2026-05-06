@@ -97,30 +97,7 @@ export default function ProjectStar({ scrollProgress, visible }) {
         </mesh>
       ))}
 
-      {/* Particles/dots around */}
-      {Array.from({ length: 20 }).map((_, i) => {
-        const theta = (i / 20) * Math.PI * 2;
-        const phi = Math.acos(2 * Math.random() - 1);
-        const r = 1.5 + Math.random() * 0.5;
-        return (
-          <mesh
-            key={`p${i}`}
-            position={[
-              r * Math.sin(phi) * Math.cos(theta),
-              r * Math.sin(phi) * Math.sin(theta),
-              r * Math.cos(phi),
-            ]}
-          >
-            <sphereGeometry args={[0.02, 8, 8]} />
-            <meshStandardMaterial
-              color="#34d399"
-              emissive="#34d399"
-              emissiveIntensity={2}
-              toneMapped={false}
-            />
-          </mesh>
-        );
-      })}
+      {/* Removed particles for a clean, professional look */}
 
       {/* Main glow light */}
       <pointLight

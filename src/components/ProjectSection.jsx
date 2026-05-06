@@ -1,136 +1,118 @@
 import React from "react";
 import { casProject } from "../data/experiences";
-import { Rocket } from "lucide-react";
+import { ExternalLink, Calendar } from "lucide-react";
 
 export default function ProjectSection({ onEnter }) {
+  const project = casProject;
+
   return (
     <section className="section project-section" id="project">
-      <div className="project-content">
-        <div className="project-label project-accent">
-          <Rocket size={14} />
-          El Gran Proyecto
-        </div>
-        <h2>
-          <span className="project-accent">{casProject.title}</span>
-        </h2>
-        <p className="project-subtitle">{casProject.subtitle}</p>
-        <p className="project-description">{casProject.description}</p>
+      <div className="project-container glass-panel">
+        <div className="project-label">Collaborative Project</div>
+        <h2>{project.title}</h2>
+        <p className="project-desc">{project.description}</p>
 
         <div className="project-timeline">
-          {casProject.timeline.map((phase, i) => (
-            <div key={i} className="timeline-item">
-              <div className="timeline-dot" />
-              <div className="timeline-content">
-                <span className="timeline-date">{phase.date}</span>
-                <h4>{phase.phase}</h4>
-                <p>{phase.description}</p>
+          {project.timeline.map((item, index) => (
+            <div key={index} className="timeline-item">
+              <div className="timeline-date">
+                <Calendar size={14} />
+                {item.date}
               </div>
+              <div className="timeline-event">{item.event}</div>
             </div>
           ))}
         </div>
 
-        <button className="cta-button project-btn" onClick={onEnter}>
-          <Rocket size={16} />
+        <button className="cta-button" onClick={onEnter}>
           Explorar Proyecto
+          <ExternalLink size={18} />
         </button>
       </div>
 
       <style>{`
         .project-section {
           min-height: 120vh;
-          padding: 6rem 2rem;
-          text-align: center;
+          padding: 6rem 12%;
+          display: flex;
+          justify-content: flex-start;
+          align-items: center;
         }
 
-        .project-content {
-          max-width: 650px;
+        .project-container {
+          max-width: 800px;
+          text-align: center;
           display: flex;
           flex-direction: column;
           align-items: center;
-          gap: 1rem;
+          gap: 1.5rem;
         }
 
         .project-label {
-          display: inline-flex;
-          align-items: center;
-          gap: 0.4rem;
-          padding: 0.4rem 1rem;
-          border-radius: 50px;
-          border: 1px solid var(--project);
-          background: var(--project-bg);
-          font-size: 0.8rem;
-          font-weight: 600;
+          font-size: 0.7rem;
+          font-weight: 700;
           text-transform: uppercase;
-          letter-spacing: 0.08em;
+          letter-spacing: 0.2em;
+          color: var(--project);
         }
 
-        .project-subtitle {
-          font-size: 1.15rem;
+        .project-desc {
+          font-size: 1.1rem;
           color: var(--text-secondary);
-          font-style: italic;
-        }
-
-        .project-description {
-          font-size: 0.95rem;
-          line-height: 1.7;
-          text-align: center;
+          margin-bottom: 1rem;
         }
 
         .project-timeline {
+          width: 100%;
+          max-width: 500px;
+          margin: 1.5rem 0 2.5rem;
           display: flex;
           flex-direction: column;
-          gap: 0;
-          margin: 1.5rem 0;
+          gap: 1.5rem;
           position: relative;
-          padding-left: 1.5rem;
-          text-align: left;
         }
 
         .project-timeline::before {
           content: '';
           position: absolute;
-          left: 5px;
-          top: 8px;
-          bottom: 8px;
-          width: 2px;
-          background: linear-gradient(to bottom, var(--project), transparent);
-          border-radius: 1px;
+          left: 50%;
+          top: 0;
+          bottom: 0;
+          width: 1px;
+          background: rgba(0,0,0,0.05);
+          transform: translateX(-50%);
         }
 
         .timeline-item {
-          display: flex;
-          gap: 1rem;
-          padding: 0.75rem 0;
           position: relative;
-        }
-
-        .timeline-dot {
-          width: 12px;
-          height: 12px;
-          min-width: 12px;
-          border-radius: 50%;
-          background: var(--project);
-          box-shadow: 0 0 10px var(--project-glow);
-          margin-top: 0.25rem;
-          position: absolute;
-          left: -1.5rem;
-          transform: translateX(-2.5px);
-        }
-
-        .timeline-content h4 {
-          font-size: 0.95rem;
-          color: var(--text-primary);
-          margin-bottom: 0.2rem;
-        }
-
-        .timeline-content p {
-          font-size: 0.85rem;
+          z-index: 1;
+          background: rgba(255,255,255,0.6);
+          backdrop-filter: blur(10px);
+          padding: 0.8rem 1.5rem;
+          border-radius: 16px;
+          border: 1px solid rgba(255,255,255,0.8);
+          box-shadow: 0 4px 15px rgba(0,0,0,0.02);
+          align-self: center;
+          width: fit-content;
+          min-width: 250px;
         }
 
         .timeline-date {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: 0.4rem;
           font-size: 0.75rem;
+          font-weight: 700;
           color: var(--project);
+          margin-bottom: 0.3rem;
+          text-transform: uppercase;
+        }
+
+        .timeline-event {
+          font-size: 0.9rem;
           font-weight: 500;
+          color: var(--text-primary);
         }
       `}</style>
     </section>

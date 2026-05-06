@@ -1,6 +1,5 @@
 import React from "react";
 import { personalInfo, casDescription } from "../data/experiences";
-import { ChevronDown } from "lucide-react";
 
 export default function HeroSection() {
   return (
@@ -17,8 +16,8 @@ export default function HeroSection() {
           {casDescription.strands.map((strand) => (
             <div
               key={strand.id}
-              className={`stat-pill`}
-              style={{ borderColor: strand.color, color: strand.color }}
+              className="stat-pill"
+              style={{ color: "var(--text-primary)" }}
             >
               <span className="stat-dot" style={{ background: strand.color }} />
               {strand.name}
@@ -26,127 +25,124 @@ export default function HeroSection() {
           ))}
         </div>
 
+
+
         <div className="cas-explanation glass-panel">
           <h3>{casDescription.title}</h3>
           <p>{casDescription.text}</p>
         </div>
       </div>
 
-      <div className="scroll-indicator">
-        <span>Descubre mi experiencia</span>
-        <ChevronDown className="bounce-arrow" size={20} />
-      </div>
-
       <style>{`
         .hero-section {
           min-height: 100vh;
-          text-align: center;
-          padding-top: 6rem;
-          gap: 2rem;
+          text-align: left;
+          padding: 8rem 12%;
+          display: flex;
+          justify-content: flex-start;
+          align-items: center;
+          position: relative;
         }
 
         .hero-content {
-          max-width: 700px;
+          max-width: 800px;
           display: flex;
           flex-direction: column;
-          align-items: center;
-          gap: 1rem;
+          align-items: flex-start;
+          gap: 1.5rem;
+          z-index: 2;
         }
+
 
         .hero-badge {
-          padding: 0.4rem 1.2rem;
-          border-radius: 50px;
-          border: 1px solid var(--glass-border);
-          background: var(--bg-glass);
-          backdrop-filter: blur(10px);
-          font-size: 0.8rem;
-          font-weight: 500;
-          color: var(--text-secondary);
-          letter-spacing: 0.05em;
+          padding: 0.6rem 1.5rem;
+          border-radius: 12px;
+          border: 1px solid rgba(255, 255, 255, 0.3);
+          background: rgba(255, 255, 255, 0.12);
+          backdrop-filter: blur(45px) saturate(160%);
+          -webkit-backdrop-filter: blur(45px) saturate(160%);
+          font-size: 0.75rem;
+          font-weight: 700;
+          color: var(--text-muted);
+          letter-spacing: 0.1em;
           text-transform: uppercase;
+          box-shadow: 
+            0 12px 40px rgba(0, 0, 0, 0.03),
+            0 0 0 1px rgba(255, 255, 255, 0.2) inset;
         }
 
+
         .hero-subtitle {
-          font-size: 1.1rem;
-          color: var(--text-muted);
-          margin-top: -0.5rem;
+          font-family: var(--font-heading);
+          font-size: 1.5rem;
+          font-style: italic;
+          color: var(--text-secondary);
+          margin-top: -1rem;
         }
 
         .hero-bio {
-          font-size: 1.05rem;
-          text-align: center;
-          line-height: 1.7;
+          font-size: 1.15rem;
+          color: var(--text-secondary);
+          max-width: 600px;
+          line-height: 1.8;
         }
 
         .hero-stats {
           display: flex;
-          gap: 0.75rem;
+          gap: 1rem;
           flex-wrap: wrap;
-          justify-content: center;
-          margin: 0.5rem 0;
+          justify-content: flex-start;
+          margin: 1rem 0;
         }
 
         .stat-pill {
           display: flex;
           align-items: center;
-          gap: 0.4rem;
-          padding: 0.4rem 1rem;
-          border-radius: 50px;
-          border: 1px solid;
+          gap: 0.6rem;
+          padding: 0.6rem 1.4rem;
+          border-radius: 14px;
+          border: 1px solid rgba(255, 255, 255, 0.3);
+          background: rgba(255, 255, 255, 0.12);
+          backdrop-filter: blur(45px) saturate(160%);
+          -webkit-backdrop-filter: blur(45px) saturate(160%);
           font-size: 0.85rem;
-          font-weight: 500;
-          background: rgba(0,0,0,0.3);
+          font-weight: 600;
+          box-shadow: 
+            0 8px 20px rgba(0, 0, 0, 0.02),
+            0 0 0 1px rgba(255, 255, 255, 0.2) inset;
+          transition: transform 0.3s var(--ease-smooth);
         }
 
+
+        .stat-pill:hover {
+          transform: translateY(-2px);
+          background: rgba(255, 255, 255, 0.2);
+        }
+
+
         .stat-dot {
-          width: 6px;
-          height: 6px;
+          width: 8px;
+          height: 8px;
           border-radius: 50%;
         }
 
         .cas-explanation {
-          margin-top: 1rem;
-          max-width: 600px;
+          margin-top: 2rem;
+          max-width: 700px;
           text-align: left;
         }
 
+
         .cas-explanation h3 {
-          margin-bottom: 0.75rem;
-          background: linear-gradient(135deg, var(--creativity), var(--activity), var(--service));
-          -webkit-background-clip: text;
-          -webkit-text-fill-color: transparent;
-          background-clip: text;
+          margin-bottom: 1rem;
+          font-size: 1.8rem;
+          color: var(--text-primary);
         }
 
         .cas-explanation p {
-          font-size: 0.95rem;
-          line-height: 1.7;
-        }
-
-        .scroll-indicator {
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          gap: 0.3rem;
-          color: var(--text-muted);
-          font-size: 0.8rem;
-          margin-top: auto;
-          padding-bottom: 1rem;
-        }
-
-        .bounce-arrow {
-          animation: bounce 2s infinite;
-        }
-
-        @keyframes bounce {
-          0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
-          40% { transform: translateY(6px); }
-          60% { transform: translateY(3px); }
-        }
-
-        @media (max-width: 768px) {
-          .hero-section { padding-top: 4rem; }
-          .cas-explanation { margin: 0.5rem 0; }
+          font-size: 1.05rem;
+          line-height: 1.8;
+          color: var(--text-secondary);
         }
       `}</style>
     </section>
