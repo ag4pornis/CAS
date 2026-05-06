@@ -5,4 +5,9 @@ import react from '@vitejs/plugin-react'
 export default defineConfig({
   plugins: [react()],
   base: '/CAS/',
+  build: {
+    // Desactivamos la minificación de CSS para que no rompa el efecto glass
+    cssMinify: false,
+    minify: true, // El JS sí lo minificamos
+  }
 })
