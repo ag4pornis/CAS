@@ -5,7 +5,8 @@ export default function HeroSection() {
   return (
     <section className="section hero-section" id="hero">
       <div className="hero-content">
-        <div className="hero-badge">IB Diploma Programme — CAS Portfolio</div>
+        <div className="hero-badge glass-panel">IB Diploma Programme — CAS Portfolio</div>
+
         <h1>
           <span className="gradient-text">{personalInfo.name}</span>
         </h1>
@@ -58,19 +59,13 @@ export default function HeroSection() {
         .hero-badge {
           padding: 0.6rem 1.5rem;
           border-radius: 12px;
-          border: 1px solid rgba(255, 255, 255, 0.3);
-          background: rgba(255, 255, 255, 0.12);
-          backdrop-filter: blur(45px) saturate(160%);
-          -webkit-backdrop-filter: blur(45px) saturate(160%);
           font-size: 0.75rem;
           font-weight: 700;
           color: var(--text-muted);
           letter-spacing: 0.1em;
           text-transform: uppercase;
-          box-shadow: 
-            0 12px 40px rgba(0, 0, 0, 0.03),
-            0 0 0 1px rgba(255, 255, 255, 0.2) inset;
         }
+
 
 
         .hero-subtitle {
@@ -102,17 +97,11 @@ export default function HeroSection() {
           gap: 0.6rem;
           padding: 0.6rem 1.4rem;
           border-radius: 14px;
-          border: 1px solid rgba(255, 255, 255, 0.3);
-          background: rgba(255, 255, 255, 0.12);
-          backdrop-filter: blur(45px) saturate(160%);
-          -webkit-backdrop-filter: blur(45px) saturate(160%);
           font-size: 0.85rem;
           font-weight: 600;
-          box-shadow: 
-            0 8px 20px rgba(0, 0, 0, 0.02),
-            0 0 0 1px rgba(255, 255, 255, 0.2) inset;
           transition: transform 0.3s var(--ease-smooth);
         }
+
 
 
         .stat-pill:hover {
