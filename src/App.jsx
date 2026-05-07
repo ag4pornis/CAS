@@ -98,12 +98,13 @@ export default function App() {
       entries.forEach((entry) => {
         const id = entry.target.id;
 
-        if (["creativity", "activity", "service"].includes(id)) {
+        if (["project", "creativity", "activity", "service"].includes(id)) {
           setVisibleStrands((prev) => ({
             ...prev,
             [id]: entry.isIntersecting,
           }));
         }
+
 
         if (entry.isIntersecting) {
           setActiveSection(id);
@@ -137,9 +138,25 @@ export default function App() {
   const orbPos = React.useRef({ x: 0, y: 0 });
   const orbState = React.useRef('idle');
 
-  React.useEffect(() => {
+  // Defined outside the loop for performance
+  const triggerBonk = (transform) => {
+    if (!orbRef.current) return;
+    orbRef.current.style.transition = 'transform 0.15s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
+    orbRef.current.style.transform = `translate(-50%, -50%) ${transform}`;
+    setTimeout(() => {
+      if (orbRef.current) {
+        orbRef.current.style.transition = 'transform 0.3s ease-out';
+        orbRef.current.style.transform = 'translate(-50%, -50%) scale(1)';
+      }
+    }, 150);
+  };
+
+  useEffect(() => {
+    // Autonomous Animation Loop for the Scroll-Orb
+    // This loop runs independently of React renders for 60FPS smoothness
     const animFrame = () => {
       if (!orbRef.current) return;
+
 
       const panels = Array.from(document.querySelectorAll('.glass-panel'));
       let targetCard = null;
