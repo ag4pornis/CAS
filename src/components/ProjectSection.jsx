@@ -24,10 +24,11 @@ export default function ProjectSection({ onEnter }) {
           ))}
         </div>
 
-        <button className="cta-button" onClick={onEnter}>
+        <button className="cta-button glass-panel" onClick={onEnter}>
           Explorar Proyecto
           <ExternalLink size={18} />
         </button>
+
       </div>
 
       <style>{`

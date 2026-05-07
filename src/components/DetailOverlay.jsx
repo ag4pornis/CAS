@@ -4,10 +4,10 @@ import { X, Calendar, CheckCircle2, ChevronLeft } from "lucide-react";
 
 export default function DetailOverlay({ section, onClose }) {
   const isProject = section === "project";
-  
+
   // Get data correctly
   const data = isProject ? casProject : casDescription.strands.find((s) => s.id === section);
-  
+
   // Get experiences for this section
   const sectionExperiences = isProject ? [] : experiences[section] || [];
 
@@ -23,9 +23,12 @@ export default function DetailOverlay({ section, onClose }) {
   }, [onClose]);
 
   return (
-    <div className="detail-overlay">
-      <header className="detail-header">
-        <button className="back-button" onClick={onClose}>
+    <div className="detail-overlay" data-lenis-prevent>
+
+      <header className="detail-header glass-panel">
+
+        <button className="back-button glass-panel" onClick={onClose}>
+
           <ChevronLeft size={18} />
           Volver
         </button>
@@ -60,7 +63,8 @@ export default function DetailOverlay({ section, onClose }) {
           <h3>Experiencias y Reflexiones</h3>
           <div className="experiences-grid">
             {sectionExperiences.map((exp, i) => (
-              <div key={i} className="experience-card">
+              <div key={i} className="experience-card glass-panel">
+
                 <div className="card-header">
                   <span className="date">
                     <Calendar size={14} />

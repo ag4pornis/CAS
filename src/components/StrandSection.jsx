@@ -12,12 +12,13 @@ export default function StrandSection({ strand, isVisible, onEnter, alignment = 
         <h2>{strand.title}</h2>
         <p>{strand.description}</p>
         <button
-          className="cta-button"
+          className="cta-button glass-panel"
           onClick={onEnter}
         >
           Ver Experiencias
           <ArrowRight size={18} />
         </button>
+
       </div>
 
       <style>{`

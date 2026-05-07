@@ -16,12 +16,13 @@ export default function HeroSection() {
           {casDescription.strands.map((strand) => (
             <div
               key={strand.id}
-              className="stat-pill"
+              className="stat-pill glass-panel"
               style={{ color: "var(--text-primary)" }}
             >
               <span className="stat-dot" style={{ background: strand.color }} />
               {strand.name}
             </div>
+
           ))}
         </div>
 
