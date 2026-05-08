@@ -58,13 +58,23 @@ Allí podrás modificar:
 
 ## 🔒 Privacidad y Propiedad Intelectual
 
-Este repositorio contiene un portafolio personal con datos reales, reflexiones y material multimedia propio.
+Este repositorio contiene un portafolio personal con datos reales, reflexiones y material multimedia propio del autor.
 
-- **Estructura del Código:** Eres libre de usar la estructura, componentes y lógica de esta web para tu propio portafolio.
-- **Contenido Personal:** Los textos descriptivos en `src/data/`, las fotografías en `src/assets/` y cualquier referencia personal son **propiedad privada**. No está permitido el uso, redistribución o copia del contenido personal sin consentimiento expreso.
+- **Estructura del Código:** Eres libre de usar la estructura, componentes y lógica de esta web para tu propio portafolio, siempre que sea para fines **no comerciales**.
+- **Contenido Personal:** Los textos descriptivos en `src/data/`, las fotografías, vídeos, reflexiones personales y cualquier referencia que identifique al autor son **propiedad privada** y están estrictamente excluidos de la licencia. No está permitido su uso, redistribución o copia.
 
-Por favor, si decides usar esta plantilla, asegúrate de reemplazar todo el contenido de `src/data/experiences.js` y las imágenes por las tuyas propias.
+Por favor, si decides usar esta plantilla, asegúrate de eliminar y reemplazar todo el contenido personal por el tuyo propio.
 
 ## 📄 Licencia
 
-El **código fuente** de este proyecto está bajo la Licencia MIT. Esto permite el uso de la estructura técnica, pero no otorga derechos sobre el contenido personal del autor. Consulta el archivo `LICENSE` para más detalles.
+Este proyecto está bajo la **AD Non-Commercial Attribution License**.
+
+Esta licencia permite el uso y modificación de la estructura técnica del software para fines **no comerciales** (como portafolios personales de estudiantes), siempre que se mantenga la **atribución original** al autor (Adrián Lavado Munuera).
+
+Principales restricciones:
+- **Prohibición de Uso Comercial:** Cualquier uso con ánimo de lucro requiere una licencia comercial.
+- **Atribución Obligatoria:** Debes dar crédito de forma clara y visible al autor original.
+- **Protección de IA:** Se prohíbe el uso del código para entrenar modelos de inteligencia artificial sin permiso.
+- **Exclusión de Contenido Personal:** La licencia NO cubre fotos, textos o reflexiones personales.
+
+Consulta el archivo `LICENSE` para leer los términos completos.
