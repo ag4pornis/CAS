@@ -19,30 +19,27 @@
 
   /* CAS Strand Colors (Sophisticated Palette) */
   --creativity: #8e7dbe;
-  /* Dusty Purple */
   --creativity-glow: rgba(142, 125, 190, 0.2);
   --creativity-bg: #f3f0f9;
 
   --activity: #d97706;
-  /* Earthy Orange */
   --activity-glow: rgba(217, 119, 6, 0.2);
   --activity-bg: #fef3c7;
 
   --service: #0ea5e9;
-  /* Sky Blue */
   --service-glow: rgba(14, 165, 233, 0.2);
   --service-bg: #e0f2fe;
 
-  /* Project */
   --project: #059669;
-  /* Forest Green */
   --project-glow: rgba(5, 150, 105, 0.2);
   --project-bg: #ecfdf5;
 
-  /* Liquid Glass */
-  --glass-bg: rgba(255, 255, 255, 0.02);
-  --glass-border: rgba(255, 255, 255, 0.50);
-  --glass-blur: 20px;
+  /* Liquid Glass — receta unificada */
+  --glass-bg: rgba(255, 255, 255, 0.012);
+  --glass-blur: blur(30px) saturate(140%) brightness(1.05);
+  --glass-border: rgba(255, 255, 255, 0.3);
+  --glass-border-top: rgba(255, 255, 255, 0.8);
+  --glass-border-left: rgba(255, 255, 255, 0.5);
 
   /* Typography */
   --font-body: 'Outfit', system-ui, -apple-system, sans-serif;
@@ -141,23 +138,26 @@ a {
   position: relative;
 }
 
-.glass-panel {
-  position: relative;
-  /* 1. Fondo Cristalino */
-  background: rgba(255, 255, 255, 0.012);
+/* ============================================
+   LIQUID GLASS — Receta unificada
+   Aplica a: .glass-panel, .experience-card,
+   .cta-button, .back-button, .detail-header
+   ============================================ */
 
-  /* 2. Refracción Dinámica */
-  backdrop-filter: blur(30px) saturate(140%) brightness(1.05);
-  -webkit-backdrop-filter: blur(30px) saturate(140%) brightness(1.05);
+.glass-panel,
+.experience-card,
+.cta-button,
+.back-button,
+.detail-header {
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
 
-  /* 3. Borde Direccional (Bisel iluminado) */
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  border-top-color: rgba(255, 255, 255, 0.8);
-  border-left-color: rgba(255, 255, 255, 0.5);
-  border-radius: 40px;
-  padding: 3rem;
+  /* Borde direccional: top y left más brillantes */
+  border: 1px solid var(--glass-border);
+  border-top-color: var(--glass-border-top);
+  border-left-color: var(--glass-border-left);
 
-  /* 4. Sombras de Profundidad + Bisel Interno */
   box-shadow:
     0 8px 32px rgba(0, 0, 0, 0.04),
     0 1px 2px rgba(0, 0, 0, 0.02),
@@ -167,12 +167,15 @@ a {
   isolation: isolate;
   transform: translateZ(0);
   overflow: hidden;
-  /* Necesario para el reflejo */
+  position: relative;
 }
 
-
-/* 4. Reflejo de Superficie (Glint) */
-.glass-panel::after {
+/* Glint diagonal en todos los elementos glass */
+.glass-panel::after,
+.experience-card::after,
+.cta-button::after,
+.back-button::after,
+.detail-header::after {
   content: "";
   position: absolute;
   top: -50%;
@@ -184,15 +187,117 @@ a {
       rgba(255, 255, 255, 0) 40%,
       rgba(255, 255, 255, 0.15) 50%,
       rgba(255, 255, 255, 0) 60%);
-
   transform: rotate(-10deg);
   pointer-events: none;
   z-index: 1;
 }
 
+/* ── .glass-panel ── */
+.glass-panel {
+  border-radius: 40px;
+  padding: 3rem;
+}
 
+/* ── .experience-card ── */
+.experience-card {
+  border-radius: 20px;
+  padding: 2rem;
+  transition: all 0.4s var(--ease-smooth);
+}
 
+.experience-card:hover {
+  transform: translateY(-6px);
+  background: rgba(255, 255, 255, 0.06);
+  border-top-color: rgba(255, 255, 255, 0.95);
+  border-left-color: rgba(255, 255, 255, 0.7);
+  box-shadow:
+    inset 0 2px 4px rgba(255, 255, 255, 0.95),
+    inset 2px 0 4px rgba(255, 255, 255, 0.5),
+    0 15px 40px rgba(0, 0, 0, 0.07);
+}
 
+.experience-card h4 {
+  font-size: 1.25rem;
+  margin-bottom: 0.75rem;
+}
+
+/* ── .cta-button ── */
+.cta-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1.1rem 2.4rem;
+  border-radius: 100px;
+  color: var(--text-primary);
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.4s var(--ease-smooth);
+}
+
+.cta-button:hover {
+  transform: translateY(-3px);
+  background: rgba(255, 255, 255, 0.06);
+  border-top-color: rgba(255, 255, 255, 0.95);
+  border-left-color: rgba(255, 255, 255, 0.7);
+}
+
+/* ── .back-button ── */
+.back-button {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1.2rem;
+  border-radius: 8px;
+  color: var(--text-primary);
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s var(--ease-smooth);
+  box-shadow: none;
+}
+
+.back-button:hover {
+  background: rgba(255, 255, 255, 0.06);
+  border-top-color: rgba(255, 255, 255, 0.95);
+  border-left-color: rgba(255, 255, 255, 0.7);
+}
+
+/* ── .detail-header ── */
+.detail-header {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  padding: 1.5rem 2rem;
+  border-radius: 0;
+  /* Full-width: sin redondeo, solo borde inferior */
+  border-left: none;
+  border-right: none;
+  border-top: none;
+  border-bottom: 1px solid var(--glass-border);
+}
+
+/* ── Overrides para elementos pequeños con glass-panel ── */
+.hero-badge.glass-panel {
+  padding: 0.6rem 1.5rem;
+  border-radius: 12px;
+  font-size: 0.75rem;
+}
+
+.stat-pill.glass-panel {
+  padding: 0.6rem 1.4rem;
+  border-radius: 14px;
+}
+
+/* ============================================
+   FIN LIQUID GLASS
+   ============================================ */
 
 .gradient-text {
   background: linear-gradient(135deg, var(--text-primary), var(--text-secondary));
@@ -250,62 +355,6 @@ a {
   font-size: 1.1rem;
 }
 
-/* --- CTA Button (Glass Editorial Style) --- */
-/* --- Botón CTA Glass --- */
-/* --- Glass Global Overrides for Small Elements --- */
-.hero-badge.glass-panel,
-.stat-pill.glass-panel,
-.cta-button.glass-panel {
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  border-top-color: rgba(255, 255, 255, 0.8);
-  border-left-color: rgba(255, 255, 255, 0.5);
-}
-
-.hero-badge.glass-panel {
-  padding: 0.6rem 1.5rem;
-  border-radius: 12px;
-  font-size: 0.75rem;
-  box-shadow: 
-    0 4px 12px rgba(0, 0, 0, 0.03),
-    inset 0 1px 2px rgba(255, 255, 255, 0.6);
-}
-
-.stat-pill.glass-panel {
-  padding: 0.6rem 1.4rem;
-  border-radius: 14px;
-  box-shadow: 
-    0 8px 20px rgba(0, 0, 0, 0.02),
-    inset 0 1px 2px rgba(255, 255, 255, 0.5);
-}
-
-.cta-button {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  padding: 1.1rem 2.4rem;
-  border-radius: 100px;
-  color: var(--text-primary);
-  font-family: var(--font-body);
-  font-size: 0.9rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.4s var(--ease-smooth);
-}
-
-.cta-button.glass-panel {
-  box-shadow: 
-    0 4px 15px rgba(0, 0, 0, 0.06),
-    inset 0 1px 2px rgba(255, 255, 255, 0.7);
-}
-
-
-
-
-.cta-button:hover {
-  transform: translateY(-3px);
-  background: rgba(255, 255, 255, 0.1);
-}
-
 /* --- Section Detail Overlay --- */
 .detail-overlay {
   position: fixed;
@@ -317,39 +366,6 @@ a {
   overflow-y: auto;
 }
 
-.detail-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 1rem;
-  padding: 1.5rem 2rem;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-  box-shadow: inset 0 -1px 0 rgba(255, 255, 255, 0.1);
-}
-
-.back-button {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 0.5rem 1.2rem;
-  border: 1px solid rgba(255, 255, 255, 0.45);
-  border-radius: 8px;
-  background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  color: var(--text-primary);
-  font-family: var(--font-body);
-  font-size: 0.85rem;
-  font-weight: 500;
-  cursor: pointer;
-  transition: all 0.3s var(--ease-smooth);
-  box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.7);
-}
-
-.back-button:hover {
-  background: rgba(255, 255, 255, 0.18);
-}
-
 .detail-body {
   flex: 1;
   padding: 4rem 2rem;
@@ -358,7 +374,7 @@ a {
   width: 100%;
 }
 
-/* --- Experience Cards --- */
+/* --- Experience Cards Grid --- */
 .experiences-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
@@ -366,41 +382,7 @@ a {
   margin-top: 3rem;
 }
 
-.experience-card {
-  border-radius: 20px;
-  padding: 2rem;
-  transition: all 0.4s var(--ease-smooth);
-
-  /* Reflejo base en reposo */
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  border-top: 1px solid rgba(255, 255, 255, 0.5);
-  box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.4);
-}
-
-.experience-card:hover {
-  transform: translateY(-6px);
-  background: rgba(255, 255, 255, 0.15);
-  /* Ligeramente más opaco al hover */
-
-  /* Aumento drástico del reflejo en el borde superior e izquierdo */
-  border-top-color: rgba(255, 255, 255, 0.95);
-  border-left-color: rgba(255, 255, 255, 0.7);
-
-  box-shadow:
-    inset 0 2px 4px rgba(255, 255, 255, 0.95),
-    /* Brillo superior intenso */
-    inset 2px 0 4px rgba(255, 255, 255, 0.5),
-    /* Brillo lateral */
-    0 15px 40px rgba(0, 0, 0, 0.07);
-  /* Sombra externa para elevar la tarjeta */
-}
-
-
-.experience-card h4 {
-  font-size: 1.25rem;
-  margin-bottom: 0.75rem;
-}
-
+/* --- Tag --- */
 .tag {
   padding: 0.3rem 0.8rem;
   border-radius: 6px;
