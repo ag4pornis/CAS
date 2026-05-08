@@ -1,16 +1,61 @@
-# React + Vite
+# CAS Portfolio — IB Diploma Programme
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Este proyecto es una plantilla de portafolio interactivo diseñada para estudiantes del Programa del Diploma del Bachillerato Internacional (IB) que deseen documentar sus experiencias de **Creatividad, Actividad y Servicio (CAS)** de una manera visualmente impactante y moderna.
 
-Currently, two official plugins are available:
+## ✨ Características
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- **Experiencia 3D Inmersiva:** Integración con Three.js para un fondo dinámico que reacciona al desplazamiento.
+- **Scroll Suave (Smooth Scrolling):** Utiliza Lenis para una navegación fluida y elegante.
+- **Secciones Interactivas:** Desglose detallado de Creatividad, Actividad y Servicio con superposiciones de información.
+- **Diseño Editorial Moderno:** Estética limpia con temas de color dinámicos según la sección.
+- **Totalmente Personalizable:** Estructura de datos clara en `src/data/experiences.js` para facilitar la edición de contenidos.
 
-## React Compiler
+## 🛠️ Tecnologías
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- [React](https://reactjs.org/)
+- [Vite](https://vitejs.dev/)
+- [Three.js](https://threejs.org/) / [@react-three/fiber](https://github.com/pmndrs/react-three-fiber)
+- [GSAP](https://greensock.com/gsap/) (GreenSock Animation Platform)
+- [Lenis](https://github.com/darkroomengineering/lenis)
+- [Lucide React](https://lucide.dev/) (Iconos)
 
-## Expanding the ESLint configuration
+## 🚀 Inicio Rápido
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+### Requisitos Previos
+
+- [Node.js](https://nodejs.org/) (versión 18 o superior recomendada)
+- npm o yarn
+
+### Instalación
+
+1. Clona el repositorio:
+   ```bash
+   git clone <url-del-repositorio>
+   ```
+
+2. Instala las dependencias:
+   ```bash
+   npm install
+   ```
+
+3. Inicia el servidor de desarrollo:
+   ```bash
+   npm run dev
+   ```
+
+4. Abre tu navegador en `http://localhost:5173`
+
+## 📝 Cómo Personalizar
+
+Para actualizar tu portafolio con tus propias experiencias, solo necesitas editar el archivo:
+`src/data/experiences.js`
+
+Allí podrás modificar:
+- Información personal (Nombre, bio, colegio).
+- Detalles del Proyecto CAS.
+- Listado de experiencias de Creatividad, Actividad y Servicio.
+- Resultados de aprendizaje.
+
+## 📄 Licencia
+
+Este proyecto está bajo la Licencia MIT. Consulta el archivo `LICENSE` para más detalles.
