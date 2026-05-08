@@ -19,3 +19,17 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
+
+---
+
+IMPORTANT NOTICE:
+
+This license applies ONLY to the software code and structure of this project.
+It does NOT cover personal content, including but not limited to:
+- Text content within `src/data/` representing personal experiences and reflections.
+- Images, videos, and other media assets within `src/assets/` or `public/`.
+- Any personal identifying information.
+
+These assets and contents are proprietary to the author and are NOT covered
+under the MIT License. Use of this project as a template requires the removal
+and replacement of all personal content.
