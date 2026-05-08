@@ -1,35 +1,181 @@
-MIT License
-
-Copyright (c) 2025
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
-
----
-
-IMPORTANT NOTICE:
-
-This license applies ONLY to the software code and structure of this project.
-It does NOT cover personal content, including but not limited to:
-- Text content within `src/data/` representing personal experiences and reflections.
-- Images, videos, and other media assets within `src/assets/` or `public/`.
-- Any personal identifying information.
-
-These assets and contents are proprietary to the author and are NOT covered
-under the MIT License. Use of this project as a template requires the removal
-and replacement of all personal content.
+AD NON-COMMERCIAL ATTRIBUTION LICENSE
+Version 1.0
+Copyright © 2026 Adrián Lavado Munuera
+================================================================================
+PREAMBLE
+This license governs the use, modification, distribution, and exploitation of the software and associated documentation files covered hereby. By exercising any rights granted under this license, you accept and agree to be bound by all terms and conditions set forth herein. If you do not agree to these terms, you are not permitted to use, copy, modify, or distribute the Software.
+================================================================================
+1. DEFINITIONS
+1.1 "Software" means the CAS (Creativity, Activity, Service) portfolio website, including the original computer program code, scripts, algorithms, documentation, design specifications, configuration files, data structures, user interfaces, and all associated materials created by the Author and made available under this License, whether in source code form, object code form, executable form, or any other form. THE DEFINITION OF SOFTWARE EXPRESSLY EXCLUDES ALL PERSONAL IMAGES, PHOTOGRAPHS, VIDEOS, PERSONAL DOCUMENTS, REFLECTIONS, JOURNAL ENTRIES, AND OTHER PERSONAL CONTENT BELONGING TO OR DEPICTING THE AUTHOR OR OTHER IDENTIFIABLE INDIVIDUALS.
+1.2 "Author" means Adrián Lavado Munuera, the original creator, copyright holder, and intellectual property owner of the Software.
+1.3 "Licensee" or "You" means any individual, entity, organization, corporation, partnership, governmental body, or other legal person exercising rights granted under this License.
+1.4 "Derivative Work" means any work, program, application, system, or creation that is based upon, derived from, incorporates, extends, modifies, adapts, translates, or otherwise builds upon the Software or any portion thereof, including but not limited to: modifications to the source code; compilations or combinations with other software; translations into other programming languages; adaptations for different platforms or environments; extractions of components, modules, or functionality; reimplementations of algorithms or logic; or any other transformation or evolution of the Software.
+1.5 "Commercial Use" means any use, deployment, operation, distribution, or exploitation of the Software or Derivative Works for which the Licensee or any third party receives, expects to receive, or has the potential to receive financial compensation, economic benefit, commercial advantage, or monetary value, whether directly or indirectly. Commercial Use expressly includes, but is not limited to:
+    (a) Incorporating the Software into products, applications, or services that are sold, licensed, leased, or otherwise provided for a fee or other valuable consideration;
+    (b) Using the Software to provide services for which payment is received, including software-as-a-service (SaaS), platform-as-a-service (PaaS), infrastructure-as-a-service (IaaS), or any hosted or cloud-based offering;
+    (c) Deploying the Software within commercial enterprises, corporations, businesses, or for-profit organizations for internal business operations, productivity enhancement, or competitive advantage;
+    (d) Using the Software in connection with advertising-supported applications, websites, or services where revenue is generated through advertisements, sponsorships, or promotional content;
+    (e) Distributing the Software or Derivative Works as part of commercial software bundles, packages, or distributions;
+    (f) Using the Software for consulting, professional services, or billable work performed for clients or customers;
+    (g) Employing the Software in production environments of entities organized for profit-making purposes, including but not limited to private companies, publicly traded corporations, limited liability companies, partnerships, and sole proprietorships;
+    (h) Utilizing the Software by educational institutions in programs or courses for which tuition, fees, or other payments are collected, except where such use is strictly for non-profit academic research or teaching purposes without direct revenue attribution to the Software;
+    (i) Deploying the Software by non-profit organizations in activities that generate revenue, accept donations linked to the Software's use, or provide services for fees;
+    (j) Any use that creates indirect financial benefit, including cost savings, efficiency gains valued in monetary terms, or competitive market positioning.
+1.6 "Non-Commercial Use" means use of the Software solely for personal, educational, academic research, or charitable purposes where no Commercial Use as defined in Section 1.5 occurs, and where the Licensee does not receive and does not expect to receive any form of financial compensation or commercial advantage related to such use.
+1.6.1 For the avoidance of doubt, Non-Commercial Use expressly includes the display of the Software or Derivative Works within a Licensee's personal professional portfolio, curriculum vitae, or personal non-commercial website for the purpose of demonstrating technical proficiency to potential employers or clients, provided that the Software itself is not being sold or used to provide a paid service.
+1.7 "Attribution" means the conspicuous and unambiguous acknowledgment of the Author's authorship and intellectual contribution as specified in Section 3 of this License.
+1.8 "Commercial License" means a separate written agreement executed between the Author and a Licensee that expressly grants rights to engage in Commercial Use of the Software upon terms and conditions, including financial compensation, as determined solely by the Author.
+1.9 "Distribute" or "Distribution" means any act of making the Software or Derivative Works available to third parties through any means, including but not limited to: publication, transmission, provision of access, downloading, uploading, hosting, sharing via electronic networks, physical transfer of storage media, or incorporation into other distributed works.
+1.10 "Modification" means any alteration, amendment, addition, deletion, enhancement, or other change made to the Software, including changes to functionality, structure, design, or documentation.
+================================================================================
+2. GRANT OF RIGHTS FOR NON-COMMERCIAL USE
+2.1 Subject to strict compliance with all terms and conditions of this License, the Author hereby grants to the Licensee a worldwide, royalty-free, non-exclusive, non-transferable, revocable license to use, reproduce, modify, prepare Derivative Works from, publicly display, publicly perform, and distribute the Software and Derivative Works thereof, solely for Non-Commercial Use.
+2.2 This grant is conditional upon the Licensee's continuous adherence to the Attribution Requirements set forth in Section 3 and all Restrictions specified in Section 5.
+2.3 Any Derivative Work created by the Licensee must:
+    (a) Include complete and accurate Attribution to the Author in accordance with Section 3;
+    (b) Contain a prominent notice stating that the work is modified from, based upon, or derived from the Author's original Software;
+    (c) Clearly identify all Modifications made, including the nature of changes and the dates upon which such Modifications were made;
+    (d) Be distributed only for Non-Commercial Use unless the Licensee has obtained a Commercial License;
+    (e) Preserve all copyright notices, license texts, and Attribution requirements present in the original Software.
+2.4 The Licensee may not sublicense the Software or Derivative Works. The rights granted herein are personal to the Licensee and may not be transferred, assigned, or delegated without the Author's prior written consent.
+2.5 This License does not grant permission to use the Author's trade names, trademarks, service marks, or product names, except as required for reasonable and customary Attribution purposes as described in Section 3.
+================================================================================
+3. ATTRIBUTION REQUIREMENTS
+3.1 The Licensee must provide clear, conspicuous, and unambiguous Attribution to the Author in all of the following circumstances:
+    (a) In any Distribution of the Software in unmodified form;
+    (b) In any Distribution of Modified versions or Derivative Works;
+    (c) In any partial reuse, incorporation, or extraction of code, algorithms, or functionality from the Software;
+    (d) In any implementation, adaptation, or reimplementation of the Software's ideas, structures, designs, architectures, or methodologies;
+    (e) In documentation, user interfaces, or other materials accompanying the Software or Derivative Works.
+3.2 Attribution must include all of the following elements:
+    (a) The name "Adrián Lavado Munuera" or the designation "Ad" clearly identifying the Author;
+    (b) An explicit statement identifying Adrián Lavado Munuera as the original creator and copyright holder of the Software;
+    (c) A functional hyperlink or other reference to the original project repository or official project page at https://github.com/ag4pornis/CAS, or such other location as the Author may designate;
+    (d) A notice in substantially the following form:
+        "This work is based on the CAS Portfolio website originally created by Adrián Lavado Munuera (Ad). Original software available at https://github.com/ag4pornis/CAS. Used under the AD Non-Commercial Attribution License."
+3.3 Attribution must be placed in at least one prominent location where it will be readily accessible and visible to users and subsequent developers, such as:
+    (a) A README file or other primary documentation; OR
+    (b) A user-facing "About" section, footer, credits screen, or similar interface.
+    While the Author encourages attribution in source code headers and distribution packages, it is not strictly required if attribution is clearly provided in one of the primary locations specified above.
+3.4 Attribution must remain intact and unmodified across all versions, Modifications, and Derivative Works. The Licensee may add their own attribution for their contributions to Derivative Works, but such additional attribution must not obscure, diminish, or supplant the Author's Attribution.
+3.5 In cases where the Software or portions thereof are integrated into larger systems or combined with other software, the Attribution must remain clearly associated with the components originating from the Author's Software and must be presented with equal prominence to any other authorship attributions.
+3.6 The Licensee acknowledges that Attribution is a material condition of this License, and failure to provide proper Attribution constitutes a material breach entitling the Author to immediate termination of rights and pursuit of legal remedies.
+================================================================================
+4. COMMERCIAL LICENSING CLAUSE
+4.1 Commercial Use of the Software or any Derivative Work is strictly prohibited under this License. Any Commercial Use requires a separate Commercial License obtained directly from the Author.
+4.2 To obtain a Commercial License, the Licensee must:
+    (a) Contact the Author at adrin_bing2@outlook.es to negotiate terms;
+    (b) Execute a written Commercial License agreement with the Author;
+    (c) Provide financial compensation to the Author as agreed upon in the Commercial License agreement.
+4.3 The terms of any Commercial License, including pricing, scope, duration, and conditions, shall be determined solely at the Author's discretion. The Author reserves the right to decline to grant a Commercial License to any party for any reason or no reason.
+4.4 Unauthorized Commercial Use of the Software constitutes:
+    (a) Copyright infringement under applicable copyright laws;
+    (b) Breach of this License agreement;
+    (c) Misappropriation of the Author's intellectual property;
+    (d) Grounds for immediate legal action, injunctive relief, and recovery of damages.
+4.5 In the event of unauthorized Commercial Use, the Author is entitled to seek:
+    (a) Immediate cessation of the infringing activity through injunctive relief;
+    (b) Statutory damages or actual damages, whichever is greater, including all profits derived from the unauthorized Commercial Use;
+    (c) Attorney's fees and costs of litigation;
+    (d) Any other remedies available under applicable law.
+4.6 The Licensee bears the burden of demonstrating that its use qualifies as Non-Commercial Use. Any ambiguity regarding whether a particular use constitutes Commercial Use shall be resolved in favor of requiring a Commercial License.
+4.7 The Author may, at his sole discretion, monitor, audit, or investigate the Licensee's use of the Software to ensure compliance with the prohibition on unauthorized Commercial Use.
+================================================================================
+5. RESTRICTIONS
+5.1 The Licensee shall not remove, obscure, alter, or modify any Attribution, copyright notice, license text, or other proprietary notice included in or accompanying the Software.
+5.2 The Licensee shall not misrepresent the authorship of the Software or any Derivative Work, including but not limited to falsely claiming authorship, failing to credit the Author, or implying that the Author endorses the Licensee's use or Derivative Works.
+5.3 The Licensee shall not sublicense, sell, rent, lease, or otherwise transfer rights in the Software for Commercial Use without obtaining a Commercial License as described in Section 4.
+5.4 The Licensee is expressly prohibited from using the Software, in whole or in part, to train, develop, improve, or enhance artificial intelligence models, machine learning algorithms, neural networks, or any other automated learning systems, whether for commercial or non-commercial purposes, without the Author's explicit prior written permission. This prohibition includes but is not limited to:
+    (a) Using the Software's source code, structure, algorithms, or outputs as training data;
+    (b) Employing the Software to generate datasets for AI/ML model training;
+    (c) Incorporating the Software into AI development pipelines or workflows;
+    (d) Analyzing the Software to extract patterns, features, or insights for AI/ML purposes.
+5.5 The Licensee shall not use the Software in any manner that violates applicable laws, regulations, or international treaties, including but not limited to laws governing intellectual property, privacy, data protection, export controls, or sanctions.
+5.6 The Licensee shall not use the Software to develop, deploy, or operate systems or applications that:
+    (a) Facilitate illegal activities, fraud, or deception;
+    (b) Violate the rights or privacy of individuals or entities;
+    (c) Cause harm, damage, or injury to persons, property, or the environment;
+    (d) Circumvent security measures, access controls, or technological protection measures.
+5.7 PERSONAL CONTENT AND PRIVACY RESTRICTION. All images, photographs, videos, personal documents, journal entries, reflections, experiences, and other personal content belonging to or depicting the Author or other identifiable individuals are strictly excluded from the licenses granted herein.
+    (a) The Licensee is expressly prohibited from copying, distributing, displaying, modifying, or using this personal content for any purpose whatsoever.
+    (b) This personal content is provided solely as part of the Author's educational IB Diploma Programme CAS portfolio and remains the exclusive property of the respective rightsholders.
+    (c) Any unauthorized use of this personal content constitutes a violation of privacy rights, image rights, and copyright, and will be prosecuted to the maximum extent permitted by law.
+    (d) For the avoidance of doubt, "personal content" includes but is not limited to: photographs of the Author or other individuals, personal reflections and journal entries, documentation of personal experiences and activities, personal videos or multimedia content, and any other materials of a personal nature included as part of the CAS portfolio documentation.
+5.8 The Licensee acknowledges that certain uses of the Software may require compliance with additional legal requirements, including but not limited to data protection regulations, accessibility standards, or industry-specific regulations. The Licensee is solely responsible for ensuring such compliance.
+================================================================================
+6. INTELLECTUAL PROPERTY AND COPYRIGHT
+6.1 The Author retains all right, title, and interest in and to the Software, including all intellectual property rights therein. This License does not transfer or convey any ownership rights in the Software to the Licensee.
+6.2 All copyrights, patents, trademarks, trade secrets, and other intellectual property rights in the Software remain the exclusive property of the Author. The Licensee acquires no intellectual property rights except the limited license rights expressly granted herein.
+6.3 The Licensee acknowledges that the Software constitutes valuable proprietary information of the Author and embodies substantial creative, intellectual, and technical effort.
+6.4 Any Modifications or Derivative Works created by the Licensee are derivative works based upon the Author's copyrighted Software. While the Licensee may hold copyright in their original contributions to such Derivative Works, such copyright is subject to the Author's underlying copyright in the Software and the terms of this License.
+6.5 The Licensee hereby grants to the Author a perpetual, irrevocable, worldwide, royalty-free license to use, modify, incorporate, or distribute any feedback, suggestions, enhancements, or other contributions the Licensee provides to the Author regarding the Software.
+================================================================================
+7. WARRANTY DISCLAIMER
+7.1 THE SOFTWARE IS PROVIDED "AS IS" AND "AS AVAILABLE," WITHOUT WARRANTY OF ANY KIND, EXPRESS, IMPLIED, STATUTORY, OR OTHERWISE. THE AUTHOR EXPRESSLY DISCLAIMS ALL WARRANTIES, INCLUDING BUT NOT LIMITED TO:
+    (a) IMPLIED WARRANTIES OF MERCHANTABILITY;
+    (b) IMPLIED WARRANTIES OF FITNESS FOR A PARTICULAR PURPOSE;
+    (c) IMPLIED WARRANTIES OF TITLE OR NON-INFRINGEMENT;
+    (d) WARRANTIES ARISING FROM COURSE OF DEALING, COURSE OF PERFORMANCE, OR USAGE OF TRADE;
+    (e) WARRANTIES THAT THE SOFTWARE WILL BE UNINTERRUPTED, ERROR-FREE, SECURE, OR FREE FROM VIRUSES OR OTHER HARMFUL COMPONENTS;
+    (f) WARRANTIES REGARDING THE ACCURACY, RELIABILITY, COMPLETENESS, OR QUALITY OF THE SOFTWARE OR ANY OUTPUTS GENERATED THEREBY.
+7.2 THE AUTHOR MAKES NO REPRESENTATION OR WARRANTY THAT THE SOFTWARE WILL MEET THE LICENSEE'S REQUIREMENTS, ACHIEVE ANY PARTICULAR RESULT, OR BE COMPATIBLE WITH ANY PARTICULAR SYSTEM, PLATFORM, OR ENVIRONMENT.
+7.3 THE LICENSEE ASSUMES ALL RESPONSIBILITY AND RISK FOR THE SELECTION, USE, PERFORMANCE, AND RESULTS OBTAINED FROM THE SOFTWARE. THE ENTIRE RISK AS TO THE QUALITY, PERFORMANCE, ACCURACY, AND EFFORT REQUIRED TO ACHIEVE DESIRED RESULTS RESTS WITH THE LICENSEE.
+7.4 NO ORAL OR WRITTEN INFORMATION, ADVICE, OR CONSULTATION PROVIDED BY THE AUTHOR SHALL CREATE ANY WARRANTY NOT EXPRESSLY STATED IN THIS LICENSE.
+7.5 SOME JURISDICTIONS DO NOT ALLOW THE EXCLUSION OF IMPLIED WARRANTIES. IN SUCH JURISDICTIONS, THE FOREGOING EXCLUSIONS MAY NOT APPLY TO THE LICENSEE, AND THE LICENSEE MAY HAVE ADDITIONAL RIGHTS UNDER APPLICABLE LAW.
+7.6 NO SUPPORT OBLIGATION. THE AUTHOR IS UNDER NO OBLIGATION TO PROVIDE ANY SUPPORT, MAINTENANCE, UPDATES, BUG FIXES, OR MODIFICATIONS FOR THE SOFTWARE. THE AUTHOR PROVIDES NO GUARANTEE OF CONTINUED AVAILABILITY OR TECHNICAL ASSISTANCE.
+================================================================================
+8. LIMITATION OF LIABILITY
+8.1 TO THE MAXIMUM EXTENT PERMITTED BY APPLICABLE LAW, IN NO EVENT SHALL THE AUTHOR BE LIABLE TO THE LICENSEE OR ANY THIRD PARTY FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, CONSEQUENTIAL, PUNITIVE, OR OTHER DAMAGES OF ANY KIND ARISING OUT OF OR RELATED TO THIS LICENSE OR THE USE OR INABILITY TO USE THE SOFTWARE, INCLUDING BUT NOT LIMITED TO:
+    (a) LOSS OF PROFITS, REVENUE, BUSINESS, OR ANTICIPATED SAVINGS;
+    (b) LOSS OF DATA, INFORMATION, OR DATABASES;
+    (c) LOSS OF USE OR INTERRUPTION OF BUSINESS;
+    (d) COST OF PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+    (e) PERSONAL INJURY OR PROPERTY DAMAGE;
+    (f) DAMAGE TO REPUTATION OR GOODWILL;
+    (g) CLAIMS BY THIRD PARTIES;
+    (h) ANY OTHER PECUNIARY OR NON-PECUNARY LOSS OR DAMAGE,
+REGARDLESS OF WHETHER SUCH DAMAGES WERE FORESEEABLE AND WHETHER OR NOT THE AUTHOR HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES, AND NOTWITHSTANDING ANY FAILURE OF ESSENTIAL PURPOSE OF ANY LIMITED REMEDY.
+8.2 THE LIMITATIONS SET FORTH IN SECTION 8.1 SHALL APPLY EVEN IF THE AUTHOR HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES AND REGARDLESS OF THE FORM OF ACTION, WHETHER IN CONTRACT, TORT (INCLUDING NEGLIGENCE), STRICT LIABILITY, WARRANTY, OR OTHERWISE.
+8.3 THE AUTHOR'S TOTAL AGGREGATE LIABILITY ARISING OUT OF OR RELATED TO THIS LICENSE OR THE SOFTWARE SHALL NOT EXCEED THE AMOUNT OF FIFTY DOLLARS (USD $50.00) OR THE EQUIVALENT IN THE APPLICABLE LOCAL CURRENCY.
+8.4 SOME JURISDICTIONS DO NOT ALLOW THE LIMITATION OR EXCLUSION OF LIABILITY FOR INCIDENTAL OR CONSEQUENTIAL DAMAGES. IN SUCH JURISDICTIONS, THE AUTHOR'S LIABILITY SHALL BE LIMITED TO THE GREATEST EXTENT PERMITTED BY APPLICABLE LAW.
+8.5 THE LICENSEE ACKNOWLEDGES THAT THE LIMITATIONS OF LIABILITY SET FORTH IN THIS SECTION 8 REFLECT A REASONABLE AND FAIR ALLOCATION OF RISK BETWEEN THE PARTIES AND THAT THESE LIMITATIONS ARE AN ESSENTIAL BASIS OF THE BARGAIN BETWEEN THE AUTHOR AND THE LICENSEE. THE AUTHOR WOULD NOT PROVIDE THE SOFTWARE TO THE LICENSEE WITHOUT THESE LIMITATIONS.
+================================================================================
+9. INDEMNIFICATION
+9.1 The Licensee agrees to indemnify, defend, and hold harmless the Author from and against any and all claims, liabilities, damages, losses, costs, expenses, fees (including reasonable attorneys' fees and court costs) arising out of or relating to:
+    (a) The Licensee's use, misuse, or inability to use the Software;
+    (b) The Licensee's violation of any term or condition of this License;
+    (c) The Licensee's violation of any third-party right, including any intellectual property right, privacy right, or property right;
+    (d) Any claim that the Licensee's use of the Software caused damage to a third party;
+    (e) The Licensee's Modifications or Derivative Works;
+    (f) The Licensee's Distribution of the Software or Derivative Works.
+9.2 This indemnification obligation will survive the termination or expiration of this License and the Licensee's use of the Software.
+================================================================================
+10. TERMINATION
+10.1 This License and the rights granted hereunder will terminate automatically and immediately without notice from the Author if the Licensee fails to comply with any term or condition of this License.
+10.2 Upon termination, the Licensee must:
+    (a) Immediately cease all use of the Software and any Derivative Works;
+    (b) Destroy or delete all copies of the Software and Derivative Works in the Licensee's possession or control;
+    (c) Certify in writing to the Author that all such copies have been destroyed or deleted, if requested by the Author.
+10.3 The Author may terminate this License at any time, with or without cause, upon thirty (30) days' written notice to the Licensee. The Author may elect to terminate immediately without notice in cases of material breach.
+10.4 Sections 3 (Attribution Requirements), 5 (Restrictions), 6 (Intellectual Property and Copyright), 7 (Warranty Disclaimer), 8 (Limitation of Liability), 9 (Indemnification), and 11 (General Provisions) shall survive any termination or expiration of this License.
+10.5 Termination of this License does not relieve the Licensee of any obligations or liabilities that accrued prior to termination, nor does it affect any rights of the Author to pursue remedies for breaches that occurred prior to termination.
+================================================================================
+11. GENERAL PROVISIONS
+11.1 ENTIRE AGREEMENT. This License constitutes the entire agreement between the Author and the Licensee regarding the subject matter hereof and supersedes all prior or contemporaneous understandings, agreements, representations, and warranties, whether written or oral, regarding such subject matter.
+11.2 AMENDMENTS. The Author reserves the right to modify, amend, or update this License at any time. Any such modifications will be effective upon posting of the revised License. The Licensee's continued use of the Software after such posting constitutes acceptance of the modified License. It is the Licensee's responsibility to review this License periodically for changes.
+11.3 WAIVER. No waiver by the Author of any term or condition of this License shall be deemed a further or continuing waiver of such term or condition or a waiver of any other term or condition. Any failure by the Author to assert a right or provision under this License shall not constitute a waiver of such right or provision.
+11.4 SEVERABILITY. If any provision of this License is held by a court of competent jurisdiction to be invalid, illegal, or unenforceable, the remainder of this License shall continue in full force and effect, and such provision shall be reformed only to the extent necessary to make it enforceable while preserving its intent to the maximum extent possible.
+11.5 GOVERNING LAW AND JURISDICTION. This License shall be governed by and construed in accordance with the laws of Spain, without regard to its conflict of law principles. Any legal action or proceeding arising out of or related to this License shall be brought exclusively in the courts of Spain, and the parties hereby consent to the personal jurisdiction and venue of such courts.
+11.6 LANGUAGE. This License is executed in the English language. In the event of any conflict between the English version and any translation, the English version shall prevail.
+11.7 ASSIGNMENT. The Licensee may not assign, transfer, or delegate any rights or obligations under this License without the prior written consent of the Author. Any attempted assignment, transfer, or delegation without such consent shall be void. The Author may freely assign this License.
+11.8 NO AGENCY. Nothing in this License shall be construed to create a partnership, joint venture, agency, employment, or fiduciary relationship between the Author and the Licensee.
+11.9 FORCE MAJEURE. Neither party shall be liable for any failure or delay in performance under this License (except for payment obligations) due to causes beyond its reasonable control, including but not limited to acts of God, war, terrorism, civil unrest, labor disputes, epidemics, pandemics, governmental actions, or failures of the Internet or telecommunications infrastructure.
+11.10 NOTICES. Any notice required or permitted under this License shall be provided to the Author at adrin_bing2@outlook.es or such other address as the Author may designate. Notices shall be deemed given when sent if sent by email with confirmation of receipt.
+11.11 INTERPRETATION. The headings and captions used in this License are for convenience only and shall not affect the interpretation of this License. The terms "including," "includes," and "such as" are illustrative and not limiting.
+11.12 COUNTERPARTS. This License may be executed in counterparts, each of which shall be deemed an original and all of which together shall constitute one and the same instrument.
+================================================================================
+END OF LICENSE
+For questions regarding this License or to request a Commercial License, please contact:
+Adrián Lavado Munuera
+Email: adrin_bing2@outlook.es
+Project Repository: https://github.com/ag4pornis/CAS
