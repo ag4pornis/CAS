@@ -142,15 +142,17 @@ export default function App() {
       // --- Unified High-Inertia Steering Engine ---
       const vh = window.innerHeight;
       const vw = window.innerWidth;
-      const safetyMargin = 140; // Wider safety for premium feel
+      const safetyMarginX = 60; // More freedom on the sides
+      const safetyMarginY = 90; // Balanced safety for top/bottom
       const now = Date.now();
 
       // 1. Establish the "Goal" (Combined Card + Wander)
       let goalX, goalY;
-      const minX = safetyMargin;
-      const maxX = vw - safetyMargin;
-      const minY = safetyMargin;
-      const maxY = vh - safetyMargin;
+      const minX = safetyMarginX;
+      const maxX = vw - safetyMarginX;
+      const minY = safetyMarginY;
+      const maxY = vh - safetyMarginY;
+
 
       if (targetCard) {
         const rect = targetCard.getBoundingClientRect();
