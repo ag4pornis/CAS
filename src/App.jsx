@@ -19,27 +19,28 @@ const sectionColors = {
 
 export default function App() {
   const [activeSection, setActiveSection] = useState("hero");
-  const [bgColors, setBgColors] = useState({
-    active: sectionColors.hero,
+  const [transitionState, setTransitionState] = useState({
     previous: sectionColors.hero,
     isTransitioning: false
   });
 
+  const activeColors = sectionColors[activeSection] || sectionColors.hero;
+
   useEffect(() => {
-    const newColors = sectionColors[activeSection] || sectionColors.hero;
-    if (newColors.accent !== bgColors.active.accent) {
-      setBgColors(prev => ({
-        previous: prev.active,
-        active: newColors,
+    if (activeColors.accent !== transitionState.previous.accent) {
+      setTransitionState(prev => ({
+        previous: prev.isTransitioning ? prev.previous : activeColors, // Keep consistent
         isTransitioning: true
       }));
-      
+
       const timer = setTimeout(() => {
-        setBgColors(prev => ({ ...prev, isTransitioning: false }));
+        setTransitionState(prev => ({ ...prev, isTransitioning: false, previous: activeColors }));
       }, 2000);
       return () => clearTimeout(timer);
     }
-  }, [activeSection]);
+  }, [activeSection, activeColors, transitionState.previous.accent]);
+
+
 
   const [scrollProgress, setScrollProgress] = useState(0);
   const [detailView, setDetailView] = useState(null);
@@ -134,9 +135,18 @@ export default function App() {
     document.body.classList.remove("no-scroll");
   }, []);
 
-  const orbRef = React.useRef(null);
-  const orbPos = React.useRef({ x: 0, y: 0 });
-  const orbState = React.useRef('idle');
+  const orbRef = useRef(null);
+  const orbPos = useRef({ x: window.innerWidth * 0.2, y: window.innerHeight * 0.3 });
+  const orbOffset = useRef({ x: 0, y: 0 });
+  const orbVel = useRef({ x: 2, y: 2 });
+  const orbWanderTarget = useRef({ x: 0, y: 0, lastUpdate: 0 });
+  const orbLastBounce = useRef({ x: 0, y: 0 });
+  const orbSquash = useRef({ x: 1, y: 1 });
+  const orbState = useRef('following');
+
+
+
+
 
   // Defined outside the loop for performance
   const triggerBonk = (transform) => {
@@ -168,90 +178,122 @@ export default function App() {
         }
       }
 
-      const ease = 0.1;
+      // --- Unified High-Inertia Steering Engine ---
       const vh = window.innerHeight;
       const vw = window.innerWidth;
-      let targetX, targetY;
+      const safetyMargin = 140; // Wider safety for premium feel
+      const now = Date.now();
+
+      // 1. Establish the "Goal" (Combined Card + Wander)
+      let goalX, goalY;
+      const minX = safetyMargin;
+      const maxX = vw - safetyMargin;
+      const minY = safetyMargin;
+      const maxY = vh - safetyMargin;
 
       if (targetCard) {
         const rect = targetCard.getBoundingClientRect();
-
-        // --- NEW: Dynamic Corner Selection ---
-        // If the card center is below the viewport center, target TOP corner.
-        // If we've scrolled past the card center, target BOTTOM corner.
         const cardCenter = (rect.top + rect.bottom) / 2;
         const viewportCenter = vh / 2;
-
-        targetX = rect.left;
-        targetY = (cardCenter > viewportCenter) ? rect.top : rect.bottom;
-
-        // --- Wide Safety Margins & Rebounds ---
-        const margin = 120;
-        const topLimit = margin;
-        const bottomLimit = vh - margin;
-
-        // Note: We check against the actual corner the orb is currently targeting
-        if (targetY < topLimit) {
-          targetY = vh * 0.25;
-          targetX = vw * 0.08;
-          if (orbState.current !== 'bonked_top') {
-            orbState.current = 'bonked_top';
-            triggerBonk('scale(1.4, 0.6)');
-          }
-        } else if (targetY > bottomLimit) {
-          targetY = vh * 0.75;
-          targetX = vw * 0.08;
-          if (orbState.current !== 'bonked_bottom') {
-            orbState.current = 'bonked_bottom';
-            triggerBonk('scale(1.4, 0.6)');
-          }
-        } else {
-          orbState.current = 'following';
-        }
+        goalX = rect.left - 30; // Closer to the edge for better focus
+        goalY = (cardCenter > viewportCenter) ? rect.top : rect.bottom;
       } else {
-        orbState.current = 'confused';
-        targetX = vw * 0.08;
-        targetY = vh * 0.25;
+        goalX = vw * 0.12;
+        goalY = vh * 0.3;
       }
 
+      goalX = Math.max(minX, Math.min(maxX, goalX));
+      goalY = Math.max(minY, Math.min(maxY, goalY));
 
+      // 2. The Brain: Rotational Steering with Organic Chaos
+      if (!orbVel.current) orbVel.current = { x: 0.5, y: 0.5 };
+      if (!orbWanderTarget.current) orbWanderTarget.current = { x: 0, y: 0, lastUpdate: 0, nextInterval: 3000 };
 
-      function triggerBonk(transform) {
-        if (!orbRef.current) return;
-        orbRef.current.style.transition = 'transform 0.15s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
-        orbRef.current.style.transform = `translate(-50%, -50%) ${transform}`;
-        setTimeout(() => {
-          if (orbRef.current) orbRef.current.style.transform = 'translate(-50%, -50%) scale(1)';
-        }, 200);
+      // Update curiosity target at random intervals (3s to 7s)
+      if (now - orbWanderTarget.current.lastUpdate > orbWanderTarget.current.nextInterval) {
+        orbWanderTarget.current = {
+          x: (Math.random() - 0.5) * 150,
+          y: (Math.random() - 0.5) * 150,
+          lastUpdate: now,
+          nextInterval: 3000 + Math.random() * 4000
+        };
       }
 
-      orbPos.current.x += (targetX - orbPos.current.x) * ease;
-      orbPos.current.y += (targetY - orbPos.current.y) * ease;
+      const finalTargetX = goalX + orbWanderTarget.current.x;
+      const finalTargetY = goalY + orbWanderTarget.current.y;
 
-      // --- Organic Floating Drift (Enhanced) ---
-      const time = Date.now() * 0.0015;
-      const driftX = Math.sin(time) * 15;
-      const driftY = Math.cos(time * 0.8) * 20;
+      const targetAngle = Math.atan2(
+        finalTargetY - orbPos.current.y,
+        finalTargetX - orbPos.current.x
+      );
 
-      // Increase drift factor when following to stay 'alive'
-      const driftFactor = (orbState.current === 'following') ? 0.5 : 1;
+      const currentSpeedRaw = Math.sqrt(orbVel.current.x ** 2 + orbVel.current.y ** 2);
+      let currentAngle = (currentSpeedRaw < 0.1) ?
+        Math.atan2(finalTargetY - orbPos.current.y, finalTargetX - orbPos.current.x) :
+        Math.atan2(orbVel.current.y, orbVel.current.x);
 
-      // Breathing pulse effect
-      const pulse = 1 + Math.sin(Date.now() * 0.002) * 0.08;
+      // --- 3. Proactive Angular Boundary Avoidance (Anti-Stuck Logic) ---
+      const buffer = 160;
+      const edgeRepulsion = 0.04; // Stronger turn force
 
-      orbRef.current.style.top = `${orbPos.current.y + driftY * driftFactor}px`;
-      orbRef.current.style.left = `${orbPos.current.x + driftX * driftFactor}px`;
-      orbRef.current.style.transform = `translate(-50%, -50%) scale(${pulse})`;
+      // Adjust the targetAngle directly if we are in the danger zone
+      // This makes the 'Brain' think the goal is actually away from the wall
+      let avoidanceAngle = targetAngle;
 
-
-      if (targetCard) {
-        const section = targetCard.closest('section');
-        if (section && section.id) {
-          const sectionColor = sectionColors[section.id] || sectionColors.hero;
-          orbRef.current.style.backgroundColor = `rgb(${sectionColor.accent})`;
-          orbRef.current.style.boxShadow = `0 0 40px 10px rgba(${sectionColor.accent}, 0.4)`;
-        }
+      if (orbPos.current.y < minY + buffer) {
+        const factor = (1 - (orbPos.current.y - minY) / buffer);
+        avoidanceAngle += edgeRepulsion * factor; // Steer away from top
       }
+      if (orbPos.current.y > maxY - buffer) {
+        const factor = (1 - (maxY - orbPos.current.y) / buffer);
+        avoidanceAngle -= edgeRepulsion * factor; // Steer away from bottom
+      }
+      if (orbPos.current.x < minX + buffer) {
+        const factor = (1 - (orbPos.current.x - minX) / buffer);
+        avoidanceAngle += edgeRepulsion * factor; // Steer away from left
+      }
+      if (orbPos.current.x > maxX - buffer) {
+        const factor = (1 - (maxX - orbPos.current.x) / buffer);
+        avoidanceAngle -= edgeRepulsion * factor; // Steer away from right
+      }
+
+      let angleDiff = avoidanceAngle - currentAngle;
+      while (angleDiff > Math.PI) angleDiff -= Math.PI * 2;
+      while (angleDiff < -Math.PI) angleDiff += Math.PI * 2;
+
+      // Complex Steering: Multi-frequency wiggle for non-periodic movement
+      const distToGoal = Math.sqrt((goalX - orbPos.current.x) ** 2 + (goalY - orbPos.current.y) ** 2);
+
+      // Dynamic steering: Relax when close to goal to prevent 'orbiting'
+      const proximityFactor = Math.max(0.2, Math.min(1, distToGoal / 100));
+      const steeringStrength = 0.015 * proximityFactor;
+
+      const wiggleScale = distToGoal < 50 ? 0.3 : 1.0;
+      const wiggle = (Math.sin(now * 0.0007) * 0.015 +
+        Math.sin(now * 0.0013) * 0.01 +
+        (Math.random() - 0.5) * 0.005) * wiggleScale;
+
+      currentAngle += (angleDiff * steeringStrength) + wiggle;
+
+      // Adaptive Cruise Speed
+      const cruiseSpeed = distToGoal < 70 ? 0.45 : 0.65;
+
+      orbVel.current.x = Math.cos(currentAngle) * cruiseSpeed;
+      orbVel.current.y = Math.sin(currentAngle) * cruiseSpeed;
+
+
+      // 4. Update position
+      orbPos.current.x += orbVel.current.x;
+      orbPos.current.y += orbVel.current.y;
+
+      // FINAL RENDER CLAMP (Strict Safety)
+      const finalX = Math.max(minX, Math.min(maxX, orbPos.current.x));
+      const finalY = Math.max(minY, Math.min(maxY, orbPos.current.y));
+      orbPos.current.x = finalX;
+      orbPos.current.y = finalY;
+
+      const pulse = 1 + Math.sin(now * 0.0008) * 0.06;
+      orbRef.current.style.transform = `translate3d(calc(-50% + ${finalX}px), calc(-50% + ${finalY}px), 0) scale(${pulse})`;
 
       requestAnimationFrame(animFrame);
     };
@@ -263,26 +305,26 @@ export default function App() {
 
 
 
+
   // Autonomous, no dependencies needed
 
 
 
-  const colors = sectionColors[activeSection] || sectionColors.hero;
 
 
   return (
     <>
       {/* Smooth Background Transition Layer */}
-      <div 
-        className="dynamic-bg" 
-        style={{ 
-          backgroundColor: `rgb(${bgColors.active.from})`,
+      <div
+        className="dynamic-bg"
+        style={{
+          backgroundColor: `rgb(${activeColors.from})`,
           transition: 'background-color 2s cubic-bezier(0.23, 1, 0.32, 1)',
           zIndex: -2
-        }} 
+        }}
       >
         {/* Persistent Mist Overlay */}
-        <div 
+        <div
           style={{
             position: 'absolute',
             inset: 0,
@@ -302,10 +344,11 @@ export default function App() {
         ref={orbRef}
         className="scroll-orb"
         style={{
-          backgroundColor: `rgb(${colors.accent})`,
-          boxShadow: `0 0 40px 10px rgba(${colors.accent}, 0.5)`,
+          backgroundColor: `rgb(${activeColors.accent})`,
+          boxShadow: `0 0 40px 10px rgba(${activeColors.accent}, 0.5)`,
         }}
       />
+
 
       <div className="content-layer" ref={contentRef}>
 
