@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useCallback } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import Scene3D from "./components/Scene3D";
 import HeroSection from "./components/HeroSection";
 import ProjectSection from "./components/ProjectSection";
@@ -19,32 +19,13 @@ const sectionColors = {
 
 export default function App() {
   const [activeSection, setActiveSection] = useState("hero");
-  const [transitionState, setTransitionState] = useState({
-    previous: sectionColors.hero,
-    isTransitioning: false
-  });
-
   const activeColors = sectionColors[activeSection] || sectionColors.hero;
 
-  useEffect(() => {
-    if (activeColors.accent !== transitionState.previous.accent) {
-      setTransitionState(prev => ({
-        previous: prev.isTransitioning ? prev.previous : activeColors, // Keep consistent
-        isTransitioning: true
-      }));
-
-      const timer = setTimeout(() => {
-        setTransitionState(prev => ({ ...prev, isTransitioning: false, previous: activeColors }));
-      }, 2000);
-      return () => clearTimeout(timer);
-    }
-  }, [activeSection, activeColors, transitionState.previous.accent]);
 
 
 
   const [scrollProgress, setScrollProgress] = useState(0);
   const [detailView, setDetailView] = useState(null);
-  const [projectVisible, setProjectVisible] = useState(false);
   const [visibleStrands, setVisibleStrands] = useState({
     creativity: false,
     activity: false,
@@ -77,7 +58,7 @@ export default function App() {
 
     requestAnimationFrame(raf);
 
-    lenis.on("scroll", ({ scroll, limit, velocity, progress }) => {
+    lenis.on("scroll", ({ progress }) => {
       setScrollProgress(progress);
     });
 
@@ -136,30 +117,10 @@ export default function App() {
   }, []);
 
   const orbRef = useRef(null);
-  const orbPos = useRef({ x: window.innerWidth * 0.2, y: window.innerHeight * 0.3 });
-  const orbOffset = useRef({ x: 0, y: 0 });
+  const orbPos = useRef({ x: 0, y: 0 });
   const orbVel = useRef({ x: 2, y: 2 });
-  const orbWanderTarget = useRef({ x: 0, y: 0, lastUpdate: 0 });
-  const orbLastBounce = useRef({ x: 0, y: 0 });
-  const orbSquash = useRef({ x: 1, y: 1 });
-  const orbState = useRef('following');
+  const orbWanderTarget = useRef({ x: 0, y: 0, lastUpdate: 0, nextInterval: 3000 });
 
-
-
-
-
-  // Defined outside the loop for performance
-  const triggerBonk = (transform) => {
-    if (!orbRef.current) return;
-    orbRef.current.style.transition = 'transform 0.15s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
-    orbRef.current.style.transform = `translate(-50%, -50%) ${transform}`;
-    setTimeout(() => {
-      if (orbRef.current) {
-        orbRef.current.style.transition = 'transform 0.3s ease-out';
-        orbRef.current.style.transform = 'translate(-50%, -50%) scale(1)';
-      }
-    }, 150);
-  };
 
   useEffect(() => {
     // Autonomous Animation Loop for the Scroll-Orb
