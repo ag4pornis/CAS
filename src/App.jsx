@@ -142,7 +142,7 @@ export default function App() {
       // --- Unified High-Inertia Steering Engine ---
       const vh = window.innerHeight;
       const vw = window.innerWidth;
-      const safetyMarginX = 60; // More freedom on the sides
+      const safetyMarginX = 65; // More freedom on the sides
       const safetyMarginY = 90; // Balanced safety for top/bottom
       const now = Date.now();
 
