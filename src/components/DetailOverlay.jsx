@@ -1,8 +1,14 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import { casDescription, casProject, experiences } from "../data/experiences";
 import { X, Calendar, CheckCircle2, ChevronLeft } from "lucide-react";
+import gsap from "gsap";
+import { useGSAP } from "@gsap/react";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 
-export default function DetailOverlay({ section, onClose }) {
+gsap.registerPlugin(ScrollTrigger);
+
+export default function DetailOverlay({ section, onClose, isClosing }) {
+  const containerRef = useRef(null);
   const isProject = section === "project";
 
   // Get data correctly
@@ -10,6 +16,87 @@ export default function DetailOverlay({ section, onClose }) {
 
   // Get experiences for this section
   const sectionExperiences = isProject ? [] : experiences[section] || [];
+
+  // --- Lógica Real de Seguimiento ---
+  // Extraemos todos los resultados marcados en las experiencias de esta sección
+  const achievedOutcomes = new Set();
+  sectionExperiences.forEach(exp => {
+    (exp.learningOutcomes || []).forEach(lo => achievedOutcomes.add(Number(lo)));
+  });
+
+  useGSAP(() => {
+    // Forzamos estado inicial invisible para evitar el "destello"
+    gsap.set(".detail-intro, .experiences-section h3, .experience-card, .outcomes-sidebar, .stats-card", {
+      opacity: 0,
+      y: 20
+    });
+
+    const tl = gsap.timeline({ delay: 0.6 });
+
+    // Fase 1: Intro y Título Principal
+    tl.fromTo(".detail-intro",
+      { opacity: 0, y: 30, filter: "blur(10px)" },
+      { opacity: 1, y: 0, filter: "blur(0px)", duration: 1.2, ease: "sine.inOut" }
+    );
+
+    // Fase 2: Título de Experiencias
+    tl.fromTo(".experiences-section h3",
+      { opacity: 0, y: 30, filter: "blur(10px)" },
+      { opacity: 1, y: 0, filter: "blur(0px)", duration: 1.0, ease: "sine.inOut" },
+      "-=0.6"
+    );
+
+    // Fase 3: Sidebar y lo demás
+    tl.fromTo(".outcomes-sidebar, .stats-card",
+      { opacity: 0, x: 20, filter: "blur(10px)" },
+      { opacity: 1, x: 0, filter: "blur(0px)", duration: 1.0, stagger: 0.2, ease: "sine.inOut" },
+      "-=0.4"
+    );
+
+    // ScrollTrigger para TODAS las tarjetas de experiencia
+    // Usamos un pequeño delay inicial para que esperen al título
+    gsap.utils.toArray(".experience-card").forEach((card, i) => {
+      gsap.fromTo(card,
+        { opacity: 0, y: 40, filter: "blur(12px)" },
+        {
+          opacity: 1,
+          y: 0,
+          filter: "blur(0px)",
+          duration: 1.2,
+          ease: "sine.out",
+          delay: 0.8 + (i * 0.1), // Sincronizado con la secuencia del título
+          scrollTrigger: {
+            trigger: card,
+            scroller: containerRef.current,
+            start: "top 95%",
+            toggleActions: "play none none none"
+          }
+        }
+      );
+    });
+  }, { scope: containerRef, dependencies: [section] });
+
+  // Animación de salida simétrica REVERSA
+  useEffect(() => {
+    if (isClosing) {
+      const tlExit = gsap.timeline();
+
+      // 1. Quitar Sidebar
+      tlExit.to(".outcomes-sidebar, .stats-card", {
+        opacity: 0, x: 20, filter: "blur(10px)", duration: 0.8, stagger: 0.1, ease: "sine.inOut"
+      });
+
+      // 2. Quitar Experiencias
+      tlExit.to(".experience-card, .experiences-section h3", {
+        opacity: 0, y: 30, filter: "blur(10px)", duration: 0.8, stagger: 0.1, ease: "sine.inOut"
+      }, "-=0.4");
+
+      // 3. Quitar Intro
+      tlExit.to(".detail-intro", {
+        opacity: 0, y: -20, filter: "blur(10px)", duration: 0.8, ease: "sine.inOut"
+      }, "-=0.4");
+    }
+  }, [isClosing]);
 
   if (!data) return null;
 
@@ -23,93 +110,135 @@ export default function DetailOverlay({ section, onClose }) {
   }, [onClose]);
 
   return (
-    <div className="detail-overlay" data-lenis-prevent>
-
-      <header className="detail-header glass-panel">
-
-        <button className="back-button glass-panel" onClick={onClose}>
-
-          <ChevronLeft size={18} />
-          Volver
-        </button>
-        <div className="header-title">
-          <span className="header-label">{isProject ? "Proyecto" : "Aspecto CAS"}</span>
-          <h2>{data.name || data.title}</h2>
-        </div>
-      </header>
-
+    <div className="detail-overlay" ref={containerRef} data-lenis-prevent>
       <main className="detail-body">
-        <div className="detail-intro">
-          <h1 className="editorial-title">{data.title || data.name}</h1>
-          <p className="subtitle">{data.description || data.text}</p>
-        </div>
+        <div className="detail-grid">
 
-        {!isProject && (
-          <section className="outcomes-section">
-            <h3>Resultados de Aprendizaje</h3>
-            <div className="outcomes-list">
-              {/* Note: In your experiences.js, outcomes are just strings in description or elsewhere? 
-                  Actually, strands don't have outcomes defined in experiences.js yet. 
-                  I'll add a check or just show a message. */}
-              <div className="outcome-tag">
-                <CheckCircle2 size={16} />
-                Desarrollo de nuevas habilidades
+          <div className="main-column">
+            <div className="detail-intro animate-in">
+              <h1 className="editorial-title">{data.title || data.name}</h1>
+              <p className="subtitle">{data.description || data.text}</p>
+            </div>
+
+            <section className="experiences-section">
+              <h3 className="animate-in">Experiencias y Reflexiones</h3>
+              <div className="experiences-grid">
+                {sectionExperiences.map((exp, i) => (
+                  <div key={i} className="experience-card glass-panel animate-in">
+                    <div className="card-header">
+                      <span className="date">
+                        <Calendar size={14} />
+                        {exp.date}
+                      </span>
+                      <h4>{exp.title}</h4>
+                    </div>
+                    <p>{exp.reflection}</p>
+                    <div className="card-tags">
+                      {(exp.learningOutcomes || []).map((loId, j) => (
+                        <span key={j} className={`tag-pill ${section}`}>
+                          Resultado {loId}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                ))}
+                {sectionExperiences.length === 0 && (
+                  <p className="empty-msg">No hay experiencias registradas todavía en esta sección.</p>
+                )}
+              </div>
+            </section>
+          </div>
+
+          <aside className="sidebar-column">
+            {!isProject && (
+              <section className="outcomes-sidebar glass-panel animate-in">
+                <div className="sidebar-group">
+                  <h4>Learning Outcomes</h4>
+                  <div className="outcomes-vertical-list">
+                    {[1, 2, 3, 4, 5, 6, 7].map((num) => {
+                      const isActive = achievedOutcomes.has(num);
+                      return (
+                        <div key={num} className={`outcome-item ${isActive ? 'active' : 'inactive'}`}>
+                          <div className="outcome-number">{num}</div>
+                          <div className="outcome-dot"></div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                  <p className="sidebar-note">Objetivos de aprendizaje detectados en tus reflexiones.</p>
+                </div>
+              </section>
+            )}
+
+            <div className="sidebar-group glass-panel stats-card animate-in">
+              <h4>Resumen de Sección</h4>
+              <div className="stat-row">
+                <span>Experiencias</span>
+                <strong>{sectionExperiences.length}</strong>
+              </div>
+              <div className="stat-row">
+                <span>Estado</span>
+                <span className={`status-badge ${sectionExperiences.length > 0 ? 'active' : 'idle'}`}>
+                  <span className="status-dot"></span>
+                  {sectionExperiences.length > 0 ? 'En curso' : 'Sin iniciar'}
+                </span>
               </div>
             </div>
-          </section>
-        )}
+          </aside>
 
-        <section className="experiences-section">
-          <h3>Experiencias y Reflexiones</h3>
-          <div className="experiences-grid">
-            {sectionExperiences.map((exp, i) => (
-              <div key={i} className="experience-card glass-panel">
-
-                <div className="card-header">
-                  <span className="date">
-                    <Calendar size={14} />
-                    {exp.date}
-                  </span>
-                  <h4>{exp.title}</h4>
-                </div>
-                <p>{exp.reflection}</p>
-                <div className="card-tags">
-                  {(exp.learningOutcomes || []).map((loId, j) => (
-                    <span key={j} className={`tag-pill ${section}`}>
-                      Resultado {loId}
-                    </span>
-                  ))}
-                </div>
-              </div>
-            ))}
-            {sectionExperiences.length === 0 && (
-              <p>No hay experiencias registradas todavía en esta sección.</p>
-            )}
-          </div>
-        </section>
+        </div>
       </main>
 
       <style>{`
-        .header-title {
-          margin-left: 1rem;
+        /* Estado inicial para evitar parpadeos */
+        .detail-intro, 
+        .experience-card, 
+        .outcomes-sidebar, 
+        .stats-card,
+        .experiences-section h3 {
+          opacity: 0;
+          will-change: opacity, transform, filter;
         }
 
-        .header-label {
-          font-size: 0.65rem;
-          text-transform: uppercase;
-          letter-spacing: 0.1em;
-          color: var(--text-muted);
-          display: block;
+        .detail-body {
+          flex: 1;
+          padding: 4rem 2rem 4rem 4rem; /* Reducimos el de la derecha a 2rem para que sea más clean */
+          width: 100% !important;
+          max-width: none !important;
+          margin: 0 !important;
+          display: flex;
+          flex-direction: column;
         }
 
-        .header-title h2 {
-          font-size: 1.1rem;
-          margin-top: -0.2rem;
+        .detail-grid {
+          display: grid;
+          grid-template-columns: 1fr 380px;
+          gap: 4rem;
+          width: 100%;
+          justify-content: space-between;
+          align-items: start;
+        }
+
+        .detail-overlay {
+          width: 100% !important;
+          flex: 1;
+          display: flex;
+          flex-direction: column;
+        }
+
+        .sidebar-column {
+          position: sticky !important;
+          top: 4rem !important;
+          height: fit-content !important;
+          display: flex;
+          flex-direction: column;
+          gap: 2rem;
+          width: 100%;
+          z-index: 10;
         }
 
         .detail-intro {
-          margin-bottom: 4rem;
-          max-width: 800px;
+          margin-bottom: 5rem;
         }
 
         .editorial-title {
@@ -124,38 +253,141 @@ export default function DetailOverlay({ section, onClose }) {
           color: var(--text-secondary);
         }
 
-        .outcomes-section {
-          margin-bottom: 4rem;
+        .sidebar-group h4 {
+          font-family: var(--font-body);
+          font-size: 0.75rem;
+          text-transform: uppercase;
+          letter-spacing: 0.2em;
+          color: var(--text-muted);
+          margin-bottom: 2rem;
+          display: block;
         }
 
-        .outcomes-section h3, .experiences-section h3 {
+        .outcomes-vertical-list {
+          display: flex;
+          flex-direction: column;
+          gap: 0.5rem;
+          position: relative;
+          padding-left: 0.5rem;
+          margin-bottom: 1.5rem;
+        }
+
+        .outcome-item {
+          display: flex;
+          align-items: center;
+          gap: 1.5rem;
+          height: 35px;
+          position: relative;
+        }
+
+        .outcome-number {
+          font-size: 0.7rem;
+          font-weight: 700;
+          color: var(--text-muted);
+          width: 15px;
+        }
+
+        .outcome-dot {
+          width: 8px;
+          height: 8px;
+          border-radius: 50%;
+          background: #eee;
+          position: relative;
+          z-index: 2;
+        }
+
+        .outcome-item.active .outcome-dot {
+          background: var(--${section});
+          box-shadow: 0 0 12px var(--${section});
+        }
+
+        .outcome-item.active .outcome-number {
+          color: var(--text-primary);
+        }
+
+        .outcomes-vertical-list::before {
+          content: '';
+          position: absolute;
+          left: calc(0.5rem + 15px + 1.5rem + 4px - 0.5px);
+          top: 15px;
+          bottom: 15px;
+          width: 1px;
+          background: #eee;
+          z-index: 1;
+        }
+
+        .sidebar-note {
+          font-size: 0.75rem;
+          color: var(--text-muted);
+          line-height: 1.5;
+        }
+
+        .outcomes-sidebar, .stats-card {
+          padding: 2rem !important;
+          border-radius: 24px !important;
+        }
+
+        .stats-card h4 {
+          opacity: 0.5;
+          text-transform: uppercase;
+          letter-spacing: 0.1em;
+          font-size: 0.7rem;
+          margin-bottom: 1.5rem;
+        }
+
+        .stat-row {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          margin-bottom: 1rem;
+          font-size: 0.9rem;
+        }
+
+        .stat-row strong {
+          color: var(--text-primary);
+          font-size: 1.1rem;
+        }
+
+        .status-badge.active {
+          color: var(--${section});
+        }
+
+        .status-badge.idle {
+          color: var(--text-muted);
+          opacity: 0.6;
+        }
+
+        .status-dot {
+          width: 6px;
+          height: 6px;
+          background: currentColor;
+          border-radius: 50%;
+          box-shadow: 0 0 8px currentColor;
+        }
+
+        .active .status-dot {
+          animation: status-pulse 2s infinite;
+        }
+
+        .idle .status-dot {
+          box-shadow: none;
+        }
+
+        @keyframes status-pulse {
+          0% { opacity: 1; transform: scale(1); }
+          50% { opacity: 0.5; transform: scale(1.2); }
+          100% { opacity: 1; transform: scale(1); }
+        }
+
+        .experiences-section h3 {
           font-family: var(--font-body);
           font-size: 0.85rem;
           text-transform: uppercase;
           letter-spacing: 0.2em;
           color: var(--text-muted);
-          margin-bottom: 2rem;
+          margin-bottom: 2.5rem;
           border-bottom: 1px solid #eee;
           padding-bottom: 1rem;
-        }
-
-        .outcomes-list {
-          display: flex;
-          flex-wrap: wrap;
-          gap: 1rem;
-        }
-
-        .outcome-tag {
-          display: flex;
-          align-items: center;
-          gap: 0.6rem;
-          background: #fff;
-          border: 1px solid #eee;
-          padding: 0.6rem 1.2rem;
-          border-radius: 8px;
-          font-size: 0.9rem;
-          font-weight: 500;
-          color: var(--text-secondary);
         }
 
         .experience-card {
@@ -206,6 +438,17 @@ export default function DetailOverlay({ section, onClose }) {
         .tag-pill.activity { background: #fef3c7; color: var(--activity); }
         .tag-pill.service { background: #e0f2fe; color: var(--service); }
         .tag-pill.project { background: #ecfdf5; color: var(--project); }
+
+        @media (max-width: 1100px) {
+          .detail-grid {
+            grid-template-columns: 1fr;
+            gap: 4rem;
+          }
+          .sidebar-column {
+            position: static;
+            order: -1;
+          }
+        }
       `}</style>
     </div>
   );

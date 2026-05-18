@@ -26,6 +26,7 @@ export default function App() {
 
   const [scrollProgress, setScrollProgress] = useState(0);
   const [detailView, setDetailView] = useState(null);
+  const [isClosing, setIsClosing] = useState(false);
   const [visibleStrands, setVisibleStrands] = useState({
     creativity: false,
     activity: false,
@@ -36,17 +37,21 @@ export default function App() {
   const contentRef = useRef(null);
   const lenisRef = useRef(null);
 
-  // ─── Initialize Lenis ───
+  // ─── Initialize Lenis (Restored for premium inertia) ───
   useEffect(() => {
+    const scrollContainer = detailView ? document.querySelector('.detail-view') : document.querySelector('.main-view');
+
+    if (!scrollContainer) return;
+
     const lenis = new Lenis({
+      wrapper: scrollContainer,
+      content: scrollContainer.firstChild,
       duration: 2.4,
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
       orientation: "vertical",
-      gestureOrientation: "vertical",
       smoothWheel: true,
       wheelMultiplier: 0.3,
       touchMultiplier: 1.5,
-      infinite: false,
     });
 
     lenisRef.current = lenis;
@@ -62,11 +67,10 @@ export default function App() {
       setScrollProgress(progress);
     });
 
-
     return () => {
       lenis.destroy();
     };
-  }, []);
+  }, [detailView]); // Se reinicia al cambiar de vista para capturar el nuevo contenedor
 
   // ─── Intersection Observer ───
   useEffect(() => {
@@ -104,16 +108,22 @@ export default function App() {
     return () => observer.disconnect();
   }, []);
 
+  // ─── Sync Native Scroll with 3D/Orb (Kept as fallback or for progress) ───
+  // Note: Lenis handles progress now, but we keep the structure clean
+
   const openDetail = useCallback((section) => {
     setDetailView(section);
-    lenisRef.current?.stop();
-    document.body.classList.add("no-scroll");
+    // lenisRef.current?.stop();
+    // document.body.classList.add("no-scroll");
   }, []);
 
   const closeDetail = useCallback(() => {
-    setDetailView(null);
-    lenisRef.current?.start();
-    document.body.classList.remove("no-scroll");
+    setIsClosing(true);
+    // Esperamos 2 segundos exactos (la duración de la transición)
+    setTimeout(() => {
+      setDetailView(null);
+      setIsClosing(false);
+    }, 2000);
   }, []);
 
   const orbRef = useRef(null);
@@ -276,7 +286,7 @@ export default function App() {
 
 
   return (
-    <>
+    <div className="app-container">
       {/* Smooth Background Transition Layer */}
       <div
         className="dynamic-bg"
@@ -312,45 +322,71 @@ export default function App() {
         }}
       />
 
+      <div className={`sliding-wrapper ${detailView && !isClosing ? "is-detail" : ""}`}>
 
-      <div className="content-layer" ref={contentRef}>
+        <div className="main-view" ref={contentRef}>
+          <div className="view-content">
+            <HeroSection />
+            <ProjectSection onEnter={() => openDetail("project")} />
 
-        <HeroSection />
-        <ProjectSection onEnter={() => openDetail("project")} />
+            <StrandSection
+              strand={casDescription.strands[0]}
+              isVisible={visibleStrands.creativity}
+              onEnter={() => openDetail("creativity")}
+              alignment="left"
+            />
+            <StrandSection
+              strand={casDescription.strands[1]}
+              isVisible={visibleStrands.activity}
+              onEnter={() => openDetail("activity")}
+              alignment="left"
+            />
+            <StrandSection
+              strand={casDescription.strands[2]}
+              isVisible={visibleStrands.service}
+              onEnter={() => openDetail("service")}
+              alignment="left"
+            />
 
-
-        <StrandSection
-          strand={casDescription.strands[0]}
-          isVisible={visibleStrands.creativity}
-          onEnter={() => openDetail("creativity")}
-          alignment="left"
-        />
-        <StrandSection
-          strand={casDescription.strands[1]}
-          isVisible={visibleStrands.activity}
-          onEnter={() => openDetail("activity")}
-          alignment="left"
-        />
-        <StrandSection
-          strand={casDescription.strands[2]}
-          isVisible={visibleStrands.service}
-          onEnter={() => openDetail("service")}
-          alignment="left"
-        />
-
-
-        <footer className="site-footer glass-panel">
-          <div className="footer-content">
-            <p className="footer-text">CAS Portfolio — IB Diploma Programme</p>
-            <p className="footer-sub">Creatividad · Actividad · Servicio</p>
+            <footer className="site-footer glass-panel">
+              <div className="footer-content">
+                <p className="footer-text">CAS Portfolio — IB Diploma Programme</p>
+                <p className="footer-sub">Creatividad · Actividad · Servicio</p>
+              </div>
+            </footer>
           </div>
-        </footer>
+        </div>
 
+        <div className="vertical-rail" onClick={detailView ? closeDetail : undefined}>
+          <div className="rail-text">
+            {detailView ? (
+              <div className="rail-active-info">
+                <span className="rail-label">
+                  {detailView === 'project' ? 'Colaborativo' : 'Dimensión CAS'}
+                </span>
+                <span className="rail-section-name">
+                  {detailView === 'project'
+                    ? 'Proyecto'
+                    : casDescription.strands.find(s => s.id === detailView)?.name}
+                </span>
+                <span className="rail-back-hint">← Click para Volver</span>
+              </div>
+            ) : "Explorar Portfolio · CAS"}
+          </div>
+        </div>
+
+        <div className="detail-view">
+          <div className="view-content">
+            {(detailView || isClosing) && (
+              <DetailOverlay
+                section={detailView || "project"}
+                onClose={closeDetail}
+                isClosing={isClosing}
+              />
+            )}
+          </div>
+        </div>
       </div>
-
-      {detailView && (
-        <DetailOverlay section={detailView} onClose={closeDetail} />
-      )}
 
       <style>{`
         .content-layer {
@@ -425,6 +461,6 @@ export default function App() {
           margin-top: 0.5rem;
         }
       `}</style>
-    </>
+    </div>
   );
 }

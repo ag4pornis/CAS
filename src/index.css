@@ -61,9 +61,20 @@
   box-sizing: border-box;
 }
 
-html {
-  scrollbar-width: thin;
-  scrollbar-color: rgba(0, 0, 0, 0.1) transparent;
+/* Ocultar barra de scroll en todos los elementos */
+* {
+  scrollbar-width: none !important;
+  /* Firefox */
+  -ms-overflow-style: none !important;
+  /* IE/Edge */
+}
+
+*::-webkit-scrollbar {
+  display: none !important;
+  /* Chrome, Safari, Opera */
+  width: 0 !important;
+  height: 0 !important;
+  background: transparent !important;
 }
 
 body {
@@ -77,16 +88,8 @@ body {
 }
 
 ::-webkit-scrollbar {
-  width: 6px;
-}
-
-::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-::-webkit-scrollbar-thumb {
-  background: rgba(0, 0, 0, 0.1);
-  border-radius: 3px;
+  display: none;
+  /* Chrome, Safari, Opera */
 }
 
 /* --- Typography --- */
@@ -317,6 +320,121 @@ a {
   pointer-events: none;
 }
 
+/* --- Layout Architecture --- */
+.app-container {
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  position: relative;
+  background: transparent;
+}
+
+.sliding-wrapper {
+  display: flex;
+  width: calc(200vw - 60px);
+  height: 100vh;
+  transition: transform 2s cubic-bezier(0.445, 0.05, 0.55, 0.95);
+  will-change: transform;
+  overflow: hidden;
+}
+
+.sliding-wrapper.is-detail {
+  transform: translateX(calc(-100vw + 60px));
+}
+
+.main-view,
+.detail-view {
+  width: calc(100vw - 60px);
+  height: 100vh;
+  overflow-y: auto;
+  position: relative;
+  scroll-behavior: smooth;
+  flex-shrink: 0;
+  /* Evita que se encoja */
+}
+
+.view-content {
+  width: 100%;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.detail-view {
+  background: var(--bg-primary);
+  display: flex;
+  width: calc(100vw - 60px);
+  flex-shrink: 0;
+}
+
+/* --- Vertical Rail --- */
+.vertical-rail {
+  width: 60px;
+  height: 100vh;
+  flex-shrink: 0;
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border-left: 1px solid var(--glass-border);
+  border-top-left-radius: 30px;
+  border-bottom-left-radius: 30px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  padding: 2rem 0;
+  z-index: 100;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.vertical-rail:hover {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.rail-text {
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  text-transform: uppercase;
+  letter-spacing: 0.3em;
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+}
+
+.rail-active-info {
+  display: flex;
+  flex-direction: row-reverse;
+  /* Porque está rotado 180 */
+  align-items: center;
+  gap: 2rem;
+}
+
+.rail-label {
+  font-size: 0.6rem;
+  opacity: 0.4;
+  letter-spacing: 0.1em;
+}
+
+.rail-section-name {
+  font-family: var(--font-heading);
+  font-size: 1.1rem;
+  color: var(--text-primary);
+  letter-spacing: 0.05em;
+  font-style: italic;
+}
+
+.rail-back-hint {
+  font-size: 0.55rem;
+  color: var(--text-muted);
+  margin-top: 1rem;
+  opacity: 0.6;
+}
+
 /* --- Content Layer --- */
 .content-layer {
   position: relative;
@@ -355,15 +473,14 @@ a {
   font-size: 1.1rem;
 }
 
-/* --- Section Detail Overlay --- */
+/* --- Section Detail Overlay (Now inline) --- */
 .detail-overlay {
-  position: fixed;
-  inset: 0;
-  z-index: 100;
-  background: var(--bg-primary);
+  width: 100%;
+  height: 100%;
   display: flex;
   flex-direction: column;
   overflow-y: auto;
+  background: var(--bg-primary);
 }
 
 .detail-body {
