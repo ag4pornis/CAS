@@ -1,7 +1,7 @@
 import React from "react";
 import { personalInfo, casDescription } from "../data/experiences";
 
-export default function HeroSection() {
+export default function HeroSection({ onStrandClick }) {
   return (
     <section className="section hero-section" id="hero">
       <div className="hero-content">
@@ -19,6 +19,7 @@ export default function HeroSection() {
               key={strand.id}
               className="stat-pill glass-panel"
               style={{ color: "var(--text-primary)" }}
+              onClick={() => onStrandClick && onStrandClick(strand.id)}
             >
               <span className="stat-dot" style={{ background: strand.color }} />
               {strand.name}
@@ -100,6 +101,7 @@ export default function HeroSection() {
           font-size: 0.85rem;
           font-weight: 600;
           transition: transform 0.3s var(--ease-smooth);
+          cursor: pointer;
         }
 
 

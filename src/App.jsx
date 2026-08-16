@@ -126,6 +126,17 @@ export default function App() {
     }, 2000);
   }, []);
 
+  const scrollToSection = useCallback((sectionId) => {
+    const target = document.getElementById(sectionId);
+    if (target) {
+      if (lenisRef.current) {
+        lenisRef.current.scrollTo(target);
+      } else {
+        target.scrollIntoView({ behavior: "smooth" });
+      }
+    }
+  }, []);
+
   const orbRef = useRef(null);
   const orbPos = useRef({ x: 0, y: 0 });
   const orbVel = useRef({ x: 2, y: 2 });
@@ -326,7 +337,7 @@ export default function App() {
 
         <div className="main-view" ref={contentRef}>
           <div className="view-content">
-            <HeroSection />
+            <HeroSection onStrandClick={scrollToSection} />
             <ProjectSection onEnter={() => openDetail("project")} />
 
             <StrandSection
@@ -357,21 +368,29 @@ export default function App() {
           </div>
         </div>
 
-        <div className="vertical-rail" onClick={detailView ? closeDetail : undefined}>
+        <div
+          className={`vertical-rail ${detailView ? "is-back-button" : ""}`}
+          onClick={detailView ? closeDetail : undefined}
+          style={detailView ? { "--rail-accent": activeColors.accent } : undefined}
+        >
           <div className="rail-text">
-            {detailView ? (
-              <div className="rail-active-info">
-                <span className="rail-label">
-                  {detailView === 'project' ? 'Colaborativo' : 'Dimensión CAS'}
-                </span>
-                <span className="rail-section-name">
-                  {detailView === 'project'
-                    ? 'Proyecto'
-                    : casDescription.strands.find(s => s.id === detailView)?.name}
-                </span>
-                <span className="rail-back-hint">← Click para Volver</span>
-              </div>
-            ) : "Explorar Portfolio · CAS"}
+            {/* Texto por defecto — se desliza hacia abajo al abrir detalle */}
+            <span className={`rail-default-text ${detailView ? "rail-exit" : ""}`}>
+              Explorar Portfolio · CAS
+            </span>
+
+            {/* Info de sección — se desliza desde arriba al abrir detalle */}
+            <div className={`rail-active-info ${detailView ? "rail-enter" : ""}`}>
+              <span className="rail-label">
+                {detailView === 'project' ? 'Colaborativo' : 'Dimensión CAS'}
+              </span>
+              <span className="rail-section-name">
+                {detailView === 'project'
+                  ? 'Proyecto'
+                  : casDescription.strands.find(s => s.id === detailView)?.name || ''}
+              </span>
+              <span className="rail-back-hint">← Click para Volver</span>
+            </div>
           </div>
         </div>
 

@@ -384,12 +384,25 @@ a {
   justify-content: space-between;
   padding: 2rem 0;
   z-index: 100;
-  cursor: pointer;
-  transition: background 0.3s ease;
+  cursor: default;
+  transition: background 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+    box-shadow 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+    border-color 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+    backdrop-filter 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+    -webkit-backdrop-filter 0.8s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.vertical-rail:hover {
-  background: rgba(255, 255, 255, 0.05);
+.vertical-rail.is-back-button {
+  cursor: pointer;
+}
+
+.vertical-rail.is-back-button:hover {
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(40px) saturate(160%) brightness(1.08);
+  -webkit-backdrop-filter: blur(40px) saturate(160%) brightness(1.08);
+  border-left-color: rgba(var(--rail-accent, 255, 255, 255), 0.4);
+  box-shadow: 0 0 30px rgba(var(--rail-accent, 30, 41, 59), 0.05),
+    inset 1px 0 1px rgba(255, 255, 255, 0.6);
 }
 
 .rail-text {
@@ -401,17 +414,58 @@ a {
   font-weight: 700;
   color: var(--text-muted);
   white-space: nowrap;
-  display: flex;
-  align-items: center;
-  gap: 2rem;
+  display: grid;
+  place-items: center;
+  height: 100%;
+  overflow: hidden;
 }
 
+/* Ambos textos apilados en la misma celda del grid */
+.rail-default-text,
+.rail-active-info {
+  grid-area: 1 / 1;
+}
+
+/* Texto por defecto: "Explorar Portfolio · CAS" */
+.rail-default-text {
+  transition: transform 2s cubic-bezier(0.16, 1, 0.3, 1),
+    opacity 1.6s cubic-bezier(0.16, 1, 0.3, 1),
+    filter 1.6s cubic-bezier(0.16, 1, 0.3, 1);
+  transform: translateX(0);
+  opacity: 1;
+  filter: blur(0px);
+}
+
+/* Al abrir detalle, el texto por defecto se desliza hacia abajo y desaparece */
+.rail-default-text.rail-exit {
+  transform: translateX(30px);
+  opacity: 0;
+  filter: blur(4px);
+  pointer-events: none;
+}
+
+/* Info de sección activa: empieza oculta arriba */
 .rail-active-info {
   display: flex;
   flex-direction: row-reverse;
   /* Porque está rotado 180 */
   align-items: center;
   gap: 2rem;
+  transition: transform 2.8s cubic-bezier(0.16, 1, 0.3, 1),
+    opacity 1.6s cubic-bezier(0.16, 1, 0.3, 1),
+    filter 1.6s cubic-bezier(0.16, 1, 0.3, 1);
+  transform: translateX(-25px);
+  opacity: 0;
+  filter: blur(4px);
+  pointer-events: none;
+}
+
+/* Al abrir detalle, la info de sección se desliza a su posición */
+.rail-active-info.rail-enter {
+  transform: translateX(0);
+  opacity: 1;
+  filter: blur(0px);
+  pointer-events: auto;
 }
 
 .rail-label {
@@ -429,10 +483,35 @@ a {
 }
 
 .rail-back-hint {
-  font-size: 0.55rem;
-  color: var(--text-muted);
+  font-size: 0.6rem;
+  color: rgba(var(--rail-accent, 30, 41, 59), 0.85);
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(var(--rail-accent, 30, 41, 59), 0.15);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.02),
+    inset 0 1px 1px rgba(255, 255, 255, 0.5);
+  padding: 0.4rem 0.8rem;
+  border-radius: 20px;
   margin-top: 1rem;
-  opacity: 0.6;
+  opacity: 0.85;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  display: inline-flex;
+  align-items: center;
+}
+
+.vertical-rail.is-back-button:hover .rail-back-hint {
+  opacity: 1;
+  background: rgba(255, 255, 255, 0.35);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-color: rgba(var(--rail-accent, 30, 41, 59), 0.45);
+  color: rgb(var(--rail-accent, 30, 41, 59));
+  transform: translateY(-4px);
+  box-shadow: 0 8px 20px rgba(var(--rail-accent, 30, 41, 59), 0.12),
+    inset 0 1px 1px rgba(255, 255, 255, 0.7);
 }
 
 /* --- Content Layer --- */
