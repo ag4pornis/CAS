@@ -415,7 +415,10 @@ a {
   color: var(--text-muted);
   white-space: nowrap;
   display: grid;
-  place-items: center;
+  align-items: center;
+  justify-items: end;
+  align-content: center;
+  justify-content: end;
   height: 100%;
   overflow: hidden;
 }
@@ -512,6 +515,37 @@ a {
   transform: translateY(-4px);
   box-shadow: 0 8px 20px rgba(var(--rail-accent, 30, 41, 59), 0.12),
     inset 0 1px 1px rgba(255, 255, 255, 0.7);
+}
+
+/* Animación de destello estilo glass del color de la sección al abrir detalle */
+.rail-active-info.rail-enter .rail-back-hint {
+  animation: glass-flash 3s cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation-delay: 2.1s;
+}
+
+@keyframes glass-flash {
+  0% {
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.01),
+      inset 0 1px 1px rgba(255, 255, 255, 0.4),
+      0 0 0 rgba(var(--rail-accent, 30, 41, 59), 0);
+    background: rgba(255, 255, 255, 0.15);
+  }
+
+  25% {
+    /* Destello/resplandor inicial */
+    box-shadow: 0 4px 20px rgba(var(--rail-accent, 30, 41, 59), 0.1),
+      inset 0 1px 2px rgba(255, 255, 255, 0.8),
+      0 0 25px 6px rgba(var(--rail-accent, 30, 41, 59), 0.45);
+    background: rgba(255, 255, 255, 0.3);
+  }
+
+  100% {
+    /* Retorno al estado normal */
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.01),
+      inset 0 1px 1px rgba(255, 255, 255, 0.4),
+      0 0 0 rgba(var(--rail-accent, 30, 41, 59), 0);
+    background: rgba(255, 255, 255, 0.15);
+  }
 }
 
 /* --- Content Layer --- */
