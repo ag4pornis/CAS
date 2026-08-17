@@ -25,47 +25,57 @@ export default function DetailOverlay({ section, onClose, isClosing }) {
     (exp.learningOutcomes || []).forEach(lo => achievedOutcomes.add(Number(lo)));
   });
 
+  const prevSelectedRef = useRef(selectedExperience);
+
   useGSAP(() => {
+    const isBackToGrid = selectedExperience === null && prevSelectedRef.current !== null;
+    prevSelectedRef.current = selectedExperience;
+
+    const delay = isBackToGrid ? 0 : 0.6;
+    const introDur = isBackToGrid ? 0.3 : 1.2;
+    const sidebarDur = isBackToGrid ? 0.3 : 1.0;
+    const cardDur = isBackToGrid ? 0.4 : 1.2;
+    const cardDelay = isBackToGrid ? 0.1 : 0.8;
+
     // Forzamos estado inicial invisible para evitar el "destello"
     gsap.set(".detail-intro, .experiences-section h3, .experience-card, .outcomes-sidebar, .stats-card", {
       opacity: 0,
       y: 20
     });
 
-    const tl = gsap.timeline({ delay: 0.6 });
+    const tl = gsap.timeline({ delay });
 
     // Fase 1: Intro y Título Principal
     tl.fromTo(".detail-intro",
-      { opacity: 0, y: 30, filter: "blur(10px)" },
-      { opacity: 1, y: 0, filter: "blur(0px)", duration: 1.2, ease: "sine.inOut" }
+      { opacity: 0, y: isBackToGrid ? 10 : 30, filter: `blur(${isBackToGrid ? 4 : 10}px)` },
+      { opacity: 1, y: 0, filter: "blur(0px)", duration: introDur, ease: "sine.inOut" }
     );
 
     // Fase 2: Título de Experiencias
     tl.fromTo(".experiences-section h3",
-      { opacity: 0, y: 30, filter: "blur(10px)" },
-      { opacity: 1, y: 0, filter: "blur(0px)", duration: 1.0, ease: "sine.inOut" },
-      "-=0.6"
+      { opacity: 0, y: isBackToGrid ? 10 : 30, filter: `blur(${isBackToGrid ? 4 : 10}px)` },
+      { opacity: 1, y: 0, filter: "blur(0px)", duration: introDur * 0.8, ease: "sine.inOut" },
+      "-=0.3"
     );
 
     // Fase 3: Sidebar y lo demás
     tl.fromTo(".outcomes-sidebar, .stats-card",
-      { opacity: 0, x: 20, filter: "blur(10px)" },
-      { opacity: 1, x: 0, filter: "blur(0px)", duration: 1.0, stagger: 0.2, ease: "sine.inOut" },
-      "-=0.4"
+      { opacity: 0, x: isBackToGrid ? 10 : 20, filter: `blur(${isBackToGrid ? 4 : 10}px)` },
+      { opacity: 1, x: 0, filter: "blur(0px)", duration: sidebarDur, stagger: 0.1, ease: "sine.inOut" },
+      "-=0.2"
     );
 
     // ScrollTrigger para TODAS las tarjetas de experiencia
-    // Usamos un pequeño delay inicial para que esperen al título
     gsap.utils.toArray(".experience-card").forEach((card, i) => {
       gsap.fromTo(card,
-        { opacity: 0, y: 40, filter: "blur(12px)" },
+        { opacity: 0, y: isBackToGrid ? 15 : 40, filter: `blur(${isBackToGrid ? 4 : 12}px)` },
         {
           opacity: 1,
           y: 0,
           filter: "blur(0px)",
-          duration: 1.2,
+          duration: cardDur,
           ease: "sine.out",
-          delay: 0.8 + (i * 0.1), // Sincronizado con la secuencia del título
+          delay: cardDelay + (i * 0.06),
           scrollTrigger: {
             trigger: card,
             scroller: containerRef.current,
