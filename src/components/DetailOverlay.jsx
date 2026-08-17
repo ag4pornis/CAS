@@ -75,7 +75,7 @@ export default function DetailOverlay({ section, onClose, isClosing }) {
         }
       );
     });
-  }, { scope: containerRef, dependencies: [section] });
+  }, { scope: containerRef, dependencies: [section, selectedExperience] });
 
   // Animación de salida simétrica REVERSA
   useEffect(() => {
