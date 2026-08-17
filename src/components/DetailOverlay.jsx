@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { casDescription, casProject, experiences } from "../data/experiences";
 import { X, Calendar, CheckCircle2, ChevronLeft } from "lucide-react";
 import gsap from "gsap";
@@ -10,6 +10,7 @@ gsap.registerPlugin(ScrollTrigger);
 export default function DetailOverlay({ section, onClose, isClosing }) {
   const containerRef = useRef(null);
   const isProject = section === "project";
+  const [selectedExperience, setSelectedExperience] = useState(null);
 
   // Get data correctly
   const data = isProject ? casProject : casDescription.strands.find((s) => s.id === section);
@@ -115,38 +116,126 @@ export default function DetailOverlay({ section, onClose, isClosing }) {
         <div className="detail-grid">
 
           <div className="main-column">
-            <div className="detail-intro animate-in">
-              <h1 className="editorial-title">{data.title || data.name}</h1>
-              <p className="subtitle">{data.description || data.text}</p>
-            </div>
+            {isProject ? (
+              <div className="project-detail-view">
+                <div className="detail-intro animate-in">
+                  <h1 className="editorial-title">{data.title}</h1>
+                  <p className="subtitle">{data.description}</p>
+                </div>
 
-            <section className="experiences-section">
-              <h3 className="animate-in">Experiencias y Reflexiones</h3>
-              <div className="experiences-grid">
-                {sectionExperiences.map((exp, i) => (
-                  <div key={i} className="experience-card glass-panel animate-in">
-                    <div className="card-header">
-                      <span className="date">
-                        <Calendar size={14} />
-                        {exp.date}
-                      </span>
-                      <h4>{exp.title}</h4>
-                    </div>
-                    <p>{exp.reflection}</p>
+                {data.image && (
+                  <div className="experience-image-container animate-in">
+                    <img src={data.image} alt={data.title} className="experience-image" />
+                  </div>
+                )}
+
+                <section className="project-detail-section animate-in">
+                  <h3>Descripción del Proyecto</h3>
+                  <p className="project-detail-text">{data.details}</p>
+                </section>
+
+                <section className="project-timeline-section animate-in">
+                  <h3>Fases del Proyecto</h3>
+                  <div className="project-timeline-grid">
+                    {data.timeline.map((step, idx) => (
+                      <div key={idx} className="project-phase-card glass-panel">
+                        <div className="phase-card-header">
+                          <span className="phase-badge">{step.phase}</span>
+                          <span className="phase-date">{step.date}</span>
+                        </div>
+                        <p>{step.description}</p>
+                      </div>
+                    ))}
+                  </div>
+                </section>
+              </div>
+            ) : selectedExperience ? (
+              <div className="experience-detail-view">
+                <button
+                  className="back-button glass-panel"
+                  onClick={() => setSelectedExperience(null)}
+                >
+                  <ChevronLeft size={16} /> Volver a {data.name || data.title}
+                </button>
+
+                <div className="detail-intro">
+                  <span className="date">
+                    <Calendar size={14} /> {selectedExperience.date}
+                  </span>
+                  <h1 className="editorial-title">{selectedExperience.title}</h1>
+                </div>
+
+                {selectedExperience.image && (
+                  <div className="experience-image-container">
+                    <img src={selectedExperience.image} alt={selectedExperience.title} className="experience-image" />
+                  </div>
+                )}
+
+                <div className="experience-text-content">
+                  <div className="text-section">
+                    <h5>Descripción</h5>
+                    <p>{selectedExperience.details || selectedExperience.description}</p>
+                  </div>
+
+                  <div className="text-section">
+                    <h5>Reflexión de la Experiencia</h5>
+                    <blockquote className="reflection-quote">
+                      <p>{selectedExperience.reflection}</p>
+                    </blockquote>
+                  </div>
+
+                  <div className="text-section">
+                    <h5>Resultados de Aprendizaje (LO)</h5>
                     <div className="card-tags">
-                      {(exp.learningOutcomes || []).map((loId, j) => (
+                      {(selectedExperience.learningOutcomes || []).map((loId, j) => (
                         <span key={j} className={`tag-pill ${section}`}>
                           Resultado {loId}
                         </span>
                       ))}
                     </div>
                   </div>
-                ))}
-                {sectionExperiences.length === 0 && (
-                  <p className="empty-msg">No hay experiencias registradas todavía en esta sección.</p>
-                )}
+                </div>
               </div>
-            </section>
+            ) : (
+              <>
+                <div className="detail-intro animate-in">
+                  <h1 className="editorial-title">{data.title || data.name}</h1>
+                  <p className="subtitle">{data.description || data.text}</p>
+                </div>
+
+                <section className="experiences-section">
+                  <h3 className="animate-in">Experiencias y Reflexiones</h3>
+                  <div className="experiences-grid">
+                    {sectionExperiences.map((exp, i) => (
+                      <div
+                        key={i}
+                        className="experience-card glass-panel animate-in clickable"
+                        onClick={() => setSelectedExperience(exp)}
+                      >
+                        <div className="card-header">
+                          <span className="date">
+                            <Calendar size={14} />
+                            {exp.date}
+                          </span>
+                          <h4>{exp.title}</h4>
+                        </div>
+                        <p>{exp.reflection}</p>
+                        <div className="card-tags">
+                          {(exp.learningOutcomes || []).map((loId, j) => (
+                            <span key={j} className={`tag-pill ${section}`}>
+                              Resultado {loId}
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+                    ))}
+                    {sectionExperiences.length === 0 && (
+                      <p className="empty-msg">No hay experiencias registradas todavía en esta sección.</p>
+                    )}
+                  </div>
+                </section>
+              </>
+            )}
           </div>
 
           <aside className="sidebar-column">
@@ -394,6 +483,184 @@ export default function DetailOverlay({ section, onClose, isClosing }) {
           display: flex;
           flex-direction: column;
           gap: 1.2rem;
+        }
+
+        .experience-card.clickable {
+          cursor: pointer;
+          transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+                      box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+                      background 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .experience-card.clickable:hover {
+          transform: translateY(-4px);
+          background: rgba(255, 255, 255, 0.15);
+          box-shadow: 0 12px 30px rgba(0, 0, 0, 0.05),
+                      inset 0 1px 1px rgba(255, 255, 255, 0.6);
+        }
+
+        .experience-detail-view, .project-detail-view {
+          display: flex;
+          flex-direction: column;
+          gap: 2.5rem;
+          width: 100%;
+          animation: experience-fade-in 0.8s cubic-bezier(0.16, 1, 0.3, 1) both;
+        }
+
+        @keyframes experience-fade-in {
+          from { opacity: 0; transform: translateY(15px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+
+        .back-button {
+          display: inline-flex;
+          align-items: center;
+          gap: 0.5rem;
+          padding: 0.6rem 1.2rem;
+          border-radius: 12px;
+          font-size: 0.75rem;
+          font-weight: 700;
+          color: var(--text-secondary);
+          text-transform: uppercase;
+          letter-spacing: 0.1em;
+          border: none;
+          cursor: pointer;
+          width: fit-content;
+          background: rgba(255, 255, 255, 0.15);
+          box-shadow: 0 4px 15px rgba(0, 0, 0, 0.02),
+                      inset 0 1px 1px rgba(255, 255, 255, 0.5);
+          transition: all 0.3s var(--ease-smooth);
+        }
+
+        .back-button:hover {
+          background: rgba(255, 255, 255, 0.25);
+          color: var(--text-primary);
+          transform: translateX(-4px);
+          box-shadow: 0 6px 20px rgba(0, 0, 0, 0.04),
+                      inset 0 1px 1px rgba(255, 255, 255, 0.6);
+        }
+
+        .experience-image-container {
+          width: 100%;
+          height: 380px;
+          border-radius: 24px;
+          overflow: hidden;
+          padding: 0 !important;
+          border: 1px solid rgba(255, 255, 255, 0.3);
+          box-shadow: 0 15px 35px rgba(0, 0, 0, 0.06);
+        }
+
+        .experience-image {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          transition: transform 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .experience-image-container:hover .experience-image {
+          transform: scale(1.03);
+        }
+
+        .experience-text-content {
+          display: flex;
+          flex-direction: column;
+          gap: 2.5rem;
+        }
+
+        .text-section h5 {
+          font-family: var(--font-body);
+          font-size: 0.75rem;
+          text-transform: uppercase;
+          letter-spacing: 0.15em;
+          color: var(--text-muted);
+          margin-bottom: 0.8rem;
+        }
+
+        .text-section p {
+          font-size: 1.1rem;
+          line-height: 1.8;
+          color: var(--text-secondary);
+        }
+
+        .reflection-quote {
+          border-left: 3px solid var(--${section});
+          padding-left: 1.5rem;
+          margin: 1.5rem 0;
+          font-style: italic;
+        }
+
+        .reflection-quote p {
+          font-size: 1.15rem;
+          color: var(--text-primary);
+          line-height: 1.7;
+        }
+
+        .project-detail-section h3, .project-timeline-section h3 {
+          font-family: var(--font-body);
+          font-size: 0.85rem;
+          text-transform: uppercase;
+          letter-spacing: 0.2em;
+          color: var(--text-muted);
+          margin-bottom: 1.5rem;
+          border-bottom: 1px solid #eee;
+          padding-bottom: 1rem;
+        }
+
+        .project-detail-text {
+          font-size: 1.15rem;
+          line-height: 1.8;
+          color: var(--text-secondary);
+          margin-bottom: 2rem;
+        }
+
+        .project-timeline-grid {
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          gap: 1.5rem;
+        }
+
+        @media (max-width: 768px) {
+          .project-timeline-grid {
+            grid-template-columns: 1fr;
+          }
+        }
+
+        .project-phase-card {
+          padding: 1.5rem;
+          display: flex;
+          flex-direction: column;
+          gap: 0.8rem;
+          border-radius: 16px;
+        }
+
+        .phase-card-header {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          flex-wrap: wrap;
+          gap: 0.5rem;
+        }
+
+        .phase-badge {
+          font-size: 0.7rem;
+          font-weight: 700;
+          color: var(--project);
+          text-transform: uppercase;
+          background: #ecfdf5;
+          padding: 0.3rem 0.6rem;
+          border-radius: 6px;
+        }
+
+        .phase-date {
+          font-size: 0.75rem;
+          color: var(--text-muted);
+          font-weight: 500;
+        }
+
+        .project-phase-card p {
+          font-size: 0.95rem;
+          line-height: 1.6;
+          color: var(--text-secondary);
         }
 
         .card-header h4 {
