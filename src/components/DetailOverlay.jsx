@@ -60,25 +60,20 @@ export default function DetailOverlay({ section, onClose, isClosing }) {
         "-=0.3"
       );
 
-      // ScrollTrigger para TODAS las tarjetas de experiencia
-      gsap.utils.toArray(".experience-card").forEach((card, i) => {
-        gsap.fromTo(card,
-          { opacity: 0, y: 15, filter: "blur(4px)" },
-          {
+      // Batch: carga tarjetas en grupos (2 filas por vez) a medida que entran al viewport
+      ScrollTrigger.batch(".experience-card", {
+        scroller: containerRef.current,
+        start: "top 110%",
+        onEnter: (batch) => {
+          gsap.to(batch, {
             opacity: 1,
             y: 0,
             filter: "blur(0px)",
             duration: cardDur,
-            ease: "sine.out",
-            delay: cardDelay + (i * 0.04),
-            scrollTrigger: {
-              trigger: card,
-              scroller: containerRef.current,
-              start: "top 95%",
-              toggleActions: "play none none none"
-            }
-          }
-        );
+            stagger: 0.06,
+            ease: "sine.out"
+          });
+        }
       });
     }
 
