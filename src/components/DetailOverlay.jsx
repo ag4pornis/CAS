@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useLayoutEffect, useRef } from "react";
-import { casDescription, casProject, experiences } from "../data/experiences";
+import { casDescription, casProject, experiences, learningOutcomes } from "../data/experiences";
 import { X, Calendar, CheckCircle2, ChevronLeft } from "lucide-react";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
@@ -11,6 +11,7 @@ export default function DetailOverlay({ section, onClose, isClosing, scrollDetai
   const containerRef = useRef(null);
   const isProject = section === "project";
   const [selectedExperience, setSelectedExperience] = useState(null);
+  const [selectedPhase, setSelectedPhase] = useState(null);
   const scrollPosRef = useRef(0);
   const prevSelectedForScroll = useRef(null);
   const prevSelectedForLenis = useRef(null);
@@ -27,13 +28,16 @@ export default function DetailOverlay({ section, onClose, isClosing, scrollDetai
   sectionExperiences.forEach(exp => {
     (exp.learningOutcomes || []).forEach(lo => achievedOutcomes.add(Number(lo)));
   });
+  const loLookup = Object.fromEntries(learningOutcomes.map(lo => [lo.id, lo.short]));
+  const loFullLookup = Object.fromEntries(learningOutcomes.map(lo => [lo.id, lo.name]));
 
-  const prevSelectedRef = useRef(selectedExperience);
+  const prevSelectedRef = useRef(selectedExperience || selectedPhase);
 
   useGSAP(() => {
-    const isBackToGrid = selectedExperience === null && prevSelectedRef.current !== null;
-    const isEnteringExp = selectedExperience !== null && prevSelectedRef.current === null;
-    prevSelectedRef.current = selectedExperience;
+    const currentDetail = selectedExperience || selectedPhase;
+    const isBackToGrid = currentDetail === null && prevSelectedRef.current !== null;
+    const isEnteringExp = currentDetail !== null && prevSelectedRef.current === null;
+    prevSelectedRef.current = currentDetail;
 
     const delay = isBackToGrid ? 0 : isEnteringExp ? 0 : 0.35;
     const introDur = isBackToGrid ? 0.5 : isEnteringExp ? 0.5 : 0.8;
@@ -42,7 +46,7 @@ export default function DetailOverlay({ section, onClose, isClosing, scrollDetai
     const cardDelay = isBackToGrid ? 0.1 : isEnteringExp ? 0.1 : 0.5;
 
     // Forzamos estado inicial invisible para evitar el "destello"
-    gsap.set(".detail-intro, .experiences-section h3, .experience-card, .outcomes-sidebar, .stats-card", {
+    gsap.set(".detail-intro, .experiences-section h3, .experience-card, .outcomes-sidebar, .stats-card, .project-phase-card, .project-detail-section, .project-timeline-section", {
       opacity: 0,
       y: 20
     });
@@ -78,6 +82,25 @@ export default function DetailOverlay({ section, onClose, isClosing, scrollDetai
           });
         }
       });
+
+      // Fase proyecto: descripción + timeline + cards
+      tl.fromTo(".project-detail-section",
+        { opacity: 0, y: 10, filter: "blur(4px)" },
+        { opacity: 1, y: 0, filter: "blur(0px)", duration: introDur, ease: "sine.inOut" },
+        "-=0.3"
+      );
+
+      tl.fromTo(".project-timeline-section",
+        { opacity: 0, y: 10, filter: "blur(4px)" },
+        { opacity: 1, y: 0, filter: "blur(0px)", duration: introDur, ease: "sine.inOut" },
+        "-=0.3"
+      );
+
+      tl.fromTo(".project-phase-card",
+        { opacity: 0, y: 15 },
+        { opacity: 1, y: 0, filter: "blur(0px)", duration: cardDur, stagger: 0.08, ease: "sine.out" },
+        "-=0.2"
+      );
     }
 
     // Fase 3: Sidebar y stats (siempre se anima)
@@ -86,35 +109,36 @@ export default function DetailOverlay({ section, onClose, isClosing, scrollDetai
       { opacity: 1, x: 0, filter: "blur(0px)", duration: sidebarDur, stagger: 0.1, ease: "sine.inOut" },
       "-=0.2"
     );
-  }, { scope: containerRef, dependencies: [section, selectedExperience] });
+  }, { scope: containerRef, dependencies: [section, selectedExperience, selectedPhase] });
 
-  // Manejo de scroll: scrollear arriba al entrar en experiencia, restaurar al volver
+  // Manejo de scroll: scrollear arriba al entrar en experiencia/fase, restaurar al volver
+  const activeDetail = selectedExperience || selectedPhase;
   useLayoutEffect(() => {
     const wasNull = prevSelectedForScroll.current === null;
-    const prevExp = prevSelectedForScroll.current;
-    prevSelectedForScroll.current = selectedExperience;
+    const prevDetail = prevSelectedForScroll.current;
+    prevSelectedForScroll.current = activeDetail;
 
     const el = containerRef.current?.closest('.detail-view');
     if (!el) return;
 
-    if (wasNull && selectedExperience !== null) {
+    if (wasNull && activeDetail !== null) {
       el.scrollTop = 0;
-    } else if (prevExp !== null && selectedExperience === null) {
+    } else if (prevDetail !== null && activeDetail === null) {
       el.scrollTop = scrollPosRef.current;
     }
-  }, [selectedExperience]);
+  }, [activeDetail]);
 
   // Sincronizar Lenis después del paint para que no sobreescriba el scrollTop
   useEffect(() => {
     const wasNull = prevSelectedForLenis.current === null;
-    prevSelectedForLenis.current = selectedExperience;
+    prevSelectedForLenis.current = activeDetail;
 
-    if (wasNull && selectedExperience !== null) {
+    if (wasNull && activeDetail !== null) {
       scrollDetailTo(0);
-    } else if (!wasNull && selectedExperience === null) {
+    } else if (!wasNull && activeDetail === null) {
       scrollDetailTo(scrollPosRef.current);
     }
-  }, [selectedExperience, scrollDetailTo]);
+  }, [activeDetail, scrollDetailTo]);
 
   // Animación de salida simétrica REVERSA
   useEffect(() => {
@@ -126,8 +150,8 @@ export default function DetailOverlay({ section, onClose, isClosing, scrollDetai
         opacity: 0, x: 20, filter: "blur(10px)", duration: 0.8, stagger: 0.1, ease: "sine.inOut"
       });
 
-      // 2. Quitar Experiencias
-      tlExit.to(".experience-card, .experiences-section h3", {
+      // 2. Quitar Experiencias / Fases
+      tlExit.to(".experience-card, .experiences-section h3, .project-phase-card, .project-detail-section, .project-timeline-section", {
         opacity: 0, y: 30, filter: "blur(10px)", duration: 0.8, stagger: 0.1, ease: "sine.inOut"
       }, "-=0.4");
 
@@ -152,43 +176,96 @@ export default function DetailOverlay({ section, onClose, isClosing, scrollDetai
   return (
     <div className="detail-overlay" ref={containerRef} data-lenis-prevent>
       <main className="detail-body">
-        <div className="detail-grid">
+        {isProject ? (
+          selectedPhase ? (
+            <div className="experience-detail-view">
+              <button
+                className="back-button glass-panel"
+                onClick={() => setSelectedPhase(null)}
+              >
+                <ChevronLeft size={16} /> Volver a {data.title}
+              </button>
 
-          <div className="main-column">
-            {isProject ? (
-              <div className="project-detail-view">
-                <div className="detail-intro animate-in">
-                  <h1 className="editorial-title">{data.title}</h1>
-                  <p className="subtitle">{data.description}</p>
+              <div className="detail-intro">
+                <span className="date">
+                  <Calendar size={14} /> {selectedPhase.date}
+                </span>
+                <h1 className="editorial-title">{selectedPhase.phase}</h1>
+              </div>
+
+              {selectedPhase.image && (
+                <div className="experience-image-container">
+                  <img src={selectedPhase.image} alt={selectedPhase.phase} className="experience-image" />
+                </div>
+              )}
+
+              <div className="experience-text-content">
+                <div className="text-section">
+                  <h5>Descripción</h5>
+                  <p>{selectedPhase.details}</p>
                 </div>
 
-                {data.image && (
-                  <div className="experience-image-container animate-in">
-                    <img src={data.image} alt={data.title} className="experience-image" />
-                  </div>
-                )}
+                <div className="text-section">
+                  <h5>Reflexión de la Fase</h5>
+                  <blockquote className="reflection-quote">
+                    <p>{selectedPhase.reflection}</p>
+                  </blockquote>
+                </div>
 
-                <section className="project-detail-section animate-in">
-                  <h3>Descripción del Proyecto</h3>
-                  <p className="project-detail-text">{data.details}</p>
-                </section>
-
-                <section className="project-timeline-section animate-in">
-                  <h3>Fases del Proyecto</h3>
-                  <div className="project-timeline-grid">
-                    {data.timeline.map((step, idx) => (
-                      <div key={idx} className="project-phase-card glass-panel">
-                        <div className="phase-card-header">
-                          <span className="phase-badge">{step.phase}</span>
-                          <span className="phase-date">{step.date}</span>
-                        </div>
-                        <p>{step.description}</p>
-                      </div>
+                <div className="text-section">
+                  <h5>Resultados de Aprendizaje (LO)</h5>
+                  <div className="card-tags">
+                    {(selectedPhase.learningOutcomes || []).map((loId, j) => (
+                      <span key={j} className="tag-pill project">
+                        {loFullLookup[loId]}
+                      </span>
                     ))}
                   </div>
-                </section>
+                </div>
               </div>
-            ) : selectedExperience ? (
+            </div>
+          ) : (
+            <div className="project-detail-view">
+              <div className="detail-intro animate-in">
+                <h1 className="editorial-title">{data.title}</h1>
+                <p className="subtitle">{data.description}</p>
+              </div>
+
+              {data.image && (
+                <div className="experience-image-container animate-in">
+                  <img src={data.image} alt={data.title} className="experience-image" />
+                </div>
+              )}
+
+              <section className="project-detail-section animate-in">
+                <h3>Descripción del Proyecto</h3>
+                <p className="project-detail-text">{data.details}</p>
+              </section>
+
+              <section className="project-timeline-section animate-in">
+                <h3>Fases del Proyecto</h3>
+                <div className="project-timeline-grid">
+                  {data.timeline.map((step, idx) => (
+                    <div
+                      key={idx}
+                      className="project-phase-card glass-panel clickable"
+                      onClick={() => {
+                        scrollPosRef.current = containerRef.current?.closest('.detail-view')?.scrollTop || 0;
+                        setSelectedPhase(step);
+                      }}
+                    >
+                      <div className="phase-card-header">
+                        <span className="phase-badge">{step.phase}</span>
+                        <span className="phase-date">{step.date}</span>
+                      </div>
+                      <p>{step.description}</p>
+                    </div>
+                  ))}
+                </div>
+              </section>
+            </div>
+          )
+        ) : selectedExperience ? (
               <div className="experience-detail-view">
                 <button
                   className="back-button glass-panel"
@@ -228,7 +305,7 @@ export default function DetailOverlay({ section, onClose, isClosing, scrollDetai
                     <div className="card-tags">
                       {(selectedExperience.learningOutcomes || []).map((loId, j) => (
                         <span key={j} className={`tag-pill ${section}`}>
-                          Resultado {loId}
+                          {loFullLookup[loId]}
                         </span>
                       ))}
                     </div>
@@ -236,89 +313,86 @@ export default function DetailOverlay({ section, onClose, isClosing, scrollDetai
                 </div>
               </div>
             ) : (
-              <>
-                <div className="detail-intro animate-in">
-                  <h1 className="editorial-title">{data.title || data.name}</h1>
-                  <p className="subtitle">{data.description || data.text}</p>
-                </div>
+              <div className="detail-grid">
+                <div className="main-column">
+                  <div className="detail-intro animate-in">
+                    <h1 className="editorial-title">{data.title || data.name}</h1>
+                    <p className="subtitle">{data.description || data.text}</p>
+                  </div>
 
-                <section className="experiences-section">
-                  <h3 className="animate-in">Experiencias y Reflexiones</h3>
-                  <div className="experiences-grid">
-                    {sectionExperiences.map((exp, i) => (
-                      <div
-                        key={i}
-                        className="experience-card glass-panel animate-in clickable"
-                        onClick={() => {
-                          scrollPosRef.current = containerRef.current?.closest('.detail-view')?.scrollTop || 0;
-                          setSelectedExperience(exp);
-                        }}
-                      >
-                        <div className="card-header">
-                          <span className="date">
-                            <Calendar size={14} />
-                            {exp.date}
-                          </span>
-                          <h4>{exp.title}</h4>
-                        </div>
-                        <p>{exp.reflection}</p>
-                        <div className="card-tags">
-                          {(exp.learningOutcomes || []).map((loId, j) => (
-                            <span key={j} className={`tag-pill ${section}`}>
-                              Resultado {loId}
+                  <section className="experiences-section">
+                    <h3 className="animate-in">Experiencias y Reflexiones</h3>
+                    <div className="experiences-grid">
+                      {sectionExperiences.map((exp, i) => (
+                        <div
+                          key={i}
+                          className="experience-card glass-panel animate-in clickable"
+                          onClick={() => {
+                            scrollPosRef.current = containerRef.current?.closest('.detail-view')?.scrollTop || 0;
+                            setSelectedExperience(exp);
+                          }}
+                        >
+                          <div className="card-header">
+                            <span className="date">
+                              <Calendar size={14} />
+                              {exp.date}
                             </span>
-                          ))}
+                            <h4>{exp.title}</h4>
+                          </div>
+                          <p>{exp.reflection}</p>
+                          <div className="card-tags">
+                            {(exp.learningOutcomes || []).map((loId, j) => (
+                              <span key={j} className={`tag-pill ${section}`}>
+                                {loLookup[loId]}
+                              </span>
+                            ))}
+                          </div>
                         </div>
-                      </div>
-                    ))}
-                    {sectionExperiences.length === 0 && (
-                      <p className="empty-msg">No hay experiencias registradas todavía en esta sección.</p>
-                    )}
-                  </div>
-                </section>
-              </>
-            )}
-          </div>
-
-          <aside className="sidebar-column">
-            {!isProject && (
-              <section className="outcomes-sidebar glass-panel animate-in">
-                <div className="sidebar-group">
-                  <h4>Learning Outcomes</h4>
-                  <div className="outcomes-vertical-list">
-                    {[1, 2, 3, 4, 5, 6, 7].map((num) => {
-                      const isActive = achievedOutcomes.has(num);
-                      return (
-                        <div key={num} className={`outcome-item ${isActive ? 'active' : 'inactive'}`}>
-                          <div className="outcome-number">{num}</div>
-                          <div className="outcome-dot"></div>
-                        </div>
-                      );
-                    })}
-                  </div>
-                  <p className="sidebar-note">Objetivos de aprendizaje detectados en tus reflexiones.</p>
+                      ))}
+                      {sectionExperiences.length === 0 && (
+                        <p className="empty-msg">No hay experiencias registradas todavía en esta sección.</p>
+                      )}
+                    </div>
+                  </section>
                 </div>
-              </section>
+
+                <aside className="sidebar-column">
+                  <section className="outcomes-sidebar glass-panel animate-in">
+                    <div className="sidebar-group">
+                      <h4>Learning Outcomes</h4>
+                      <div className="outcomes-vertical-list">
+                        {[1, 2, 3, 4, 5, 6, 7].map((num) => {
+                          const isActive = achievedOutcomes.has(num);
+                          return (
+                            <div key={num} className={`outcome-item ${isActive ? 'active' : 'inactive'}`}>
+                              <div className="outcome-name">{loLookup[num]}</div>
+                              <div className="outcome-dot"></div>
+                            </div>
+                          );
+                        })}
+                      </div>
+                      <p className="sidebar-note">Objetivos de aprendizaje detectados en tus reflexiones.</p>
+                    </div>
+                  </section>
+
+                  <div className="sidebar-group glass-panel stats-card animate-in">
+                    <h4>Resumen de Sección</h4>
+                    <div className="stat-row">
+                      <span>Experiencias</span>
+                      <strong>{sectionExperiences.length}</strong>
+                    </div>
+                    <div className="stat-row">
+                      <span>Estado</span>
+                      <span className={`status-badge ${sectionExperiences.length > 0 ? 'active' : 'idle'}`}>
+                        <span className="status-dot"></span>
+                        {sectionExperiences.length > 0 ? 'En curso' : 'Sin iniciar'}
+                      </span>
+                    </div>
+                  </div>
+                </aside>
+              </div>
             )}
-
-            <div className="sidebar-group glass-panel stats-card animate-in">
-              <h4>Resumen de Sección</h4>
-              <div className="stat-row">
-                <span>Experiencias</span>
-                <strong>{sectionExperiences.length}</strong>
-              </div>
-              <div className="stat-row">
-                <span>Estado</span>
-                <span className={`status-badge ${sectionExperiences.length > 0 ? 'active' : 'idle'}`}>
-                  <span className="status-dot"></span>
-                  {sectionExperiences.length > 0 ? 'En curso' : 'Sin iniciar'}
-                </span>
-              </div>
-            </div>
-          </aside>
-
-        </div>
-      </main>
+          </main>
 
       <style>{`
         /* Estado inicial para evitar parpadeos */
@@ -411,11 +485,11 @@ export default function DetailOverlay({ section, onClose, isClosing, scrollDetai
           position: relative;
         }
 
-        .outcome-number {
-          font-size: 0.7rem;
+        .outcome-name {
+          font-size: 0.75rem;
           font-weight: 700;
           color: var(--text-muted);
-          width: 15px;
+          white-space: nowrap;
         }
 
         .outcome-dot {
@@ -432,7 +506,7 @@ export default function DetailOverlay({ section, onClose, isClosing, scrollDetai
           box-shadow: 0 0 12px var(--${section});
         }
 
-        .outcome-item.active .outcome-number {
+        .outcome-item.active .outcome-name {
           color: var(--text-primary);
         }
 
@@ -535,6 +609,20 @@ export default function DetailOverlay({ section, onClose, isClosing, scrollDetai
         }
 
         .experience-card.clickable:hover {
+          transform: translateY(-4px);
+          background: rgba(255, 255, 255, 0.15);
+          box-shadow: 0 12px 30px rgba(0, 0, 0, 0.05),
+                      inset 0 1px 1px rgba(255, 255, 255, 0.6);
+        }
+
+        .project-phase-card.clickable {
+          cursor: pointer;
+          transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+                      box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+                      background 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .project-phase-card.clickable:hover {
           transform: translateY(-4px);
           background: rgba(255, 255, 255, 0.15);
           box-shadow: 0 12px 30px rgba(0, 0, 0, 0.05),
