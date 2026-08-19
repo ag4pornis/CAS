@@ -78,7 +78,12 @@ export default function DetailOverlay({ section, onClose, isClosing, scrollDetai
             filter: "blur(0px)",
             duration: cardDur,
             stagger: 0.06,
-            ease: "sine.out"
+            ease: "sine.out",
+            onComplete: function() {
+              batch.forEach(el => {
+                el.style.removeProperty('transform');
+              });
+            }
           });
         }
       });
@@ -603,30 +608,54 @@ export default function DetailOverlay({ section, onClose, isClosing, scrollDetai
 
         .experience-card.clickable {
           cursor: pointer;
-          transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1),
-                      box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1),
-                      background 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+          border: none;
+          overflow: visible;
+          background: rgba(255, 255, 255, 0.15);
+          box-shadow: 0 4px 15px rgba(0, 0, 0, 0.02),
+                      inset 0 1px 1px rgba(255, 255, 255, 0.5);
+          transition: background 0.15s var(--ease-smooth),
+                      box-shadow 0.15s var(--ease-smooth),
+                      transform 0.15s var(--ease-smooth);
+        }
+
+        .experience-card.clickable::after {
+          display: none;
         }
 
         .experience-card.clickable:hover {
-          transform: translateY(-4px);
-          background: rgba(255, 255, 255, 0.15);
-          box-shadow: 0 12px 30px rgba(0, 0, 0, 0.05),
-                      inset 0 1px 1px rgba(255, 255, 255, 0.6);
+          background: rgba(255, 255, 255, 0.35);
+          transform: scale(1.06) !important;
+          box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08),
+                      inset 0 1px 1px rgba(255, 255, 255, 0.7);
+          transition: background 0.3s var(--ease-smooth),
+                      box-shadow 0.3s var(--ease-smooth),
+                      transform 0.3s var(--ease-smooth);
         }
 
         .project-phase-card.clickable {
           cursor: pointer;
-          transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1),
-                      box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1),
-                      background 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+          border: none;
+          overflow: visible;
+          background: rgba(255, 255, 255, 0.15);
+          box-shadow: 0 4px 15px rgba(0, 0, 0, 0.02),
+                      inset 0 1px 1px rgba(255, 255, 255, 0.5);
+          transition: background 0.15s var(--ease-smooth),
+                      box-shadow 0.15s var(--ease-smooth),
+                      transform 0.15s var(--ease-smooth);
+        }
+
+        .project-phase-card.clickable::after {
+          display: none;
         }
 
         .project-phase-card.clickable:hover {
-          transform: translateY(-4px);
-          background: rgba(255, 255, 255, 0.15);
-          box-shadow: 0 12px 30px rgba(0, 0, 0, 0.05),
-                      inset 0 1px 1px rgba(255, 255, 255, 0.6);
+          background: rgba(255, 255, 255, 0.35);
+          transform: scale(1.06) !important;
+          box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08),
+                      inset 0 1px 1px rgba(255, 255, 255, 0.7);
+          transition: background 0.3s var(--ease-smooth),
+                      box-shadow 0.3s var(--ease-smooth),
+                      transform 0.3s var(--ease-smooth);
         }
 
         .experience-detail-view, .project-detail-view {
@@ -688,7 +717,7 @@ export default function DetailOverlay({ section, onClose, isClosing, scrollDetai
         }
 
         .experience-image-container:hover .experience-image {
-          transform: scale(1.03);
+          transform: scale(1.06);
         }
 
         .experience-text-content {
