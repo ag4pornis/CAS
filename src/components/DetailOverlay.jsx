@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useLayoutEffect, useRef } from "react";
 import { casDescription, casProject, experiences } from "../data/experiences";
 import { X, Calendar, CheckCircle2, ChevronLeft } from "lucide-react";
 import gsap from "gsap";
@@ -7,10 +7,13 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 gsap.registerPlugin(ScrollTrigger);
 
-export default function DetailOverlay({ section, onClose, isClosing }) {
+export default function DetailOverlay({ section, onClose, isClosing, scrollDetailTo }) {
   const containerRef = useRef(null);
   const isProject = section === "project";
   const [selectedExperience, setSelectedExperience] = useState(null);
+  const scrollPosRef = useRef(0);
+  const prevSelectedForScroll = useRef(null);
+  const prevSelectedForLenis = useRef(null);
 
   // Get data correctly
   const data = isProject ? casProject : casDescription.strands.find((s) => s.id === section);
@@ -84,6 +87,34 @@ export default function DetailOverlay({ section, onClose, isClosing }) {
       "-=0.2"
     );
   }, { scope: containerRef, dependencies: [section, selectedExperience] });
+
+  // Manejo de scroll: scrollear arriba al entrar en experiencia, restaurar al volver
+  useLayoutEffect(() => {
+    const wasNull = prevSelectedForScroll.current === null;
+    const prevExp = prevSelectedForScroll.current;
+    prevSelectedForScroll.current = selectedExperience;
+
+    const el = containerRef.current?.closest('.detail-view');
+    if (!el) return;
+
+    if (wasNull && selectedExperience !== null) {
+      el.scrollTop = 0;
+    } else if (prevExp !== null && selectedExperience === null) {
+      el.scrollTop = scrollPosRef.current;
+    }
+  }, [selectedExperience]);
+
+  // Sincronizar Lenis después del paint para que no sobreescriba el scrollTop
+  useEffect(() => {
+    const wasNull = prevSelectedForLenis.current === null;
+    prevSelectedForLenis.current = selectedExperience;
+
+    if (wasNull && selectedExperience !== null) {
+      scrollDetailTo(0);
+    } else if (!wasNull && selectedExperience === null) {
+      scrollDetailTo(scrollPosRef.current);
+    }
+  }, [selectedExperience, scrollDetailTo]);
 
   // Animación de salida simétrica REVERSA
   useEffect(() => {
@@ -218,7 +249,10 @@ export default function DetailOverlay({ section, onClose, isClosing }) {
                       <div
                         key={i}
                         className="experience-card glass-panel animate-in clickable"
-                        onClick={() => setSelectedExperience(exp)}
+                        onClick={() => {
+                          scrollPosRef.current = containerRef.current?.closest('.detail-view')?.scrollTop || 0;
+                          setSelectedExperience(exp);
+                        }}
                       >
                         <div className="card-header">
                           <span className="date">

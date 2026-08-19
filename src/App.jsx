@@ -137,6 +137,12 @@ export default function App() {
     }
   }, []);
 
+  const scrollDetailTo = useCallback((pos) => {
+    if (lenisRef.current) {
+      lenisRef.current.scrollTo(pos, { immediate: true });
+    }
+  }, []);
+
   const orbRef = useRef(null);
   const orbPos = useRef({ x: 0, y: 0 });
   const orbVel = useRef({ x: 2, y: 2 });
@@ -401,6 +407,7 @@ export default function App() {
                 section={detailView || "project"}
                 onClose={closeDetail}
                 isClosing={isClosing}
+                scrollDetailTo={scrollDetailTo}
               />
             )}
           </div>
