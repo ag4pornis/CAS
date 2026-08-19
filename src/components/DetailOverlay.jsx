@@ -370,8 +370,8 @@ export default function DetailOverlay({ section, onClose, isClosing, scrollDetai
                           const isActive = achievedOutcomes.has(num);
                           return (
                             <div key={num} className={`outcome-item ${isActive ? 'active' : 'inactive'}`}>
-                              <div className="outcome-name">{loLookup[num]}</div>
                               <div className="outcome-dot"></div>
+                              <div className="outcome-name">{loLookup[num]}</div>
                             </div>
                           );
                         })}
@@ -478,14 +478,14 @@ export default function DetailOverlay({ section, onClose, isClosing, scrollDetai
           flex-direction: column;
           gap: 0.5rem;
           position: relative;
-          padding-left: 0.5rem;
+          padding-left: 0;
           margin-bottom: 1.5rem;
         }
 
         .outcome-item {
           display: flex;
           align-items: center;
-          gap: 1.5rem;
+          gap: 1rem;
           height: 35px;
           position: relative;
         }
@@ -498,12 +498,13 @@ export default function DetailOverlay({ section, onClose, isClosing, scrollDetai
         }
 
         .outcome-dot {
-          width: 8px;
-          height: 8px;
+          width: 10px;
+          height: 10px;
           border-radius: 50%;
           background: #eee;
           position: relative;
           z-index: 2;
+          flex-shrink: 0;
         }
 
         .outcome-item.active .outcome-dot {
@@ -518,10 +519,11 @@ export default function DetailOverlay({ section, onClose, isClosing, scrollDetai
         .outcomes-vertical-list::before {
           content: '';
           position: absolute;
-          left: calc(0.5rem + 15px + 1.5rem + 4px - 0.5px);
-          top: 15px;
-          bottom: 15px;
+          left: 5px;
+          top: 17px;
+          bottom: 17px;
           width: 1px;
+          transform: translateX(-50%);
           background: #eee;
           z-index: 1;
         }
@@ -623,10 +625,10 @@ export default function DetailOverlay({ section, onClose, isClosing, scrollDetai
         }
 
         .experience-card.clickable:hover {
-          background: rgba(255, 255, 255, 0.35);
+          background: rgba(255, 255, 255, 0.22);
           transform: scale(1.06) !important;
-          box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08),
-                      inset 0 1px 1px rgba(255, 255, 255, 0.7);
+          box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06),
+                      inset 0 1px 1px rgba(255, 255, 255, 0.6);
           transition: background 0.3s var(--ease-smooth),
                       box-shadow 0.3s var(--ease-smooth),
                       transform 0.3s var(--ease-smooth);
@@ -649,10 +651,10 @@ export default function DetailOverlay({ section, onClose, isClosing, scrollDetai
         }
 
         .project-phase-card.clickable:hover {
-          background: rgba(255, 255, 255, 0.35);
+          background: rgba(255, 255, 255, 0.22);
           transform: scale(1.06) !important;
-          box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08),
-                      inset 0 1px 1px rgba(255, 255, 255, 0.7);
+          box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06),
+                      inset 0 1px 1px rgba(255, 255, 255, 0.6);
           transition: background 0.3s var(--ease-smooth),
                       box-shadow 0.3s var(--ease-smooth),
                       transform 0.3s var(--ease-smooth);

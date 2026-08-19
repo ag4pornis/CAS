@@ -236,14 +236,29 @@ a {
   font-size: 0.9rem;
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.4s var(--ease-smooth);
+  transition: background 0.15s var(--ease-smooth),
+              box-shadow 0.15s var(--ease-smooth),
+              transform 0.15s var(--ease-smooth),
+              border-color 0.15s var(--ease-smooth),
+              backdrop-filter 0.15s var(--ease-smooth),
+              -webkit-backdrop-filter 0.15s var(--ease-smooth);
 }
 
 .cta-button:hover {
-  transform: translateY(-3px);
-  background: rgba(255, 255, 255, 0.06);
+  transform: scale(1.05);
+  background: rgba(255, 255, 255, 0.22);
   border-top-color: rgba(255, 255, 255, 0.95);
   border-left-color: rgba(255, 255, 255, 0.7);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06),
+              inset 0 1px 1px rgba(255, 255, 255, 0.6);
+  backdrop-filter: blur(12px) saturate(140%) brightness(1.03);
+  -webkit-backdrop-filter: blur(12px) saturate(140%) brightness(1.03);
+  transition: background 0.3s var(--ease-smooth),
+              box-shadow 0.3s var(--ease-smooth),
+              transform 0.3s var(--ease-smooth),
+              border-color 0.3s var(--ease-smooth),
+              backdrop-filter 0.3s var(--ease-smooth),
+              -webkit-backdrop-filter 0.3s var(--ease-smooth);
 }
 
 /* ── .back-button ── */
