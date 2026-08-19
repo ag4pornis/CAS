@@ -42,6 +42,7 @@ export default function App() {
     const scrollContainer = detailView ? document.querySelector('.detail-view') : document.querySelector('.main-view');
 
     if (!scrollContainer) return;
+    if (!scrollContainer.firstChild) return;
 
     const lenis = new Lenis({
       wrapper: scrollContainer,
@@ -139,7 +140,12 @@ export default function App() {
 
   const scrollDetailTo = useCallback((pos) => {
     if (lenisRef.current) {
-      lenisRef.current.scrollTo(pos, { immediate: true });
+      lenisRef.current.scrollTo(pos, { immediate: true, force: true });
+    } else {
+      // Fallback: scroll both window and detail-view
+      window.scrollTo(0, pos);
+      const el = document.querySelector('.detail-view');
+      if (el) el.scrollTop = pos;
     }
   }, []);
 
@@ -403,12 +409,12 @@ export default function App() {
         <div className="detail-view">
           <div className="view-content">
             {(detailView || isClosing) && (
-              <DetailOverlay
-                section={detailView || "project"}
-                onClose={closeDetail}
-                isClosing={isClosing}
-                scrollDetailTo={scrollDetailTo}
-              />
+               <DetailOverlay
+                 section={detailView || "project"}
+                 onClose={closeDetail}
+                 isClosing={isClosing}
+                 scrollDetailTo={scrollDetailTo}
+               />
             )}
           </div>
         </div>

@@ -14,7 +14,6 @@ export default function DetailOverlay({ section, onClose, isClosing, scrollDetai
   const [selectedPhase, setSelectedPhase] = useState(null);
   const scrollPosRef = useRef(0);
   const prevSelectedForScroll = useRef(null);
-  const prevSelectedForLenis = useRef(null);
 
   // Get data correctly
   const data = isProject ? casProject : casDescription.strands.find((s) => s.id === section);
@@ -34,16 +33,18 @@ export default function DetailOverlay({ section, onClose, isClosing, scrollDetai
   const prevSelectedRef = useRef(selectedExperience || selectedPhase);
 
   useGSAP(() => {
+    ScrollTrigger.getAll().forEach(t => t.kill());
+
     const currentDetail = selectedExperience || selectedPhase;
     const isBackToGrid = currentDetail === null && prevSelectedRef.current !== null;
     const isEnteringExp = currentDetail !== null && prevSelectedRef.current === null;
     prevSelectedRef.current = currentDetail;
 
     const delay = isBackToGrid ? 0 : isEnteringExp ? 0 : 0.35;
-    const introDur = isBackToGrid ? 0.5 : isEnteringExp ? 0.5 : 0.8;
-    const sidebarDur = isBackToGrid ? 0.5 : isEnteringExp ? 0.5 : 0.7;
-    const cardDur = isBackToGrid ? 0.5 : isEnteringExp ? 0.5 : 0.7;
-    const cardDelay = isBackToGrid ? 0.1 : isEnteringExp ? 0.1 : 0.5;
+    const introDur = isBackToGrid ? 0.3 : isEnteringExp ? 0.5 : 0.8;
+    const sidebarDur = isBackToGrid ? 0.4 : isEnteringExp ? 0.5 : 0.7;
+    const cardDur = isBackToGrid ? 0.4 : isEnteringExp ? 0.5 : 0.7;
+    const cardDelay = isBackToGrid ? 0.05 : isEnteringExp ? 0.1 : 0.5;
 
     // Forzamos estado inicial invisible para evitar el "destello"
     gsap.set(".detail-intro, .experiences-section h3, .experience-card, .outcomes-sidebar, .stats-card, .project-phase-card, .project-detail-section, .project-timeline-section", {
@@ -112,35 +113,19 @@ export default function DetailOverlay({ section, onClose, isClosing, scrollDetai
     tl.fromTo(".outcomes-sidebar, .stats-card",
       { opacity: 0, x: 10, filter: "blur(4px)" },
       { opacity: 1, x: 0, filter: "blur(0px)", duration: sidebarDur, stagger: 0.1, ease: "sine.inOut" },
-      "-=0.2"
+      isBackToGrid ? "-=0.5" : "-=0.2"
     );
   }, { scope: containerRef, dependencies: [section, selectedExperience, selectedPhase] });
 
-  // Manejo de scroll: scrollear arriba al entrar en experiencia/fase, restaurar al volver
+  // Manejo de scroll: restaurar al volver a la grilla
   const activeDetail = selectedExperience || selectedPhase;
   useLayoutEffect(() => {
     const wasNull = prevSelectedForScroll.current === null;
     const prevDetail = prevSelectedForScroll.current;
     prevSelectedForScroll.current = activeDetail;
 
-    const el = containerRef.current?.closest('.detail-view');
-    if (!el) return;
-
-    if (wasNull && activeDetail !== null) {
-      el.scrollTop = 0;
-    } else if (prevDetail !== null && activeDetail === null) {
-      el.scrollTop = scrollPosRef.current;
-    }
-  }, [activeDetail]);
-
-  // Sincronizar Lenis después del paint para que no sobreescriba el scrollTop
-  useEffect(() => {
-    const wasNull = prevSelectedForLenis.current === null;
-    prevSelectedForLenis.current = activeDetail;
-
-    if (wasNull && activeDetail !== null) {
-      scrollDetailTo(0);
-    } else if (!wasNull && activeDetail === null) {
+    // Solo restaurar scroll cuando volvemos a la grilla (activeDetail → null)
+    if (prevDetail !== null && activeDetail === null) {
       scrollDetailTo(scrollPosRef.current);
     }
   }, [activeDetail, scrollDetailTo]);
@@ -254,10 +239,18 @@ export default function DetailOverlay({ section, onClose, isClosing, scrollDetai
                     <div
                       key={idx}
                       className="project-phase-card glass-panel clickable"
-                      onClick={() => {
-                        scrollPosRef.current = containerRef.current?.closest('.detail-view')?.scrollTop || 0;
-                        setSelectedPhase(step);
-                      }}
+                       onClick={() => {
+                         const detailViewEl = containerRef.current?.closest('.detail-view') || document.querySelector('.detail-view');
+                         scrollPosRef.current = detailViewEl?.scrollTop || 0;
+                         if (detailViewEl) {
+                           detailViewEl.scrollTop = 0;
+                         }
+                         scrollDetailTo(0);
+                         setTimeout(() => {
+                           if (detailViewEl) detailViewEl.scrollTop = 0;
+                         }, 0);
+                         setSelectedPhase(step);
+                       }}
                     >
                       <div className="phase-card-header">
                         <span className="phase-badge">{step.phase}</span>
@@ -332,8 +325,15 @@ export default function DetailOverlay({ section, onClose, isClosing, scrollDetai
                         <div
                           key={i}
                           className="experience-card glass-panel animate-in clickable"
-                          onClick={() => {
-                            scrollPosRef.current = containerRef.current?.closest('.detail-view')?.scrollTop || 0;
+                        onClick={() => {
+                            const detailViewEl = containerRef.current?.closest('.detail-view') || document.querySelector('.detail-view');
+                            scrollPosRef.current = detailViewEl?.scrollTop || 0;
+                            // Reset scroll to top BEFORE React re-renders
+                            if (detailViewEl) detailViewEl.scrollTop = 0;
+                            scrollDetailTo(0);
+                            setTimeout(() => {
+                              if (detailViewEl) detailViewEl.scrollTop = 0;
+                            }, 0);
                             setSelectedExperience(exp);
                           }}
                         >
