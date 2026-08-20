@@ -78,7 +78,7 @@ export default function DetailOverlay({ section, onClose, isClosing, scrollDetai
             y: 0,
             filter: "blur(0px)",
             duration: cardDur,
-            delay: 0.3,
+            delay: cardDelay,
             stagger: 0.06,
             ease: "sine.out",
             onComplete: function () {
@@ -91,30 +91,32 @@ export default function DetailOverlay({ section, onClose, isClosing, scrollDetai
       });
 
       // Fase proyecto: descripción + timeline + cards
-      tl.fromTo(".project-detail-section",
-        { opacity: 0, y: 10, filter: "blur(4px)" },
-        { opacity: 1, y: 0, filter: "blur(0px)", duration: introDur, ease: "sine.inOut" },
-        "-=0.3"
-      );
+      if (isProject && !isEnteringExp) {
+        tl.fromTo(".project-detail-section",
+          { opacity: 0, y: 10, filter: "blur(4px)" },
+          { opacity: 1, y: 0, filter: "blur(0px)", duration: introDur, ease: "sine.inOut" },
+          "-=0.3"
+        );
 
-      tl.fromTo(".project-timeline-section",
-        { opacity: 0, y: 10, filter: "blur(4px)" },
-        { opacity: 1, y: 0, filter: "blur(0px)", duration: introDur, ease: "sine.inOut" },
-        "-=0.3"
-      );
+        tl.fromTo(".project-timeline-section",
+          { opacity: 0, y: 10, filter: "blur(4px)" },
+          { opacity: 1, y: 0, filter: "blur(0px)", duration: introDur, ease: "sine.inOut" },
+          "-=0.3"
+        );
 
-      tl.fromTo(".project-phase-card",
-        { opacity: 0, y: 15 },
-        { opacity: 1, y: 0, filter: "blur(0px)", duration: cardDur, stagger: 0.08, ease: "sine.out" },
-        "-=0.2"
-      );
+        tl.fromTo(".project-phase-card",
+          { opacity: 0, y: 15 },
+          { opacity: 1, y: 0, filter: "blur(0px)", duration: cardDur, stagger: 0.08, ease: "sine.out" },
+          "-=0.2"
+        );
+      }
     }
 
     // Fase 3: Sidebar y stats (siempre se anima)
     tl.fromTo(".outcomes-sidebar, .stats-card",
       { opacity: 0, x: 10, filter: "blur(4px)" },
       { opacity: 1, x: 0, filter: "blur(0px)", duration: sidebarDur, stagger: 0.1, ease: "sine.inOut" },
-      isBackToGrid ? "-=0.2" : "-=0.5"
+      isBackToGrid ? "-=0.2" : "+=0.1"
     );
   }, { scope: containerRef, dependencies: [section, selectedExperience, selectedPhase] });
 
