@@ -160,10 +160,10 @@ export default function DetailOverlay({ section, onClose, isClosing, scrollDetai
         opacity: 0, y: 20, filter: "blur(10px)", duration: 0.6, stagger: 0.05, ease: "sine.inOut"
       }, "-=0.4");
 
-      // 3. Quitar Intro
+      // 3. Quitar Intro (título)
       tlExit.to(".detail-intro", {
         opacity: 0, y: -20, filter: "blur(10px)", duration: 0.8, ease: "sine.inOut"
-      }, "-=0.4");
+      }, "-=0.8");
     }
   }, [isClosing]);
 

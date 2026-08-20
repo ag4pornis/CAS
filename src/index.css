@@ -375,6 +375,22 @@ a {
   flex-direction: column;
 }
 
+.main-blur-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 10;
+  pointer-events: none;
+  backdrop-filter: blur(0);
+  -webkit-backdrop-filter: blur(0);
+  transition: backdrop-filter 1.8s ease, -webkit-backdrop-filter 1.8s ease;
+}
+
+.main-blur-overlay.blurred {
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  transition: backdrop-filter 0.25s ease, -webkit-backdrop-filter 0.25s ease;
+}
+
 .detail-view {
   background: var(--bg-primary);
   display: flex;

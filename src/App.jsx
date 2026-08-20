@@ -36,6 +36,11 @@ export default function App() {
 
   const contentRef = useRef(null);
   const lenisRef = useRef(null);
+  const [scrollBtnReady, setScrollBtnReady] = useState(false);
+
+  useEffect(() => {
+    requestAnimationFrame(() => setScrollBtnReady(true));
+  }, []);
 
   // ─── Initialize Lenis (Restored for premium inertia) ───
   useEffect(() => {
@@ -348,6 +353,7 @@ export default function App() {
       <div className={`sliding-wrapper ${detailView && !isClosing ? "is-detail" : ""}`}>
 
         <div className="main-view" ref={contentRef}>
+          <div className={`main-blur-overlay${detailView && !isClosing ? ' blurred' : ''}`} />
           <div className="view-content">
             <HeroSection onStrandClick={scrollToSection} />
             <ProjectSection onEnter={() => openDetail("project")} />
@@ -375,6 +381,14 @@ export default function App() {
               <div className="footer-content">
                 <p className="footer-text">CAS Portfolio — IB Diploma Programme</p>
                 <p className="footer-sub">Creatividad · Actividad · Servicio</p>
+                <a
+                  href="https://github.com/ag4pornis/CAS"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="footer-repo"
+                >
+                  GitHub ↗
+                </a>
               </div>
             </footer>
           </div>
@@ -419,6 +433,21 @@ export default function App() {
           </div>
         </div>
       </div>
+
+      <button
+        className={`scroll-top-btn${scrollBtnReady && scrollProgress > 0.1 && !detailView ? ' visible' : ''}`}
+        onClick={() => {
+          const container = document.querySelector('.main-view');
+          if (container && lenisRef.current) {
+            lenisRef.current.scrollTo(container, { offset: 0, force: true });
+          }
+        }}
+        aria-label="Volver arriba"
+      >
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+          <polyline points="4 12 10 6 16 12" />
+        </svg>
+      </button>
 
       <style>{`
         .content-layer {
@@ -471,12 +500,17 @@ export default function App() {
         .site-footer {
           margin: 6rem 0 0 0;
           padding: 5rem 2rem;
-          text-align: center;
           position: relative;
           background: transparent !important;
           border: none !important;
           border-radius: 40px 40px 0 0 !important;
           width: 100%;
+        }
+
+        .footer-content {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
         }
 
 
@@ -491,6 +525,72 @@ export default function App() {
           font-size: 0.85rem;
           color: var(--text-muted);
           margin-top: 0.5rem;
+        }
+
+        .footer-repo {
+          display: inline-block;
+          margin-top: 1rem;
+          font-size: 0.7rem;
+          color: var(--text-muted);
+          opacity: 0.5;
+          text-decoration: none;
+          transition: opacity 0.3s ease;
+          text-align: center;
+        }
+
+        .footer-repo:hover {
+          opacity: 1;
+        }
+
+        .scroll-top-btn {
+          position: fixed;
+          bottom: 2rem;
+          right: 5rem;
+          width: 44px;
+          height: 44px;
+          border-radius: 50%;
+          background: var(--glass-bg);
+          backdrop-filter: var(--glass-blur);
+          -webkit-backdrop-filter: var(--glass-blur);
+          border: 1px solid var(--glass-border);
+          border-top-color: var(--glass-border-top);
+          border-left-color: var(--glass-border-left);
+          box-shadow:
+            0 8px 32px rgba(0, 0, 0, 0.04),
+            0 1px 2px rgba(0, 0, 0, 0.02),
+            inset 0 2px 3px rgba(255, 255, 255, 0.8),
+            inset 2px 0 3px rgba(255, 255, 255, 0.4);
+          color: var(--text-primary);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          cursor: pointer;
+          z-index: 101;
+          opacity: 0;
+          pointer-events: none;
+          transition: background 0.15s var(--ease-smooth),
+                      box-shadow 0.15s var(--ease-smooth),
+                      transform 0.15s var(--ease-smooth),
+                      border-color 0.15s var(--ease-smooth),
+                      opacity 0.4s ease;
+        }
+
+        .scroll-top-btn.visible {
+          opacity: 1;
+          pointer-events: auto;
+        }
+
+        .scroll-top-btn:hover {
+          transform: translateY(-3px) scale(1.15);
+          background: rgba(255, 255, 255, 0.22);
+          border-top-color: rgba(255, 255, 255, 0.95);
+          border-left-color: rgba(255, 255, 255, 0.7);
+          box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06),
+                      inset 0 1px 1px rgba(255, 255, 255, 0.6);
+          transition: background 0.3s var(--ease-smooth),
+                      box-shadow 0.3s var(--ease-smooth),
+                      transform 0.3s var(--ease-smooth),
+                      border-color 0.3s var(--ease-smooth);
         }
       `}</style>
     </div>

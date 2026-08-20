@@ -56,6 +56,12 @@ Allí podrás modificar:
 - Listado de experiencias de Creatividad, Actividad y Servicio.
 - Resultados de aprendizaje.
 
+## ⚠️ Declaración de Uso de Inteligencia Artificial
+
+Este sitio web ha sido desarrollado con la asistencia de inteligencia artificial. La IA participó en gran parte del diseño, implementación y refinamiento de la **estructura técnica** de la web: componentes React, estilos CSS, animaciones, lógica de navegación y configuración del proyecto.
+
+**Esto NO aplica al contenido del portafolio.** Las reflexiones, experiencias, descripciones del Proyecto CAS, resultados de aprendizaje, fotografías y cualquier otro material incluido en `src/data/experiences.js` y en los componentes de texto son **obra original del autor** y no han sido generados ni editados por inteligencia artificial.
+
 ## 🔒 Privacidad y Propiedad Intelectual
 
 Este repositorio contiene un portafolio personal con datos reales, reflexiones y material multimedia propio del autor.
