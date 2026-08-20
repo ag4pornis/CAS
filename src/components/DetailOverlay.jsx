@@ -9,30 +9,49 @@ gsap.registerPlugin(ScrollTrigger);
 
 function ImageGallery({ images, alt, galleryKey }) {
   const [idx, setIdx] = useState(0);
-  const imgRef = useRef(null);
+  const [prevIdx, setPrevIdx] = useState(null);
+  const currentRef = useRef(null);
+  const prevRef = useRef(null);
+  const animating = useRef(false);
   const len = (images || []).length;
 
   const navigate = (dir) => {
-    if (len <= 1) return;
+    if (len <= 1 || animating.current) return;
     const next = (idx + dir + len) % len;
-    gsap.to(imgRef.current, {
-      opacity: 0,
-      duration: 0.25,
-      ease: "power2.in",
+    animating.current = true;
+    setPrevIdx(idx);
+    setIdx(next);
+  };
+
+  useEffect(() => {
+    if (prevIdx === null || !prevRef.current || !currentRef.current) return;
+
+    gsap.set(currentRef.current, { opacity: 0 });
+    const tl = gsap.timeline({
       onComplete: () => {
-        setIdx(next);
-        gsap.fromTo(imgRef.current, { opacity: 0 }, { opacity: 1, duration: 0.35, ease: "power2.out" });
+        setPrevIdx(null);
+        animating.current = false;
       },
     });
-  };
+    tl.to(prevRef.current, { opacity: 0, duration: 0.2, ease: "power2.in" });
+    tl.to(currentRef.current, { opacity: 1, duration: 0.3, ease: "power2.out" }, "-=0.1");
+  }, [prevIdx]);
 
   if (!images || images.length === 0) return null;
 
   return (
     <div className="experience-image-container">
+      {prevIdx !== null && (
+        <img
+          ref={prevRef}
+          src={images[prevIdx]}
+          alt={alt}
+          className="experience-image"
+          style={{ position: "absolute", inset: 0 }}
+        />
+      )}
       <img
-        ref={imgRef}
-        key={`${galleryKey}-${idx}`}
+        ref={currentRef}
         src={images[idx]}
         alt={alt}
         className="experience-image"
@@ -834,12 +853,15 @@ export default function DetailOverlay({ section, onClose, isClosing, scrollDetai
           display: flex;
           gap: 6px;
           z-index: 5;
-          opacity: 0;
-          transition: opacity 0.3s ease;
-        }
-
-        .experience-image-container:hover .img-dots {
-          opacity: 1;
+          padding: 8px 14px;
+          border-radius: 20px;
+          background: var(--glass-bg);
+          backdrop-filter: var(--glass-blur);
+          -webkit-backdrop-filter: var(--glass-blur);
+          border: 1px solid var(--glass-border);
+          border-top-color: var(--glass-border-top);
+          border-left-color: var(--glass-border-left);
+          box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04), inset 0 1px 2px rgba(255, 255, 255, 0.6);
         }
 
         .img-dot {
