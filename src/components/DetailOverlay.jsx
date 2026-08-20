@@ -12,6 +12,7 @@ function ImageGallery({ images, alt, galleryKey }) {
   const [prevIdx, setPrevIdx] = useState(null);
   const currentRef = useRef(null);
   const prevRef = useRef(null);
+  const dotsRef = useRef(null);
   const animating = useRef(false);
   const len = (images || []).length;
 
@@ -21,6 +22,13 @@ function ImageGallery({ images, alt, galleryKey }) {
     animating.current = true;
     setPrevIdx(idx);
     setIdx(next);
+
+    if (dotsRef.current) {
+      gsap.fromTo(dotsRef.current,
+        { scale: 1.3, boxShadow: "0 4px 20px rgba(255,255,255,0.15), inset 0 1px 3px rgba(255,255,255,0.9)" },
+        { scale: 1, boxShadow: "0 4px 16px rgba(0,0,0,0.04), inset 0 1px 2px rgba(255,255,255,0.6)", duration: 1.2, ease: "power2.out" }
+      );
+    }
   };
 
   useEffect(() => {
@@ -33,8 +41,8 @@ function ImageGallery({ images, alt, galleryKey }) {
         animating.current = false;
       },
     });
-    tl.to(prevRef.current, { opacity: 0, duration: 0.2, ease: "power2.in" });
-    tl.to(currentRef.current, { opacity: 1, duration: 0.3, ease: "power2.out" }, "-=0.1");
+    tl.to(prevRef.current, { opacity: 0, duration: 0.35, ease: "power2.in" });
+    tl.to(currentRef.current, { opacity: 1, duration: 0.5, ease: "power2.out" }, "-=0.1");
   }, [prevIdx]);
 
   if (!images || images.length === 0) return null;
@@ -69,7 +77,7 @@ function ImageGallery({ images, alt, galleryKey }) {
               <polyline points="8 4 14 10 8 16" />
             </svg>
           </button>
-          <div className="img-dots">
+          <div className="img-dots" ref={dotsRef}>
             {images.map((_, i) => (
               <span key={i} className={`img-dot${i === idx ? " active" : ""}`} />
             ))}
@@ -842,7 +850,7 @@ export default function DetailOverlay({ section, onClose, isClosing, scrollDetai
 
         .img-nav-btn:hover {
           background: rgba(255, 255, 255, 0.22);
-          transform: translateY(-50%) scale(1.1);
+          transform: translateY(-50%) scale(1.2);
         }
 
         .img-dots {
