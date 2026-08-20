@@ -7,6 +7,60 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 gsap.registerPlugin(ScrollTrigger);
 
+function ImageGallery({ images, alt, galleryKey }) {
+  const [idx, setIdx] = useState(0);
+  const imgRef = useRef(null);
+  const len = (images || []).length;
+
+  const navigate = (dir) => {
+    if (len <= 1) return;
+    const next = (idx + dir + len) % len;
+    gsap.to(imgRef.current, {
+      opacity: 0,
+      duration: 0.25,
+      ease: "power2.in",
+      onComplete: () => {
+        setIdx(next);
+        gsap.fromTo(imgRef.current, { opacity: 0 }, { opacity: 1, duration: 0.35, ease: "power2.out" });
+      },
+    });
+  };
+
+  if (!images || images.length === 0) return null;
+
+  return (
+    <div className="experience-image-container">
+      <img
+        ref={imgRef}
+        key={`${galleryKey}-${idx}`}
+        src={images[idx]}
+        alt={alt}
+        className="experience-image"
+        style={{ position: "absolute", inset: 0 }}
+      />
+      {len > 1 && (
+        <>
+          <button className="img-nav-btn img-nav-left" onClick={() => navigate(-1)} aria-label="Imagen anterior">
+            <svg width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+              <polyline points="12 4 6 10 12 16" />
+            </svg>
+          </button>
+          <button className="img-nav-btn img-nav-right" onClick={() => navigate(1)} aria-label="Imagen siguiente">
+            <svg width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+              <polyline points="8 4 14 10 8 16" />
+            </svg>
+          </button>
+          <div className="img-dots">
+            {images.map((_, i) => (
+              <span key={i} className={`img-dot${i === idx ? " active" : ""}`} />
+            ))}
+          </div>
+        </>
+      )}
+    </div>
+  );
+}
+
 export default function DetailOverlay({ section, onClose, isClosing, scrollDetailTo }) {
   const containerRef = useRef(null);
   const isProject = section === "project";
@@ -198,10 +252,8 @@ export default function DetailOverlay({ section, onClose, isClosing, scrollDetai
                 <h1 className="editorial-title">{selectedPhase.phase}</h1>
               </div>
 
-              {selectedPhase.image && (
-                <div className="experience-image-container">
-                  <img src={selectedPhase.image} alt={selectedPhase.phase} className="experience-image" />
-                </div>
+              {selectedPhase.images && selectedPhase.images.length > 0 && (
+                <ImageGallery images={selectedPhase.images} alt={selectedPhase.phase} galleryKey={`phase-${selectedPhase.phase}`} />
               )}
 
               <div className="experience-text-content">
@@ -236,9 +288,9 @@ export default function DetailOverlay({ section, onClose, isClosing, scrollDetai
                 <p className="subtitle">{data.description}</p>
               </div>
 
-              {data.image && (
-                <div className="experience-image-container animate-in">
-                  <img src={data.image} alt={data.title} className="experience-image" />
+              {data.images && data.images.length > 0 && (
+                <div className="animate-in">
+                  <ImageGallery images={data.images} alt={data.title} galleryKey="project" />
                 </div>
               )}
 
@@ -294,10 +346,8 @@ export default function DetailOverlay({ section, onClose, isClosing, scrollDetai
               <h1 className="editorial-title">{selectedExperience.title}</h1>
             </div>
 
-            {selectedExperience.image && (
-              <div className="experience-image-container">
-                <img src={selectedExperience.image} alt={selectedExperience.title} className="experience-image" />
-              </div>
+            {selectedExperience.images && selectedExperience.images.length > 0 && (
+              <ImageGallery images={selectedExperience.images} alt={selectedExperience.title} galleryKey={selectedExperience.id} />
             )}
 
             <div className="experience-text-content">
@@ -717,6 +767,7 @@ export default function DetailOverlay({ section, onClose, isClosing, scrollDetai
         }
 
         .experience-image-container {
+          position: relative;
           width: 100%;
           height: 380px;
           border-radius: 24px;
@@ -730,11 +781,79 @@ export default function DetailOverlay({ section, onClose, isClosing, scrollDetai
           width: 100%;
           height: 100%;
           object-fit: cover;
-          transition: transform 1.2s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
-        .experience-image-container:hover .experience-image {
-          transform: scale(1.06);
+        .img-nav-btn {
+          position: absolute;
+          top: 50%;
+          transform: translateY(-50%);
+          width: 38px;
+          height: 38px;
+          border-radius: 50%;
+          border: 1px solid var(--glass-border);
+          background: var(--glass-bg);
+          backdrop-filter: var(--glass-blur);
+          -webkit-backdrop-filter: var(--glass-blur);
+          box-shadow:
+            0 8px 32px rgba(0, 0, 0, 0.04),
+            inset 0 2px 3px rgba(255, 255, 255, 0.8),
+            inset 2px 0 3px rgba(255, 255, 255, 0.4);
+          color: var(--text-primary);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          cursor: pointer;
+          z-index: 5;
+          opacity: 0;
+          transition: opacity 0.3s ease, background 0.15s var(--ease-smooth),
+                      transform 0.15s var(--ease-smooth);
+        }
+
+        .experience-image-container:hover .img-nav-btn {
+          opacity: 1;
+        }
+
+        .img-nav-left {
+          left: 12px;
+        }
+
+        .img-nav-right {
+          right: 12px;
+        }
+
+        .img-nav-btn:hover {
+          background: rgba(255, 255, 255, 0.22);
+          transform: translateY(-50%) scale(1.1);
+        }
+
+        .img-dots {
+          position: absolute;
+          bottom: 12px;
+          left: 50%;
+          transform: translateX(-50%);
+          display: flex;
+          gap: 6px;
+          z-index: 5;
+          opacity: 0;
+          transition: opacity 0.3s ease;
+        }
+
+        .experience-image-container:hover .img-dots {
+          opacity: 1;
+        }
+
+        .img-dot {
+          width: 6px;
+          height: 6px;
+          border-radius: 50%;
+          background: var(--text-muted);
+          opacity: 0.4;
+          transition: opacity 0.3s ease, transform 0.3s ease;
+        }
+
+        .img-dot.active {
+          opacity: 1;
+          transform: scale(1.3);
         }
 
         .experience-text-content {

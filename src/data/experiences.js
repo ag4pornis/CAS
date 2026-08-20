@@ -45,7 +45,9 @@ export const casProject = {
     "El proyecto CAS es una actividad colaborativa de al menos un mes de duración que aborda una necesidad de la comunidad. Este proyecto representa el culmen de mi experiencia CAS, combinando creatividad, actividad y servicio en una iniciativa significativa.",
   details:
     "El proyecto CAS consistió en la creación de un huerto urbano comunitario en el centro de día de la tercera edad de nuestro barrio. Durante cuatro meses, colaboramos de forma directa con los residentes para diseñar bancales accesibles, sembrar hortalizas y plantas aromáticas, y establecer un sistema de riego sostenible. Esta iniciativa fomentó el intercambio intergeneracional, mejoró el bienestar físico y emocional de los mayores y creó una red de voluntariado permanente en nuestro colegio para mantener el espacio vivo.",
-  image: "https://images.unsplash.com/photo-1466692476868-aef1dfb1e735?w=1200&auto=format&fit=crop&q=80",
+  images: [
+    "https://images.unsplash.com/photo-1466692476868-aef1dfb1e735?w=1200&auto=format&fit=crop&q=80"
+  ],
   timeline: [
     {
       phase: "Investigación",
@@ -53,7 +55,7 @@ export const casProject = {
       description: "Identificación de la necesidad en el centro de día y planificación inicial.",
       details: "El primer paso fue contactsr con los responsables del centro de día para conocer sus necesidades. Realizamos visitas semanales durante todo septiembre, entrevistando a residentes y personal para entender qué tipo de espacio verde necesitaban. Investigamos técnicas de huerto urbano accesible, bancales elevados para sillas de ruedas y sistemas de riego por goteo de bajo mantenimiento. También estudiamos experiencias similares en otros barrios para extraer buenas prácticas.",
       reflection: "Esta fase me enseñó la importancia de escuchar antes de actuar. Pensé que sabía lo que la gente necesitaba, pero las conversaciones con los mayores cambiaron completamente mi perspectiva. Aprendí a hacer preguntas abiertas y a documentar necesidades reales en vez de asumir.",
-      image: "https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=1000&auto=format&fit=crop&q=80",
+      images: ["https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=1000&auto=format&fit=crop&q=80"],
       learningOutcomes: [1, 3],
     },
     {
@@ -62,7 +64,10 @@ export const casProject = {
       description: "Diseño de los bancales elevados y organización de las comisiones de trabajo.",
       details: "Con la información recopilada, diseñamos un plano del patio del centro con ocho bancales elevados a diferentes alturas. Organizamos al grupo en comisiones: jardinería, construcción, comunicación y logística. Elaboramos un presupuesto detallado y solicitamos donaciones de materiales a empresas locales. Crearon un cronograma semanal con tareas asignadas y un sistema de comunicación por grupo de mensajería.",
       reflection: "Planificar en equipo fue un reto enorme. Tuvimos desacuerdos sobre el diseño de los bancales y tuvimos que aprender a negociar y encontrar soluciones de compromiso. Descubrí que una buena planificación ahorra muchísimo tiempo después, pero que también hay que ser flexible cuando las cosas no salen como se esperaba.",
-      image: "https://images.unsplash.com/photo-1531973576160-7125cd663d86?w=1000&auto=format&fit=crop&q=80",
+      images: [
+        "https://images.unsplash.com/photo-1531973576160-7125cd663d86?w=1000&auto=format&fit=crop&q=80",
+        "https://images.unsplash.com/photo-1542626991-cbc4e32524cc?w=1000&auto=format&fit=crop&q=80"
+      ],
       learningOutcomes: [1, 3, 5],
     },
     {
@@ -71,7 +76,7 @@ export const casProject = {
       description: "Construcción, siembra inicial y talleres intergeneracionales semanales.",
       details: "Durante dos meses, trabajamos cada sábado construyendo los bancales con madera reciclada y sembrando hortalizas, hierbas aromáticas y flores. Los residentes participaron activamente en la siembra y nos enseñaron trucos de jardinería que llevaban décadas practicando. Organizamos talleres semanales de cocina con las hierbas cosechadas y sesiones de fotografía del huerto. El sistema de riego se instaló en la tercera semana y funcionó correctamente desde el primer día.",
       reflection: "Los sábados en el huerto se convirtieron en lo mejor de mi semana. Ver cómo los bancales pasaban de ser planos de madera a jardines llenos de vida fue mágico. Los momentos más significativos fueron las conversaciones con Doña Carmen mientras plantábamos tomates — me contó su infancia en el campo y me enseñó que la jardinería es mucho más que poner tierra en una maceta.",
-      image: "https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=1000&auto=format&fit=crop&q=80",
+      images: ["https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=1000&auto=format&fit=crop&q=80"],
       learningOutcomes: [1, 2, 4, 5],
     },
     {
@@ -80,7 +85,7 @@ export const casProject = {
       description: "Evaluación del impacto social y reflexiones sobre el aprendizaje colaborativo.",
       details: "En la fase final, recopilamos feedback de los residentes, el personal y los propios participantes mediante entrevistas y encuestas. El huerto generó un cambio visible en el bienestar de los residentes: aumento de actividad física, más interacción social y mejor estado de ánimo. Creamos un informe de impacto social y una presentación para el colegio. También dejamos un plan de mantenimiento permanente con un grupo de voluntarios del colegio.",
       reflection: "Esta fase me hizo darme cuenta de que el verdadero éxito no se mide en kilos de tomates, sino en las sonrisas que generaste. El proyecto me transformó: pasé de ver el servicio como una obligación a entenderlo como una oportunidad genuina de conectar con otros. Aprendí que liderar no es mandar, sino crear las condiciones para que cada persona pueda aportar lo mejor de sí.",
-      image: "https://images.unsplash.com/photo-1466692476868-aef1dfb1e735?w=1000&auto=format&fit=crop&q=80",
+      images: ["https://images.unsplash.com/photo-1466692476868-aef1dfb1e735?w=1000&auto=format&fit=crop&q=80"],
       learningOutcomes: [1, 2, 4, 6, 7],
     },
   ],
@@ -99,7 +104,13 @@ export const experiences = {
       learningOutcomes: [1, 2, 4],
       reflection:
         "Esta experiencia me enseñó la importancia de la paciencia y la perseverancia en el proceso creativo, descubriendo que los errores sobre el lienzo son oportunidades para cambiar de dirección.",
-      image: "https://images.unsplash.com/photo-1460661419201-fd4cecdf8a8b?w=1000&auto=format&fit=crop&q=80",
+      images: [
+        "https://images.unsplash.com/photo-1460661419201-fd4cecdf8a8b?w=1000&auto=format&fit=crop&q=80",
+        "https://images.unsplash.com/photo-1579783902614-a3fb3927b6a5?w=1000&auto=format&fit=crop&q=80",
+        "https://images.unsplash.com/photo-1513364776144-60967b0f800f?w=1000&auto=format&fit=crop&q=80",
+        "https://images.unsplash.com/photo-1578926078693-4eb3d4499e44?w=1000&auto=format&fit=crop&q=80",
+        "https://images.unsplash.com/photo-1547891654-e66ed7ebb968?w=1000&auto=format&fit=crop&q=80"
+      ],
     },
     {
       id: "c2",
@@ -112,7 +123,7 @@ export const experiences = {
       learningOutcomes: [1, 3, 4],
       reflection:
         "Aprendí a canalizar mis emociones a través de la música y a apreciar el proceso de creación por encima del resultado técnico final, mejorando mis habilidades en el entorno digital.",
-      image: "https://images.unsplash.com/photo-1507838153414-b4b713384a76?w=1000&auto=format&fit=crop&q=80",
+      images: ["https://images.unsplash.com/photo-1507838153414-b4b713384a76?w=1000&auto=format&fit=crop&q=80"],
     },
     {
       id: "c3",
@@ -125,7 +136,7 @@ export const experiences = {
       learningOutcomes: [2, 5, 7],
       reflection:
         "Combinar creatividad con un propósito social fue muy gratificante. Entender las necesidades de comunicación visual me ayudó a poner mi creatividad al servicio directo de los demás.",
-      image: "https://images.unsplash.com/photo-1626785774573-4b799315345d?w=1000&auto=format&fit=crop&q=80",
+      images: ["https://images.unsplash.com/photo-1626785774573-4b799315345d?w=1000&auto=format&fit=crop&q=80"],
     },
   ],
   activity: [
@@ -140,7 +151,7 @@ export const experiences = {
       learningOutcomes: [1, 2, 4],
       reflection:
         "La disciplina del entrenamiento me enseñó que los límites son fundamentalmente mentales y que la constancia diaria es el único camino para alcanzar objetivos ambiciosos.",
-      image: "https://images.unsplash.com/photo-1502224562085-639556652f33?w=1000&auto=format&fit=crop&q=80",
+      images: ["https://images.unsplash.com/photo-1502224562085-639556652f33?w=1000&auto=format&fit=crop&q=80"],
     },
     {
       id: "a2",
@@ -153,7 +164,7 @@ export const experiences = {
       learningOutcomes: [1, 2, 3],
       reflection:
         "Enfrentar miedos es un proceso gradual que requiere confianza en uno mismo y en el compañero que asegura la cuerda. Aprendí a centrarme en el siguiente movimiento, paso a paso.",
-      image: "https://images.unsplash.com/photo-1522163182402-834f871fd851?w=1000&auto=format&fit=crop&q=80",
+      images: ["https://images.unsplash.com/photo-1522163182402-834f871fd851?w=1000&auto=format&fit=crop&q=80"],
     },
     {
       id: "a3",
@@ -166,7 +177,7 @@ export const experiences = {
       learningOutcomes: [3, 5, 6],
       reflection:
         "El deporte en equipo me ha enseñado el valor de la comunicación, el esfuerzo colectivo y la lealtad competitiva. Liderar al equipo en la cancha me ayudó a crecer a nivel personal.",
-      image: "https://images.unsplash.com/photo-1508098682722-e99c43a406b2?w=1000&auto=format&fit=crop&q=80",
+      images: ["https://images.unsplash.com/photo-1508098682722-e99c43a406b2?w=1000&auto=format&fit=crop&q=80"],
     },
   ],
   service: [
@@ -181,7 +192,7 @@ export const experiences = {
       learningOutcomes: [3, 5, 6, 7],
       reflection:
         "Enseñar me ha ayudado a consolidar mis propios conocimientos y a desarrollar una profunda empatía. La satisfacción de ver a otros comprender un problema es inigualable.",
-      image: "https://images.unsplash.com/photo-1434030216411-0b793f4b4173?w=1000&auto=format&fit=crop&q=80",
+      images: ["https://images.unsplash.com/photo-1434030216411-0b793f4b4173?w=1000&auto=format&fit=crop&q=80"],
     },
     {
       id: "s2",
@@ -194,7 +205,7 @@ export const experiences = {
       learningOutcomes: [5, 6, 7],
       reflection:
         "Ver el impacto directo de nuestro trabajo en las familias beneficiadas fue profundamente conmovedor. Me concienció sobre la importancia de la logística social en proyectos de ayuda humanitaria.",
-      image: "https://images.unsplash.com/photo-1593113598332-cd288d649433?w=1000&auto=format&fit=crop&q=80",
+      images: ["https://images.unsplash.com/photo-1593113598332-cd288d649433?w=1000&auto=format&fit=crop&q=80"],
     },
     {
       id: "s3",
@@ -207,7 +218,7 @@ export const experiences = {
       learningOutcomes: [3, 5, 6, 7],
       reflection:
         "La responsabilidad medioambiental es un deber de todos. Ver la cantidad de microplásticos acumulados me impulsó a comprometerme de forma más activa en iniciativas ecológicas.",
-      image: "https://images.unsplash.com/photo-1618477388954-7852f32655ec?w=1000&auto=format&fit=crop&q=80",
+      images: ["https://images.unsplash.com/photo-1618477388954-7852f32655ec?w=1000&auto=format&fit=crop&q=80"],
     },
   ],
 };

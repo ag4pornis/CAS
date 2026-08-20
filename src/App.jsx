@@ -437,9 +437,8 @@ export default function App() {
       <button
         className={`scroll-top-btn${scrollBtnReady && scrollProgress > 0.1 && !detailView ? ' visible' : ''}`}
         onClick={() => {
-          const container = document.querySelector('.main-view');
-          if (container && lenisRef.current) {
-            lenisRef.current.scrollTo(container, { offset: 0, force: true });
+          if (lenisRef.current) {
+            lenisRef.current.scrollTo(0, { force: true });
           }
         }}
         aria-label="Volver arriba"
