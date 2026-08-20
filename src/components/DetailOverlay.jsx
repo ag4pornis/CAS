@@ -78,9 +78,10 @@ export default function DetailOverlay({ section, onClose, isClosing, scrollDetai
             y: 0,
             filter: "blur(0px)",
             duration: cardDur,
+            delay: 0.3,
             stagger: 0.06,
             ease: "sine.out",
-            onComplete: function() {
+            onComplete: function () {
               batch.forEach(el => {
                 el.style.removeProperty('transform');
               });
@@ -113,7 +114,7 @@ export default function DetailOverlay({ section, onClose, isClosing, scrollDetai
     tl.fromTo(".outcomes-sidebar, .stats-card",
       { opacity: 0, x: 10, filter: "blur(4px)" },
       { opacity: 1, x: 0, filter: "blur(0px)", duration: sidebarDur, stagger: 0.1, ease: "sine.inOut" },
-      isBackToGrid ? "-=0.5" : "-=0.2"
+      isBackToGrid ? "-=0.2" : "-=0.5"
     );
   }, { scope: containerRef, dependencies: [section, selectedExperience, selectedPhase] });
 
@@ -239,18 +240,18 @@ export default function DetailOverlay({ section, onClose, isClosing, scrollDetai
                     <div
                       key={idx}
                       className="project-phase-card glass-panel clickable"
-                       onClick={() => {
-                         const detailViewEl = containerRef.current?.closest('.detail-view') || document.querySelector('.detail-view');
-                         scrollPosRef.current = detailViewEl?.scrollTop || 0;
-                         if (detailViewEl) {
-                           detailViewEl.scrollTop = 0;
-                         }
-                         scrollDetailTo(0);
-                         setTimeout(() => {
-                           if (detailViewEl) detailViewEl.scrollTop = 0;
-                         }, 0);
-                         setSelectedPhase(step);
-                       }}
+                      onClick={() => {
+                        const detailViewEl = containerRef.current?.closest('.detail-view') || document.querySelector('.detail-view');
+                        scrollPosRef.current = detailViewEl?.scrollTop || 0;
+                        if (detailViewEl) {
+                          detailViewEl.scrollTop = 0;
+                        }
+                        scrollDetailTo(0);
+                        setTimeout(() => {
+                          if (detailViewEl) detailViewEl.scrollTop = 0;
+                        }, 0);
+                        setSelectedPhase(step);
+                      }}
                     >
                       <div className="phase-card-header">
                         <span className="phase-badge">{step.phase}</span>
@@ -264,140 +265,140 @@ export default function DetailOverlay({ section, onClose, isClosing, scrollDetai
             </div>
           )
         ) : selectedExperience ? (
-              <div className="experience-detail-view">
-                <button
-                  className="back-button glass-panel"
-                  onClick={() => setSelectedExperience(null)}
-                >
-                  <ChevronLeft size={16} /> Volver a {data.name || data.title}
-                </button>
+          <div className="experience-detail-view">
+            <button
+              className="back-button glass-panel"
+              onClick={() => setSelectedExperience(null)}
+            >
+              <ChevronLeft size={16} /> Volver a {data.name || data.title}
+            </button>
 
-                <div className="detail-intro">
-                  <span className="date">
-                    <Calendar size={14} /> {selectedExperience.date}
-                  </span>
-                  <h1 className="editorial-title">{selectedExperience.title}</h1>
-                </div>
+            <div className="detail-intro">
+              <span className="date">
+                <Calendar size={14} /> {selectedExperience.date}
+              </span>
+              <h1 className="editorial-title">{selectedExperience.title}</h1>
+            </div>
 
-                {selectedExperience.image && (
-                  <div className="experience-image-container">
-                    <img src={selectedExperience.image} alt={selectedExperience.title} className="experience-image" />
-                  </div>
-                )}
-
-                <div className="experience-text-content">
-                  <div className="text-section">
-                    <h5>Descripción</h5>
-                    <p>{selectedExperience.details || selectedExperience.description}</p>
-                  </div>
-
-                  <div className="text-section">
-                    <h5>Reflexión de la Experiencia</h5>
-                    <blockquote className="reflection-quote">
-                      <p>{selectedExperience.reflection}</p>
-                    </blockquote>
-                  </div>
-
-                  <div className="text-section">
-                    <h5>Resultados de Aprendizaje (LO)</h5>
-                    <div className="card-tags">
-                      {(selectedExperience.learningOutcomes || []).map((loId, j) => (
-                        <span key={j} className={`tag-pill ${section}`}>
-                          {loFullLookup[loId]}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-              </div>
-            ) : (
-              <div className="detail-grid">
-                <div className="main-column">
-                  <div className="detail-intro animate-in">
-                    <h1 className="editorial-title">{data.title || data.name}</h1>
-                    <p className="subtitle">{data.description || data.text}</p>
-                  </div>
-
-                  <section className="experiences-section">
-                    <h3 className="animate-in">Experiencias y Reflexiones</h3>
-                    <div className="experiences-grid">
-                      {sectionExperiences.map((exp, i) => (
-                        <div
-                          key={i}
-                          className="experience-card glass-panel animate-in clickable"
-                        onClick={() => {
-                            const detailViewEl = containerRef.current?.closest('.detail-view') || document.querySelector('.detail-view');
-                            scrollPosRef.current = detailViewEl?.scrollTop || 0;
-                            // Reset scroll to top BEFORE React re-renders
-                            if (detailViewEl) detailViewEl.scrollTop = 0;
-                            scrollDetailTo(0);
-                            setTimeout(() => {
-                              if (detailViewEl) detailViewEl.scrollTop = 0;
-                            }, 0);
-                            setSelectedExperience(exp);
-                          }}
-                        >
-                          <div className="card-header">
-                            <span className="date">
-                              <Calendar size={14} />
-                              {exp.date}
-                            </span>
-                            <h4>{exp.title}</h4>
-                          </div>
-                          <p>{exp.reflection}</p>
-                          <div className="card-tags">
-                            {(exp.learningOutcomes || []).map((loId, j) => (
-                              <span key={j} className={`tag-pill ${section}`}>
-                                {loLookup[loId]}
-                              </span>
-                            ))}
-                          </div>
-                        </div>
-                      ))}
-                      {sectionExperiences.length === 0 && (
-                        <p className="empty-msg">No hay experiencias registradas todavía en esta sección.</p>
-                      )}
-                    </div>
-                  </section>
-                </div>
-
-                <aside className="sidebar-column">
-                  <section className="outcomes-sidebar glass-panel animate-in">
-                    <div className="sidebar-group">
-                      <h4>Learning Outcomes</h4>
-                      <div className="outcomes-vertical-list">
-                        {[1, 2, 3, 4, 5, 6, 7].map((num) => {
-                          const isActive = achievedOutcomes.has(num);
-                          return (
-                            <div key={num} className={`outcome-item ${isActive ? 'active' : 'inactive'}`}>
-                              <div className="outcome-dot"></div>
-                              <div className="outcome-name">{loLookup[num]}</div>
-                            </div>
-                          );
-                        })}
-                      </div>
-                      <p className="sidebar-note">Objetivos de aprendizaje detectados en tus reflexiones.</p>
-                    </div>
-                  </section>
-
-                  <div className="sidebar-group glass-panel stats-card animate-in">
-                    <h4>Resumen de Sección</h4>
-                    <div className="stat-row">
-                      <span>Experiencias</span>
-                      <strong>{sectionExperiences.length}</strong>
-                    </div>
-                    <div className="stat-row">
-                      <span>Estado</span>
-                      <span className={`status-badge ${sectionExperiences.length > 0 ? 'active' : 'idle'}`}>
-                        <span className="status-dot"></span>
-                        {sectionExperiences.length > 0 ? 'En curso' : 'Sin iniciar'}
-                      </span>
-                    </div>
-                  </div>
-                </aside>
+            {selectedExperience.image && (
+              <div className="experience-image-container">
+                <img src={selectedExperience.image} alt={selectedExperience.title} className="experience-image" />
               </div>
             )}
-          </main>
+
+            <div className="experience-text-content">
+              <div className="text-section">
+                <h5>Descripción</h5>
+                <p>{selectedExperience.details || selectedExperience.description}</p>
+              </div>
+
+              <div className="text-section">
+                <h5>Reflexión de la Experiencia</h5>
+                <blockquote className="reflection-quote">
+                  <p>{selectedExperience.reflection}</p>
+                </blockquote>
+              </div>
+
+              <div className="text-section">
+                <h5>Resultados de Aprendizaje (LO)</h5>
+                <div className="card-tags">
+                  {(selectedExperience.learningOutcomes || []).map((loId, j) => (
+                    <span key={j} className={`tag-pill ${section}`}>
+                      {loFullLookup[loId]}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+        ) : (
+          <div className="detail-grid">
+            <div className="main-column">
+              <div className="detail-intro animate-in">
+                <h1 className="editorial-title">{data.title || data.name}</h1>
+                <p className="subtitle">{data.description || data.text}</p>
+              </div>
+
+              <section className="experiences-section">
+                <h3 className="animate-in">Experiencias y Reflexiones</h3>
+                <div className="experiences-grid">
+                  {sectionExperiences.map((exp, i) => (
+                    <div
+                      key={i}
+                      className="experience-card glass-panel animate-in clickable"
+                      onClick={() => {
+                        const detailViewEl = containerRef.current?.closest('.detail-view') || document.querySelector('.detail-view');
+                        scrollPosRef.current = detailViewEl?.scrollTop || 0;
+                        // Reset scroll to top BEFORE React re-renders
+                        if (detailViewEl) detailViewEl.scrollTop = 0;
+                        scrollDetailTo(0);
+                        setTimeout(() => {
+                          if (detailViewEl) detailViewEl.scrollTop = 0;
+                        }, 0);
+                        setSelectedExperience(exp);
+                      }}
+                    >
+                      <div className="card-header">
+                        <span className="date">
+                          <Calendar size={14} />
+                          {exp.date}
+                        </span>
+                        <h4>{exp.title}</h4>
+                      </div>
+                      <p>{exp.reflection}</p>
+                      <div className="card-tags">
+                        {(exp.learningOutcomes || []).map((loId, j) => (
+                          <span key={j} className={`tag-pill ${section}`}>
+                            {loLookup[loId]}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+                  ))}
+                  {sectionExperiences.length === 0 && (
+                    <p className="empty-msg">No hay experiencias registradas todavía en esta sección.</p>
+                  )}
+                </div>
+              </section>
+            </div>
+
+            <aside className="sidebar-column">
+              <section className="outcomes-sidebar glass-panel animate-in">
+                <div className="sidebar-group">
+                  <h4>Learning Outcomes</h4>
+                  <div className="outcomes-vertical-list">
+                    {[1, 2, 3, 4, 5, 6, 7].map((num) => {
+                      const isActive = achievedOutcomes.has(num);
+                      return (
+                        <div key={num} className={`outcome-item ${isActive ? 'active' : 'inactive'}`}>
+                          <div className="outcome-dot"></div>
+                          <div className="outcome-name">{loLookup[num]}</div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                  <p className="sidebar-note">Objetivos de aprendizaje detectados en tus reflexiones.</p>
+                </div>
+              </section>
+
+              <div className="sidebar-group glass-panel stats-card animate-in">
+                <h4>Resumen de Sección</h4>
+                <div className="stat-row">
+                  <span>Experiencias</span>
+                  <strong>{sectionExperiences.length}</strong>
+                </div>
+                <div className="stat-row">
+                  <span>Estado</span>
+                  <span className={`status-badge ${sectionExperiences.length > 0 ? 'active' : 'idle'}`}>
+                    <span className="status-dot"></span>
+                    {sectionExperiences.length > 0 ? 'En curso' : 'Sin iniciar'}
+                  </span>
+                </div>
+              </div>
+            </aside>
+          </div>
+        )}
+      </main>
 
       <style>{`
         /* Estado inicial para evitar parpadeos */
