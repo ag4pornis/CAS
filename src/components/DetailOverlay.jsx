@@ -47,7 +47,7 @@ export default function DetailOverlay({ section, onClose, isClosing, scrollDetai
     const cardDelay = isBackToGrid ? 0.05 : isEnteringExp ? 0.1 : 0.5;
 
     // Forzamos estado inicial invisible para evitar el "destello"
-    gsap.set(".detail-intro, .experiences-section h3, .experience-card, .outcomes-sidebar, .stats-card, .project-phase-card, .project-detail-section, .project-timeline-section", {
+    gsap.set(".detail-intro, .experiences-section h3, .experience-card, .outcomes-sidebar, .stats-card, .project-phase-card, .project-detail-section, .project-timeline-section, .experience-image-container", {
       opacity: 0,
       y: 20
     });
@@ -58,6 +58,13 @@ export default function DetailOverlay({ section, onClose, isClosing, scrollDetai
     tl.fromTo(".detail-intro",
       { opacity: 0, y: 10, filter: "blur(4px)" },
       { opacity: 1, y: 0, filter: "blur(0px)", duration: introDur, ease: "sine.inOut" }
+    );
+
+    // Fase 1.5: Imagen
+    tl.fromTo(".experience-image-container",
+      { opacity: 0, scale: 0.95, filter: "blur(6px)" },
+      { opacity: 1, scale: 1, filter: "blur(0px)", duration: introDur * 0.8, ease: "sine.inOut" },
+      "-=0.4"
     );
 
     if (!isEnteringExp) {
@@ -144,8 +151,13 @@ export default function DetailOverlay({ section, onClose, isClosing, scrollDetai
       });
 
       // 2. Quitar Experiencias / Fases
-      tlExit.to(".experience-card, .experiences-section h3, .project-phase-card, .project-detail-section, .project-timeline-section", {
+      tlExit.to(".experience-card, .experiences-section h3, .project-phase-card, .project-detail-section, .project-timeline-section, .experience-image-container", {
         opacity: 0, y: 30, filter: "blur(10px)", duration: 0.8, stagger: 0.1, ease: "sine.inOut"
+      }, "-=0.4");
+
+      // 2.5. Quitar Detalle de Experiencia
+      tlExit.to(".experience-detail-view .text-section, .experience-detail-view .experience-image-container, .experience-detail-view .back-button", {
+        opacity: 0, y: 20, filter: "blur(10px)", duration: 0.6, stagger: 0.05, ease: "sine.inOut"
       }, "-=0.4");
 
       // 3. Quitar Intro
