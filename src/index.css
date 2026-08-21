@@ -2,7 +2,7 @@
    CAS Portfolio — Editorial Art Gallery Style
    ============================================ */
 
-@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,700;0,800;1,700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,700;0,800;1,700&family=Caveat:wght@400;700&display=swap');
 
 /* --- Design Tokens (Light Theme) --- */
 :root {
@@ -44,6 +44,7 @@
   /* Typography */
   --font-body: 'Outfit', system-ui, -apple-system, sans-serif;
   --font-heading: 'Playfair Display', serif;
+  --font-script: 'Caveat', cursive;
 
   /* Spacing */
   --section-padding: clamp(4rem, 10vh, 8rem);
@@ -324,15 +325,45 @@ a {
   background-clip: text;
 }
 
-/* --- Canvas Container --- */
-.canvas-container {
+/* --- Loader --- */
+.loader {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg-primary);
+}
+
+.loader-svg {
+  width: min(420px, 80vw);
+  height: auto;
+}
+
+/* --- Image Grid --- */
+.image-grid {
   position: fixed;
   top: 0;
-  left: 0;
+  right: 0;
+  width: calc((100vw - 60px) * 0.667);
+  height: 100vh;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(3, 1fr);
+  gap: 10px;
+  padding: 20px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.grid-cell {
   width: 100%;
   height: 100%;
-  z-index: 0;
-  pointer-events: none;
+  object-fit: cover;
+  border-radius: 8px;
+  opacity: 0;
+  will-change: transform, opacity;
 }
 
 /* --- Layout Architecture --- */

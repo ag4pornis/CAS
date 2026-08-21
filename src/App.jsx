@@ -1,10 +1,12 @@
 import { useState, useEffect, useRef, useCallback } from "react";
-import Scene3D from "./components/Scene3D";
+import ImageGrid from "./components/ImageGrid";
 import HeroSection from "./components/HeroSection";
 import ProjectSection from "./components/ProjectSection";
 import StrandSection from "./components/StrandSection";
 import DetailOverlay from "./components/DetailOverlay";
+import Loader from "./components/Loader";
 import { casDescription } from "./data/experiences";
+import { preloadImages } from "./utils/sectionImages";
 import Lenis from "lenis";
 
 // Editorial Light Theme Colors
@@ -37,9 +39,16 @@ export default function App() {
   const contentRef = useRef(null);
   const lenisRef = useRef(null);
   const [scrollBtnReady, setScrollBtnReady] = useState(false);
+  const [isLoaded, setIsLoaded] = useState(false);
+  const [imagesReady, setImagesReady] = useState(false);
 
   useEffect(() => {
     requestAnimationFrame(() => setScrollBtnReady(true));
+  }, []);
+
+  // ─── Preload images in background ───
+  useEffect(() => {
+    preloadImages().then(() => setImagesReady(true));
   }, []);
 
   // ─── Initialize Lenis (Restored for premium inertia) ───
@@ -315,6 +324,8 @@ export default function App() {
 
   return (
     <div className="app-container">
+      {!isLoaded && <Loader ready={imagesReady} onComplete={() => setIsLoaded(true)} />}
+
       {/* Smooth Background Transition Layer */}
       <div
         className="dynamic-bg"
@@ -336,10 +347,7 @@ export default function App() {
       </div>
 
 
-      <Scene3D
-        activeSection={activeSection}
-        scrollProgress={scrollProgress}
-      />
+      <ImageGrid activeSection={activeSection} />
 
       <div
         ref={orbRef}
