@@ -19,7 +19,7 @@ export default function ProjectSection({ onEnter }) {
                 <Calendar size={14} />
                 {item.date}
               </div>
-              <div className="timeline-event">{item.event}</div>
+              <div className="timeline-event">{item.phase}</div>
             </div>
           ))}
         </div>

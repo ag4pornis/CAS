@@ -9,7 +9,7 @@ export default function StrandSection({ strand, isVisible, onEnter, alignment = 
           <span className="strand-number">0{strand.id === 'creativity' ? '1' : strand.id === 'activity' ? '2' : '3'}</span>
           <span className="strand-label">{strand.name}</span>
         </div>
-        <h2>{strand.title}</h2>
+        <h2>{strand.name}</h2>
         <p>{strand.description}</p>
         <button
           className="cta-button glass-panel"
