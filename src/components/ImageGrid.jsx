@@ -14,7 +14,7 @@ export default function ImageGrid({ activeSection }) {
     if (!gridRef.current) return;
 
     const container = gridRef.current;
-    const imgs = container.querySelectorAll(".grid-cell");
+    const cells = container.querySelectorAll(".grid-cell");
     const from = prevSection.current;
     const to = activeSection;
     const wasVisible = prevVisible.current;
@@ -34,11 +34,12 @@ export default function ImageGrid({ activeSection }) {
         ease: "power2.out",
       });
       const urls = shuffleArray(imagesBySection[to] || imagesBySection.project);
-      imgs.forEach((img, i) => {
-        if (urls[i]) img.src = urls[i];
+      cells.forEach((cell, i) => {
+        const img = cell.querySelector("img");
+        if (urls[i] && img) img.src = urls[i];
       });
-      gsap.set(imgs, { opacity: 0, scale: 0.92 });
-      gsap.to(imgs, {
+      gsap.set(cells, { opacity: 0, scale: 0.92 });
+      gsap.to(cells, {
         opacity: 1,
         scale: 1,
         duration: 0.7,
@@ -61,18 +62,20 @@ export default function ImageGrid({ activeSection }) {
     }
 
     if (wasVisible && nowVisible && from !== to) {
+      gsap.killTweensOf(cells);
       const urls = shuffleArray(imagesBySection[to] || imagesBySection.project);
-      gsap.to(imgs, {
+      gsap.to(cells, {
         opacity: 0,
         scale: 0.92,
         duration: 0.45,
         ease: "power2.in",
         stagger: { each: 0.03, from: "random" },
         onComplete: () => {
-          imgs.forEach((img, i) => {
-            if (urls[i]) img.src = urls[i];
+          cells.forEach((cell, i) => {
+            const img = cell.querySelector("img");
+            if (urls[i] && img) img.src = urls[i];
           });
-          gsap.to(imgs, {
+          gsap.to(cells, {
             opacity: 1,
             scale: 1,
             duration: 0.65,
@@ -96,7 +99,9 @@ export default function ImageGrid({ activeSection }) {
       style={{ opacity: 0, transform: "scale(0.95)" }}
     >
       {initialUrls.map((url, i) => (
-        <img key={i} className="grid-cell" src={url} alt="" loading="lazy" />
+        <div key={i} className="grid-cell">
+          <img src={url} alt="" loading="lazy" />
+        </div>
       ))}
     </div>
   );
