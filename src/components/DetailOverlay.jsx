@@ -68,12 +68,12 @@ function ImageGallery({ images, alt, galleryKey }) {
       {len > 1 && (
         <>
           <button className="img-nav-btn img-nav-left" onClick={() => navigate(-1)} aria-label="Imagen anterior">
-            <svg width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+            <svg width="22" height="22" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
               <polyline points="12 4 6 10 12 16" />
             </svg>
           </button>
           <button className="img-nav-btn img-nav-right" onClick={() => navigate(1)} aria-label="Imagen siguiente">
-            <svg width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+            <svg width="22" height="22" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
               <polyline points="8 4 14 10 8 16" />
             </svg>
           </button>
@@ -814,8 +814,8 @@ export default function DetailOverlay({ section, onClose, isClosing, scrollDetai
           position: absolute;
           top: 50%;
           transform: translateY(-50%);
-          width: 38px;
-          height: 38px;
+          width: 48px;
+          height: 48px;
           border-radius: 50%;
           border: 1px solid var(--glass-border);
           background: var(--glass-bg);
@@ -833,24 +833,34 @@ export default function DetailOverlay({ section, onClose, isClosing, scrollDetai
           z-index: 5;
           opacity: 0;
           transition: opacity 0.3s ease, background 0.15s var(--ease-smooth),
-                      transform 0.15s var(--ease-smooth);
+                      transform 0.3s var(--ease-smooth);
         }
 
         .experience-image-container:hover .img-nav-btn {
           opacity: 1;
+          transform: translateY(-50%) scale(1.2);
+          animation: nav-pulse 0.5s ease-out;
         }
 
         .img-nav-left {
-          left: 12px;
+          left: 20px;
         }
 
         .img-nav-right {
-          right: 12px;
+          right: 20px;
         }
 
         .img-nav-btn:hover {
           background: rgba(255, 255, 255, 0.22);
-          transform: translateY(-50%) scale(1.2);
+          transform: translateY(-50%) scale(1.3) !important;
+        }
+
+        @keyframes nav-pulse {
+          0%   { transform: translateY(-50%) scale(1); }
+          35%  { transform: translateY(-50%) scale(1.4); }
+          60%  { transform: translateY(-50%) scale(1.05); }
+          85%  { transform: translateY(-50%) scale(1.35); }
+          100% { transform: translateY(-50%) scale(1.2); }
         }
 
         .img-dots {
