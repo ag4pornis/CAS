@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef, useCallback, lazy, Suspense } from "react";
 import ImageGrid from "./components/ImageGrid";
+import LogoOverlay from "./components/LogoOverlay";
 import HeroSection from "./components/HeroSection";
 import ProjectSection from "./components/ProjectSection";
 import StrandSection from "./components/StrandSection";
@@ -359,6 +360,7 @@ export default function App() {
 
 
       <ImageGrid activeSection={activeSection} />
+      <LogoOverlay activeSection={activeSection} />
 
       <div
         ref={orbRef}
