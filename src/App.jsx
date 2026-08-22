@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef, useCallback, lazy, Suspense } from "react";
 import ImageGrid from "./components/ImageGrid";
 import LogoOverlay from "./components/LogoOverlay";
+import OrbIntro from "./components/OrbIntro";
 import HeroSection from "./components/HeroSection";
 import ProjectSection from "./components/ProjectSection";
 import StrandSection from "./components/StrandSection";
@@ -333,9 +334,12 @@ export default function App() {
   return (
     <div className="app-container">
       {!isLoaded && (
-        <Suspense fallback={<div className="loader" />}>
-          <Loader ready={imagesReady} onComplete={() => setIsLoaded(true)} />
-        </Suspense>
+        <>
+          <OrbIntro isLoaded={isLoaded} />
+          <Suspense fallback={<div className="loader" />}>
+            <Loader ready={imagesReady} onComplete={() => setIsLoaded(true)} />
+          </Suspense>
+        </>
       )}
 
       {/* Smooth Background Transition Layer */}
