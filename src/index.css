@@ -238,11 +238,11 @@ a {
   font-weight: 600;
   cursor: pointer;
   transition: background 0.15s var(--ease-smooth),
-              box-shadow 0.15s var(--ease-smooth),
-              transform 0.15s var(--ease-smooth),
-              border-color 0.15s var(--ease-smooth),
-              backdrop-filter 0.15s var(--ease-smooth),
-              -webkit-backdrop-filter 0.15s var(--ease-smooth);
+    box-shadow 0.15s var(--ease-smooth),
+    transform 0.15s var(--ease-smooth),
+    border-color 0.15s var(--ease-smooth),
+    backdrop-filter 0.15s var(--ease-smooth),
+    -webkit-backdrop-filter 0.15s var(--ease-smooth);
 }
 
 .cta-button:hover {
@@ -251,15 +251,15 @@ a {
   border-top-color: rgba(255, 255, 255, 0.95);
   border-left-color: rgba(255, 255, 255, 0.7);
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06),
-              inset 0 1px 1px rgba(255, 255, 255, 0.6);
+    inset 0 1px 1px rgba(255, 255, 255, 0.6);
   backdrop-filter: blur(12px) saturate(140%) brightness(1.03);
   -webkit-backdrop-filter: blur(12px) saturate(140%) brightness(1.03);
   transition: background 0.3s var(--ease-smooth),
-              box-shadow 0.3s var(--ease-smooth),
-              transform 0.3s var(--ease-smooth),
-              border-color 0.3s var(--ease-smooth),
-              backdrop-filter 0.3s var(--ease-smooth),
-              -webkit-backdrop-filter 0.3s var(--ease-smooth);
+    box-shadow 0.3s var(--ease-smooth),
+    transform 0.3s var(--ease-smooth),
+    border-color 0.3s var(--ease-smooth),
+    backdrop-filter 0.3s var(--ease-smooth),
+    -webkit-backdrop-filter 0.3s var(--ease-smooth);
 }
 
 /* ── .back-button ── */
@@ -336,9 +336,11 @@ a {
   background: var(--bg-primary);
 }
 
-.loader-svg {
-  width: min(420px, 80vw);
-  height: auto;
+.loader svg {
+  display: block;
+  margin-left: auto;
+  margin-right: 41%;
+  height: 10rem;
 }
 
 /* --- Image Grid --- */
@@ -593,6 +595,7 @@ a {
     backdrop-filter: var(--glass-blur);
     -webkit-backdrop-filter: var(--glass-blur);
   }
+
   20% {
     /* Primer pulso — borde encendido */
     border-left: 4px solid rgb(var(--rail-accent, 30, 41, 59));
@@ -606,6 +609,7 @@ a {
     backdrop-filter: blur(60px) saturate(200%) brightness(1.4);
     -webkit-backdrop-filter: blur(60px) saturate(200%) brightness(1.4);
   }
+
   40% {
     /* Bajada parcial — se apaga un poco */
     border-left: 2px solid rgba(var(--rail-accent, 30, 41, 59), 0.3);
@@ -616,6 +620,7 @@ a {
     backdrop-filter: blur(40px) saturate(160%) brightness(1.1);
     -webkit-backdrop-filter: blur(40px) saturate(160%) brightness(1.1);
   }
+
   60% {
     /* Segundo pulso — glow máximo otra vez */
     border-left: 5px solid rgb(var(--rail-accent, 30, 41, 59));
@@ -629,6 +634,7 @@ a {
     backdrop-filter: blur(70px) saturate(220%) brightness(1.5);
     -webkit-backdrop-filter: blur(70px) saturate(220%) brightness(1.5);
   }
+
   100% {
     border-left-color: var(--glass-border);
     box-shadow: none;

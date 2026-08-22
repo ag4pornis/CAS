@@ -1,10 +1,10 @@
-import { useState, useEffect, useRef, useCallback } from "react";
+import { useState, useEffect, useRef, useCallback, lazy, Suspense } from "react";
 import ImageGrid from "./components/ImageGrid";
 import HeroSection from "./components/HeroSection";
 import ProjectSection from "./components/ProjectSection";
 import StrandSection from "./components/StrandSection";
 import DetailOverlay from "./components/DetailOverlay";
-import Loader from "./components/Loader";
+const Loader = lazy(() => import("./components/Loader"));
 import { casDescription } from "./data/experiences";
 import { preloadImages } from "./utils/sectionImages";
 import Lenis from "lenis";
@@ -324,7 +324,11 @@ export default function App() {
 
   return (
     <div className="app-container">
-      {!isLoaded && <Loader ready={imagesReady} onComplete={() => setIsLoaded(true)} />}
+      {!isLoaded && (
+        <Suspense fallback={<div className="loader" />}>
+          <Loader ready={imagesReady} onComplete={() => setIsLoaded(true)} />
+        </Suspense>
+      )}
 
       {/* Smooth Background Transition Layer */}
       <div
