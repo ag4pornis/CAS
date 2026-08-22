@@ -306,6 +306,21 @@ export default function DetailOverlay({ section, onClose, isClosing, scrollDetai
                     ))}
                   </div>
                 </div>
+
+                {selectedPhase.diary && selectedPhase.diary.length > 0 && (
+                  <div className="text-section">
+                    <h5>Diario de la Fase</h5>
+                    <div className="phase-diary">
+                      {selectedPhase.diary.map((entry, i) => (
+                        <div key={i} className="diary-entry glass-panel">
+                          <span className="diary-date">{entry.date}</span>
+                          <h6 className="diary-title">{entry.title}</h6>
+                          <p className="diary-content">{entry.content}</p>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
               </div>
             </div>
           ) : (
@@ -355,6 +370,15 @@ export default function DetailOverlay({ section, onClose, isClosing, scrollDetai
                   ))}
                 </div>
               </section>
+
+              {data.globalReflection && (
+                <section className="project-global-reflection animate-in">
+                  <h3 className="global-reflection-title">Reflexión Global del Proyecto</h3>
+                  <blockquote className="reflection-quote">
+                    <p>{data.globalReflection}</p>
+                  </blockquote>
+                </section>
+              )}
             </div>
           )
         ) : selectedExperience ? (
@@ -540,7 +564,7 @@ export default function DetailOverlay({ section, onClose, isClosing, scrollDetai
         }
 
         .detail-intro {
-          margin-bottom: 5rem;
+          margin-bottom: 2rem;
         }
 
         .editorial-title {
@@ -930,7 +954,7 @@ export default function DetailOverlay({ section, onClose, isClosing, scrollDetai
           line-height: 1.7;
         }
 
-        .project-detail-section h3, .project-timeline-section h3 {
+        .project-detail-section h3, .project-timeline-section h3, .global-reflection-title {
           font-family: var(--font-body);
           font-size: 0.85rem;
           text-transform: uppercase;
@@ -1040,6 +1064,49 @@ export default function DetailOverlay({ section, onClose, isClosing, scrollDetai
         .tag-pill.activity { background: #fef3c7; color: var(--activity); }
         .tag-pill.service { background: #e0f2fe; color: var(--service); }
         .tag-pill.project { background: #ecfdf5; color: var(--project); }
+
+        .project-global-reflection {
+          margin-top: 2rem;
+        }
+
+        .project-global-reflection .reflection-quote {
+          font-size: 1.1rem;
+          line-height: 1.9;
+        }
+
+        .phase-diary {
+          display: flex;
+          flex-direction: column;
+          gap: 1rem;
+        }
+
+        .diary-entry {
+          padding: 1.5rem;
+          display: flex;
+          flex-direction: column;
+          gap: 0.6rem;
+          border-radius: 16px;
+        }
+
+        .diary-date {
+          font-size: 0.7rem;
+          font-weight: 700;
+          color: var(--project);
+          text-transform: uppercase;
+          letter-spacing: 0.05em;
+        }
+
+        .diary-title {
+          font-family: var(--font-heading);
+          font-size: 1.15rem;
+          color: var(--text-primary);
+        }
+
+        .diary-content {
+          font-size: 0.95rem;
+          line-height: 1.7;
+          color: var(--text-secondary);
+        }
 
         @media (max-width: 1100px) {
           .detail-grid {

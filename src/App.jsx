@@ -3,6 +3,7 @@ import ImageGrid from "./components/ImageGrid";
 import HeroSection from "./components/HeroSection";
 import ProjectSection from "./components/ProjectSection";
 import StrandSection from "./components/StrandSection";
+import GlobalReflection from "./components/GlobalReflection";
 import DetailOverlay from "./components/DetailOverlay";
 const Loader = lazy(() => import("./components/Loader"));
 import { casDescription } from "./data/experiences";
@@ -16,6 +17,7 @@ const sectionColors = {
   creativity: { from: "232, 225, 245", to: "250, 248, 255", accent: "142, 125, 190" },
   activity: { from: "254, 243, 199", to: "255, 255, 255", accent: "217, 119, 6" },
   service: { from: "191, 232, 255", to: "240, 249, 255", accent: "14, 165, 233" },
+  reflection: { from: "226, 232, 240", to: "248, 250, 252", accent: "30, 41, 59" },
 };
 
 
@@ -115,7 +117,7 @@ export default function App() {
 
     const sections = document.querySelectorAll("[id]");
     sections.forEach((section) => {
-      if (["hero", "project", "creativity", "activity", "service"].includes(section.id)) {
+      if (["hero", "project", "creativity", "activity", "service", "reflection"].includes(section.id)) {
         observer.observe(section);
       }
     });
@@ -388,6 +390,8 @@ export default function App() {
               onEnter={() => openDetail("service")}
               alignment="left"
             />
+
+            <GlobalReflection />
 
             <footer className="site-footer glass-panel">
               <div className="footer-content">

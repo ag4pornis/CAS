@@ -53,10 +53,15 @@ export const casProject = {
       phase: "Investigación",
       date: "Septiembre 2025",
       description: "Identificación de la necesidad en el centro de día y planificación inicial.",
-      details: "El primer paso fue contactsr con los responsables del centro de día para conocer sus necesidades. Realizamos visitas semanales durante todo septiembre, entrevistando a residentes y personal para entender qué tipo de espacio verde necesitaban. Investigamos técnicas de huerto urbano accesible, bancales elevados para sillas de ruedas y sistemas de riego por goteo de bajo mantenimiento. También estudiamos experiencias similares en otros barrios para extraer buenas prácticas.",
+      details: "El primer paso fue contactar con los responsables del centro de día para conocer sus necesidades. Realizamos visitas semanales durante todo septiembre, entrevistando a residentes y personal para entender qué tipo de espacio verde necesitaban. Investigamos técnicas de huerto urbano accesible, bancales elevados para sillas de ruedas y sistemas de riego por goteo de bajo mantenimiento. También estudiamos experiencias similares en otros barrios para extraer buenas prácticas.",
       reflection: "Esta fase me enseñó la importancia de escuchar antes de actuar. Pensé que sabía lo que la gente necesitaba, pero las conversaciones con los mayores cambiaron completamente mi perspectiva. Aprendí a hacer preguntas abiertas y a documentar necesidades reales en vez de asumir.",
       images: ["https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=1000&auto=format&fit=crop&q=80"],
       learningOutcomes: [1, 3],
+      diary: [
+        { date: "3 Sept 2025", title: "Primera visita al centro", content: "Hoy fuimos por primera vez al centro de día. Nos recibió la directora, Doña Lucía, y nos paseó por las instalaciones. El patio trasero estaba vacío — solo tierra y unas macetas rotas. Un grupo de residentes se acercó a vernos con curiosidad. Doña Carmen me preguntó si sabíamos de jardinería. Le dije que no, pero que estábamos dispuestos a aprender." },
+        { date: "12 Sept 2025", title: "Entrevistas con residentes", content: "Volvimos con un cuestionario preparado. Hablamos con ocho residentes durante una hora. La mayoría quería un espacio al aire libre donde sentarse, pero también había interés en plantar cosas. Don Manuel, que fue agricultor, nos contó técnicas tradicionales de siembra que nunca habíamos oído." },
+        { date: "22 Sept 2025", title: "Investigación de técnicas", content: "Pasamos la tarde investigando bancales elevados accesibles para sillas de ruedas. Encontramos un diseño que permitía regular la altura. También estudiamos sistemas de riego por goteo de bajo mantenimiento. Tomamos notas detalladas para la fase de planificación." },
+      ],
     },
     {
       phase: "Planificación",
@@ -69,6 +74,11 @@ export const casProject = {
         "https://images.unsplash.com/photo-1542626991-cbc4e32524cc?w=1000&auto=format&fit=crop&q=80"
       ],
       learningOutcomes: [1, 3, 5],
+      diary: [
+        { date: "5 Oct 2025", title: "Diseño de bancales", content: "Trazamos el plano del patio con ocho bancales elevados a tres alturas diferentes: 40cm, 60cm y 80cm para adaptarnos a residentes sentados, de pie y en silla de ruedas. Cada banco tendrá 1.20m de largo por 0.60m de profundidad." },
+        { date: "19 Oct 2025", title: "Organización de comisiones", content: "Repartimos los roles: jardinería (sembrar y cuidar las plantas), construcción (armar los bancales), comunicación (redes sociales y carteles) y logística (materiales y transporte). Yo quedé en construcción con tres compañeros." },
+        { date: "28 Oct 2025", title: "Presupuesto finalizado", content: "Presentamos el presupuesto al colegio: 320 euros en madera reciclada, tornillos y tierra. Las empresas del barrio ofrecieron donar las herramientas. El director aprobó todo en una tarde." },
+      ],
     },
     {
       phase: "Ejecución",
@@ -78,6 +88,12 @@ export const casProject = {
       reflection: "Los sábados en el huerto se convirtieron en lo mejor de mi semana. Ver cómo los bancales pasaban de ser planos de madera a jardines llenos de vida fue mágico. Los momentos más significativos fueron las conversaciones con Doña Carmen mientras plantábamos tomates — me contó su infancia en el campo y me enseñó que la jardinería es mucho más que poner tierra en una maceta.",
       images: ["https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=1000&auto=format&fit=crop&q=80"],
       learningOutcomes: [1, 2, 4, 5],
+      diary: [
+        { date: "2 Nov 2025", title: "Primera jornada de construccion", content: "Llegamos a las 9 de la manana con la madera y las herramientas. Don Manuel nos ayudo a cortar las tablas con una sierra manual. Montamos los dos primeros bancales antes del mediodia. Los residentes nos trajo zumo y galletas." },
+        { date: "16 Nov 2025", title: "Siembra con los residentes", content: "Dona Carmen nos enseno a plantar tomates, albahaca y lavanda. Cada residente eligio que queria plantar en su bancale. Dona Pilar, que nunca habia jardinado, planto sus primeras fresas con una emocion que nos contagio a todos." },
+        { date: "7 Dic 2025", title: "Instalacion del riego", content: "El sistema de goteo quedo instalado en toda la zona. Funciono desde el primer dia. Los residentes estaban asombrados de ver como el agua llegaba sola a cada planta. Organizamos el primer taller de cocina con la albahaca que ya habia crecido." },
+        { date: "21 Dic 2025", title: "Sesion de fotos del huerto", content: "Organizamos una sesion de fotografia documental del huerto para mostrar el antes y el despues. Las fotos quedaron preciosas: los bancales llenos de verduras, los sonrisas de los mayores, las manos en la tierra." },
+      ],
     },
     {
       phase: "Reflexión",
@@ -87,8 +103,26 @@ export const casProject = {
       reflection: "Esta fase me hizo darme cuenta de que el verdadero éxito no se mide en kilos de tomates, sino en las sonrisas que generaste. El proyecto me transformó: pasé de ver el servicio como una obligación a entenderlo como una oportunidad genuina de conectar con otros. Aprendí que liderar no es mandar, sino crear las condiciones para que cada persona pueda aportar lo mejor de sí.",
       images: ["https://images.unsplash.com/photo-1466692476868-aef1dfb1e735?w=1000&auto=format&fit=crop&q=80"],
       learningOutcomes: [1, 2, 4, 6, 7],
+      diary: [
+        { date: "11 Ene 2026", title: "Encuesta de impacto", content: "Recogimos feedback de 12 residentes y 5 miembros del personal mediante entrevistas personales. El 90% dijo que su estado de animo habia mejorado desde que empezo el huerto. Dona Carmen nos regalo un ramo de lavanda seca." },
+        { date: "25 Ene 2026", title: "Presentacion al colegio", content: "Explicamos el proyecto ante 200 alumnos y profesores en el acto del trimestre. Proyectamos un video con el antes y el despues del patio. Muchos alumnos se ofrecieron como voluntarios para el proximo trimestre." },
+      ],
+    },
+    {
+      phase: "Demonstración",
+      date: "Febrero 2026",
+      description: "Difusion de resultados, exposicion fotografia y handed-over al grupo de voluntarios.",
+      details: "Organizamos una exposicion fotografica en el hall del colegio con 30 fotos del proceso, desde la primera visita hasta el huerto en plena produccion. Creamos un video documental de 5 minutos y lo publicamos en las redes del colegio. Realizamos una sesion de transferencia con el nuevo grupo de voluntarios, entregando un manual de mantenimiento y el cronograma de riego. El centro de dia firmo un compromiso de conservacion a largo plazo.",
+      reflection: "Compartir los resultados fue tan gratificante como el proyecto mismo. Ver la exposicion llena de gente que se acercaba a contarnos lo inspirador que les parecia nuestro trabajo me hizo sentir que el esfuerzo habia valido la pena. Entregar el huerto a los voluntarios fue un acto de confianza: aprendi que liderar tambien es saber soltar.",
+      images: ["https://images.unsplash.com/photo-1466692476868-aef1dfb1e735?w=1000&auto=format&fit=crop&q=80"],
+      learningOutcomes: [1, 2, 4, 5, 6, 7],
+      diary: [
+        { date: "3 Feb 2026", title: "Montaje de la exposicion", content: "Seleccionamos 30 fotos del proyecto y las imprimimos en formato grande. Colgamos cada foto con una breve descripcion del momento que capturaba. El hall del colegio se transformo en una galeria temporal." },
+        { date: "14 Feb 2026", title: "Inauguracion y transferencia", content: "Vinieron residentes, familias, profesores y el grupo nuevo de voluntarios. Dona Carmen hizo un pequeno discurso que nos dejo a todos sin palabras. Luego pasamos el testigo oficialmente al grupo de voluntarios, entregandoles el manual que habiamos preparado." },
+      ],
     },
   ],
+  globalReflection: "A lo largo de estos dos anos, CAS me ha transformado de maneras que no imaginaba. Al principio veia las actividades como obligaciones aparte de mis estudios, pero poco a poco descubri que eran las experiencias que mas me definieron. La pintura me enseno paciencia, la media maraton me enseno que los limites son mentales, y las clases de matematicas me enseno que ensenar es la mejor manera de aprender. El proyecto del huerto fue el punto de inflexion: deje de ver el servicio como algo que se hace por otros para entenderlo como algo que haces contigo mismo, en conexion con los demas. CAS me enseno que crecer no esta en los libros, sino en las conversaciones con Dona Manuel, en los sabajos de siembra, en las derrotas en la cancha y en las noches componiendo musica. Mi mayor aprendizaje es que la vida real no se mide en notas, sino en las personas que tocas y en las experiencias que te cambian por dentro.",
 };
 
 export const experiences = {
