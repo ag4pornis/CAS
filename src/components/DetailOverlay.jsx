@@ -260,7 +260,7 @@ export default function DetailOverlay({ section, onClose, isClosing, scrollDetai
   }, [onClose]);
 
   return (
-    <div className="detail-overlay" ref={containerRef} data-lenis-prevent>
+    <div className="detail-overlay" ref={containerRef}>
       <main className="detail-body">
         {isProject ? (
           selectedPhase ? (
