@@ -128,7 +128,7 @@ export default function DetailOverlay({ section, onClose, isClosing, scrollDetai
     const cardDelay = isBackToGrid ? 0.05 : isEnteringExp ? 0.1 : 0.5;
 
     // Forzamos estado inicial invisible para evitar el "destello"
-    gsap.set(".detail-intro, .experiences-section h3, .experience-card, .outcomes-sidebar, .stats-card, .project-phase-card, .project-detail-section, .project-timeline-section, .experience-image-container", {
+    gsap.set(".detail-intro, .experiences-section h3, .experience-card, .outcomes-sidebar, .stats-card, .project-phase-card, .project-detail-section, .project-timeline-section, .experience-image-container, .project-global-reflection, .diary-entry, .phase-diary", {
       opacity: 0,
       y: 20
     });
@@ -197,6 +197,12 @@ export default function DetailOverlay({ section, onClose, isClosing, scrollDetai
           { opacity: 1, y: 0, filter: "blur(0px)", duration: cardDur, stagger: 0.08, ease: "sine.out" },
           "-=0.2"
         );
+
+        tl.fromTo(".project-global-reflection",
+          { opacity: 0, y: 15, filter: "blur(4px)" },
+          { opacity: 1, y: 0, filter: "blur(0px)", duration: introDur, ease: "sine.inOut" },
+          "-=0.2"
+        );
       }
     }
 
@@ -206,6 +212,20 @@ export default function DetailOverlay({ section, onClose, isClosing, scrollDetai
       { opacity: 1, x: 0, filter: "blur(0px)", duration: sidebarDur, stagger: 0.1, ease: "sine.inOut" },
       isBackToGrid ? "-=0.2" : "+=0.1"
     );
+
+    // Fase 4: Diario de la fase (al entrar en detalle de fase del proyecto)
+    if (isProject && selectedPhase && selectedPhase.diary && selectedPhase.diary.length > 0) {
+      tl.fromTo(".phase-diary",
+        { opacity: 0, y: 15, filter: "blur(4px)" },
+        { opacity: 1, y: 0, filter: "blur(0px)", duration: introDur, ease: "sine.inOut" },
+        "-=0.3"
+      );
+      tl.fromTo(".diary-entry",
+        { opacity: 0, y: 15 },
+        { opacity: 1, y: 0, duration: cardDur, stagger: 0.08, ease: "sine.out" },
+        "-=0.4"
+      );
+    }
   }, { scope: containerRef, dependencies: [section, selectedExperience, selectedPhase] });
 
   // Manejo de scroll: restaurar al volver a la grilla
@@ -232,7 +252,7 @@ export default function DetailOverlay({ section, onClose, isClosing, scrollDetai
       });
 
       // 2. Quitar Experiencias / Fases
-      tlExit.to(".experience-card, .experiences-section h3, .project-phase-card, .project-detail-section, .project-timeline-section, .experience-image-container", {
+      tlExit.to(".experience-card, .experiences-section h3, .project-phase-card, .project-detail-section, .project-timeline-section, .experience-image-container, .project-global-reflection, .diary-entry, .phase-diary", {
         opacity: 0, y: 30, filter: "blur(10px)", duration: 0.8, stagger: 0.1, ease: "sine.inOut"
       }, "-=0.4");
 
