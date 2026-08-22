@@ -4,16 +4,16 @@ import gsap from "gsap";
 
 export default function Loader({ ready, onComplete }) {
   const containerRef = useRef(null);
-  const [animDone, setAnimDone] = useState(false);
   const [fadeOut, setFadeOut] = useState(false);
+  const [firstDrawDone, setFirstDrawDone] = useState(false);
 
   useEffect(() => {
-    const timer = setTimeout(() => setAnimDone(true), 5000);
+    const timer = setTimeout(() => setFirstDrawDone(true), 2800);
     return () => clearTimeout(timer);
   }, []);
 
   useEffect(() => {
-    if (ready && animDone && !fadeOut) {
+    if (ready && firstDrawDone && !fadeOut) {
       setFadeOut(true);
       gsap.to(containerRef.current, {
         opacity: 0,
@@ -22,13 +22,15 @@ export default function Loader({ ready, onComplete }) {
         onComplete,
       });
     }
-  }, [ready, animDone, fadeOut, onComplete]);
+  }, [ready, firstDrawDone, fadeOut, onComplete]);
 
   return (
     <div ref={containerRef} className="loader">
       <Letters
         text="cas"
         autoPlay
+        loop
+        loopPauseMs={800}
         animation={{ type: "tween", duration: 2.5, ease: "easeInOut" }}
         strokeWidth={2}
         color="#000000"
