@@ -822,7 +822,7 @@ export default function DetailOverlay({ section, onClose, isClosing, scrollDetai
           width: 100%;
           height: 380px;
           border-radius: 24px;
-          overflow: hidden;
+          overflow: clip;
           padding: 0 !important;
           border: 1px solid rgba(255, 255, 255, 0.3);
           box-shadow: 0 15px 35px rgba(0, 0, 0, 0.06);

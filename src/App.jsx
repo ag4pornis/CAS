@@ -84,7 +84,12 @@ export default function App() {
       setScrollProgress(progress);
     });
 
+    const resizeId = setTimeout(() => {
+      lenis.resize();
+    }, 100);
+
     return () => {
+      clearTimeout(resizeId);
       lenis.destroy();
     };
   }, [detailView]); // Se reinicia al cambiar de vista para capturar el nuevo contenedor
