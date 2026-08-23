@@ -1,5 +1,16 @@
 import { useRef, useEffect } from "react";
 
+function catmullRom(p0, p1, p2, p3, t) {
+  const t2 = t * t;
+  const t3 = t2 * t;
+  return 0.5 * (
+    (2 * p1) +
+    (-p0 + p2) * t +
+    (2 * p0 - 5 * p1 + 4 * p2 - p3) * t2 +
+    (-p0 + 3 * p1 - 3 * p2 + p3) * t3
+  );
+}
+
 export default function OrbIntro({ isLoaded }) {
   const ref = useRef(null);
 
@@ -7,11 +18,22 @@ export default function OrbIntro({ isLoaded }) {
     if (!ref.current) return;
 
     const vh = window.innerHeight;
-    const cx = 30;
-    const cy = vh * 0.13;
-    const R = 70;
-    const duration = 2500;
-    const startAngle = -Math.PI / 2;
+
+    const pts = [
+      [90, -80],
+      [100, 40],
+      [150, 160],
+      [55, 210],
+      [70, 180],
+      [-20, 165],
+      [-80, 175],
+    ];
+    const padStart = [pts[0][0] + 20, pts[0][1] - 60];
+    const padEnd = [pts[6][0] - 40, pts[6][1] + 20];
+    const all = [padStart, ...pts, padEnd];
+
+    const segCount = all.length - 3;
+    const duration = 2600;
     const startTime = Date.now();
 
     let done = false;
@@ -19,16 +41,16 @@ export default function OrbIntro({ isLoaded }) {
     function tick() {
       if (!ref.current || done) return;
       const now = Date.now();
-      const elapsed = now - startTime;
-      const t = Math.min(elapsed / duration, 1);
+      const t = Math.min((now - startTime) / duration, 1);
 
-      const angle = startAngle + t * Math.PI * 2;
-      const x = cx + R * Math.cos(angle);
-      const y = cy + R * Math.sin(angle);
+      const raw = t * segCount;
+      const seg = Math.min(Math.floor(raw), segCount - 1);
+      const local = raw - seg;
+
+      const x = catmullRom(all[seg][0], all[seg + 1][0], all[seg + 2][0], all[seg + 3][0], local);
+      const y = catmullRom(all[seg][1], all[seg + 1][1], all[seg + 2][1], all[seg + 3][1], local);
 
       const pulse = 1 + Math.sin(now * 0.0008) * 0.06;
-      const fadeOut = t > 0.7 ? 1 - (t - 0.7) / 0.3 : 1;
-      ref.current.style.opacity = fadeOut;
       ref.current.style.transform =
         `translate3d(calc(-50% + ${x}px), calc(-50% + ${y}px), 0) scale(${pulse})`;
 
@@ -71,7 +93,7 @@ export default function OrbIntro({ isLoaded }) {
         marginTop: -30,
         marginLeft: -30,
         willChange: "transform",
-        opacity: 0,
+        opacity: 1,
       }}
     />
   );
