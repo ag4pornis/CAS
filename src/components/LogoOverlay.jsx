@@ -55,6 +55,8 @@ export default function LogoOverlay({ activeSection }) {
           top: 50%;
           transform: translateY(-50%);
           width: clamp(500px, 55vw, 800px);
+          aspect-ratio: 1 / 1;
+          height: auto;
           opacity: 0;
           filter: blur(1.3px);
           pointer-events: none;
